@@ -12,7 +12,8 @@ num_bit_extra = global_vars.bit_extra * 2 * num_half_bit
 class Signal:
   def __init__(self, file_name, data):
     self.file_name = file_name
-    self.answer = [int(i) for i in data[0]]
+    self.answer = data[0]
+#    self.answer = [int(i) for i in data[0]]
     self.samples = list()
     for idx in range(1, len(data)-1):  # -1은 제일 뒤의 '\n'을 제거해주기 위함
       self.samples.append(data[idx])
@@ -21,7 +22,6 @@ class Signal:
     self.standardize_samples()
     self.index = self.detect_preamble()
     self.extract_data_samples()
-    self.make_answer_samples()
 
 
   def standardize_samples(self):
@@ -87,23 +87,7 @@ class Signal:
 
   def extract_data_samples(self):
     self.data_samples = self.samples[self.index : self.index + num_bit_data]
+    self.rev_cut_std_samples = self.samples[self.index : self.index + num_bit_data]
     if self.state == 1:
       for idx in range(len(self.rev_cut_std_samples)):
         self.rev_cut_std_samples[idx] *= -1.0
-
-
-  def make_answer_samples(self):
-    self.answer_samples = list()
-    level = -1
-    for bit in self.answer:
-      for i in range(0, num_half_bit):
-        self.answer_samples.append(level)
-
-      if bit:
-        for i in range(0, num_half_bit):
-          self.answer_samples.append(level)
-      else:
-        level *= -1
-        for i in range(0, num_half_bit):
-          self.answer_samples.append(level)
-      level *= -1
