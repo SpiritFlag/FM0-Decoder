@@ -30,7 +30,7 @@ def main_fnc(mode, folder_name):
 
   output = autoencoder.test_model(np.array(input_set.test))
   success = grading(output, answer_set.test)
-  print(str(success) + " / " + str(len(output)) + "\n\n")
+  print(str(success) + " / " + str(len(answer_set.test)) + "\n\n")
 
 
 
