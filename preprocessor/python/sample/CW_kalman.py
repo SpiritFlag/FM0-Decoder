@@ -1,5 +1,4 @@
 import sys
-import numpy as np
 
 from tqdm import tqdm
 from IQcomplex import IQcomplex
