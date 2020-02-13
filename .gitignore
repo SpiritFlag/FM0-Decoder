@@ -1,3 +1,5 @@
 *__pycache__/
 *.ftpconfig
 data/
+model/
+log/

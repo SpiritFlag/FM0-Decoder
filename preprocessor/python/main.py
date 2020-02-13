@@ -1,14 +1,17 @@
 import sys
 import timeit
-import numpy as np
 
 from tqdm import tqdm
 from global_vars import *
 
 from sample.CW_kalman import CW_kalman
 from sample.std_cliffing import std_cliffing
-from sample_set.separation_simple import separation_simple
+from sample_set.generate_RNindex import generate_RNindex
+from sample_set.generate_RNdatabit import generate_RNdatabit
+from sample_set.generate_RNset import generate_RNset
 from sample_set.bit_with_correlation import bit_with_correlation
+
+
 
 if __name__ == "__main__":
   try:
@@ -17,7 +20,9 @@ if __name__ == "__main__":
     print("2. sample_set")
     menu = int(input("\nSelect > "))
     if menu < 1 or menu > 2:
-      raise ValueError("The index of menu must be in between 1 to 2.")
+      raise ValueError("User Interrupt")
+
+
 
     print("\n\n\t*** Select Function ***")
     if menu == 1: # 1. sample
@@ -29,17 +34,25 @@ if __name__ == "__main__":
       elif menu == 2:
         menu = std_cliffing
       else:
-        raise ValueError("The index of function must be in between 1 to 2.")
+        raise ValueError("User Interrupt")
     elif menu == 2: # 2. sample_set
-      print("1. separation_simple")
-      print("2. bit_with_correlation")
+      print("1. generate_RNindex")
+      print("2. generate_RNdatabit")
+      print("3. generate_RNset")
+      print("4. bit_with_correlation")
       menu = int(input("\nSelect > "))
       if menu == 1:
-        menu = separation_simple
+        menu = generate_RNindex
       elif menu == 2:
+        menu = generate_RNdatabit
+      elif menu == 3:
+        menu = generate_RNset
+      elif menu == 4:
         menu = bit_with_correlation
       else:
-        raise ValueError("The index of function must be in between 1 to 2.")
+        raise ValueError("User Interrupt")
+
+
 
     print("\n\n\t*** Check Global Variables ***")
     print("file_name_list= " + str(file_name_list))
@@ -58,11 +71,19 @@ if __name__ == "__main__":
     print("n_bit_preamble= " + str(n_bit_preamble))
     print("n_bit_data= " + str(n_bit_data))
     print("n_extra= " + str(n_extra))
+    print("")
+    print("n_RNtrain= " + str(n_RNtrain))
+    print("n_RNvalidation= " + str(n_RNvalidation))
+    print("n_RNtest= " + str(n_RNtest))
+    print("n_RNset= " + str(n_RNset))
+    print("n_RNsignal= " + str(n_RNsignal))
 
     print("\n" + str(menu))
     chk = input("\nPress Y(y) to continue.. > ")
     if chk != "Y" and chk != "y":
       raise ValueError("User Interrupt")
+
+
 
     tot_time = timeit.default_timer()
     for file_name in file_name_list:

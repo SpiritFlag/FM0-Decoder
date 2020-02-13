@@ -1,38 +1,56 @@
-import itertools
+import sys
+import timeit
+import pickle
 
 from tqdm import tqdm
 from sklearn import svm
+from sklearn.externals import joblib
+from global_vars import *
 
-signal_path = "data/C_bit_with_correlation/"
+
 
 def SVM_train():
-  X = []
-  y = []
+  try:
+    train_set = []
+    answer_set = []
 
-  for x in range(4):
-    n_lines = sum(1 for line in open(signal_path + "100_0_0_" + str(x) + "_train"))
-    file = open(signal_path + "100_0_0_" + str(x) + "_train", "r")
+    log = open(log_full_path, "a")
+    log.write("\t*** SVM_train ***\n")
 
-    for idx in tqdm(range(n_lines), desc="READING", ncols=100, unit=" signal"):
-      sample = file.readline().rstrip(" \n").split(" ")
-      sample = [float(i) for i in sample]
-      X.append(sample)
-      y.append(x)
+    for f in tqdm(range(len(file_name_list)), desc="READING", ncols=100, unit=" file"):
+      file_name = file_name_list[f]
+      try:
+        log.write(file_name + " ")
 
-  clf = svm.SVC(verbose=True)
-  clf.fit(X, y)
+        for x in range(4):
+          n_lines = sum(1 for line in open(signal_path + file_name + "_RN" + str(RN_index) + "_train_" + str(x)))
+          log.write(str(n_lines) + " ")
+          file = open(signal_path + file_name + "_RN" + str(RN_index) + "_train_" + str(x), "r")
 
-  sample_list = []
-  answer_list = []
+          for idx in range(n_lines):
+            sample = file.readline().rstrip(" \n").split(" ")
+            sample = [float(i) for i in sample]
+            train_set.append(sample)
+            answer_set.append(x)
 
-  for x in range(4):
-    n_lines = sum(1 for line in open(signal_path + "100_0_0_" + str(x) + "_test"))
-    file = open(signal_path + "100_0_0_" + str(x) + "_test", "r")
+          file.close()
+        log.write("\n")
 
-    for idx in tqdm(range(n_lines), desc="READING", ncols=100, unit=" signal"):
-      sample = file.readline().rstrip(" \n").split(" ")
-      sample = [float(i) for i in sample]
-      sample_list.append(sample)
-      answer_list.append(x)
+      except Exception as ex:
+        _, _, tb = sys.exc_info()
+        print("[SVM_train:" + file_name + ":" + str(tb.tb_lineno) + "] " + str(ex) + "\n\n")
 
-  clf.predict(sample_list)
+    train_time = timeit.default_timer()
+    clf = svm.SVC(verbose=True)
+    clf.fit(train_set, answer_set)
+    joblib.dump(clf, model_full_path)
+    print("\t\tTRAIN TIME= " + str(round(timeit.default_timer() - train_time, 3)) + " (sec)\n")
+    log.write(model_full_path + " successfully trained!\n")
+
+    print("\n\n")
+    log.close()
+    return True
+
+  except Exception as ex:
+    _, _, tb = sys.exc_info()
+    print("[SVM_train:" + str(tb.tb_lineno) + "] " + str(ex) + "\n\n")
