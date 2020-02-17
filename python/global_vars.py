@@ -5,7 +5,7 @@ for a in ["100", "200", "300", "400"]:
             file_name_list_all.append(a + "_" + b + "_" + c)
 
 file_name_list = []
-#file_name_list = ["100_0_0"]
+#file_name_list = ["200_0_0"]
 file_name_list = file_name_list_all
 RN_index = 0
 
@@ -22,7 +22,13 @@ log_full_path = log_path + execute_time
 
 databit_path = "data/C_RN_databit/"
 #signal_path = "data/C_RN_std/"
-signal_path = "data/C_RN_bit_with_correlation_std/"
+#signal_path = "data/C_RN_bit_with_correlation_std/"
+signal_path = "data/C_RN_2_bit_with_correlation_std/"
+#model_type = "one_bit"
+model_type = "two_bit"
+#model_type = "half_bit"
+#model_postpix = "_onehot"
+model_postpix = "_lowhigh"
 
 
 
@@ -33,3 +39,9 @@ n_half_bit = int(n_bit / 2)
 n_bit_preamble = 6
 n_bit_data = 128
 n_extra = int(n_sample - n_bit * (n_bit_preamble + n_bit_data))
+
+
+
+learning_rate = 0.001
+learning_epoch = 100
+isEarlyStop = True
