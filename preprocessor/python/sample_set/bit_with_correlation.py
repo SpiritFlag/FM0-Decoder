@@ -108,10 +108,12 @@ def fnc(file_name, set_name, set_size):
           start += (shift - n_tolerance_bit)
 
           if set_name == "test":
-            for sample in signal[idx][start:start+n_bit]:
+            for sample in signal[idx][start-n_half_bit:start+n_bit+n_half_bit]:
+            #for sample in signal[idx][start:start+n_bit]:
               file[0].write(str(sample) + " ")
           else:
-            for sample in signal[idx][start:start+n_bit]:
+            for sample in signal[idx][start-n_half_bit:start+n_bit+n_half_bit]:
+            #for sample in signal[idx][start:start+n_bit]:
               file[type].write(str(sample) + " ")
             file[type].write("\n")
 

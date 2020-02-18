@@ -1,3 +1,4 @@
+import os
 import sys
 import timeit
 
@@ -8,16 +9,22 @@ from rename import rename
 from correlation.fix_shift_3 import correlation_fix_shift_3
 from SVM.train import SVM_train
 from SVM.test import SVM_test
+from MLP.train import MLP_train
+from MLP.test import MLP_test
 
 
 
 if __name__ == "__main__":
   try:
+    os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+    os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+
     print("\n\n\t*** Select Menu ***")
     print("1. correlation")
     print("2. SVM")
+    print("3. MLP")
     menu = int(input("\nSelect > "))
-    if menu < 1 or menu > 2:
+    if menu < 1 or menu > 3:
       raise ValueError("User Interrupt")
 
     print("\n\n\t*** Select Function ***")
@@ -38,6 +45,16 @@ if __name__ == "__main__":
         menu = SVM_test
       else:
         raise ValueError("User Interrupt")
+    elif menu == 3: # 3. MLP
+      print("1. train")
+      print("2. test")
+      menu = int(input("\nSelect > "))
+      if menu == 1:
+        menu = MLP_train
+      elif menu == 2:
+        menu = MLP_test
+      else:
+        raise ValueError("User Interrupt")
 
     print("\n\n\t*** Check Global Variables ***")
     print("file_name_list= " + str(file_name_list))
@@ -47,6 +64,7 @@ if __name__ == "__main__":
     print("")
     print("databit_path= " + str(databit_path))
     print("signal_path= " + str(signal_path))
+    print("model_type= " + str(model_type))
     print("")
     print("n_sample= " + str(n_sample))
     print("n_cw= " + str(n_cw))
@@ -62,7 +80,7 @@ if __name__ == "__main__":
       raise ValueError("User Interrupt")
 
     tot_time = timeit.default_timer()
-    ret = menu()
+    ret = menu("")
     print("\t\tTOTAL EXECUTION TIME= " + str(round(timeit.default_timer() - tot_time, 3)) + " (sec)\n")
     rename(ret)
 
