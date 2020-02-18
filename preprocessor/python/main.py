@@ -10,6 +10,9 @@ from sample_set.generate_RNindex import generate_RNindex
 from sample_set.generate_RNdatabit import generate_RNdatabit
 from sample_set.generate_RNset import generate_RNset
 from sample_set.bit_with_correlation import bit_with_correlation
+from sample_set.generate_RNwhole_databit import generate_RNwhole_databit
+from sample_set.generate_RNwhole_set import generate_RNwhole_set
+from databit.half_bit_repitition import half_bit_repitition
 
 
 
@@ -18,8 +21,9 @@ if __name__ == "__main__":
     print("\n\n\t*** Select Menu ***")
     print("1. sample")
     print("2. sample_set")
+    print("3. databit")
     menu = int(input("\nSelect > "))
-    if menu < 1 or menu > 2:
+    if menu < 1 or menu > 3:
       raise ValueError("User Interrupt")
 
 
@@ -40,6 +44,8 @@ if __name__ == "__main__":
       print("2. generate_RNdatabit")
       print("3. generate_RNset")
       print("4. bit_with_correlation")
+      print("5. generate_RNwhole_databit")
+      print("6. generate_RNwhole_set")
       menu = int(input("\nSelect > "))
       if menu == 1:
         menu = generate_RNindex
@@ -49,6 +55,17 @@ if __name__ == "__main__":
         menu = generate_RNset
       elif menu == 4:
         menu = bit_with_correlation
+      elif menu == 5:
+        menu = generate_RNwhole_databit
+      elif menu == 6:
+        menu = generate_RNwhole_set
+      else:
+        raise ValueError("User Interrupt")
+    elif menu == 3: # 3. databit
+      print("1. half_bit_repitition")
+      menu = int(input("\nSelect > "))
+      if menu == 1:
+        menu = half_bit_repitition
       else:
         raise ValueError("User Interrupt")
 

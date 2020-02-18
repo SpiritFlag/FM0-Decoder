@@ -80,9 +80,9 @@ if __name__ == "__main__":
       raise ValueError("User Interrupt")
 
     tot_time = timeit.default_timer()
-    ret = menu("")
+    model, log = menu("")
     print("\t\tTOTAL EXECUTION TIME= " + str(round(timeit.default_timer() - tot_time, 3)) + " (sec)\n")
-    rename(ret)
+    rename(model, log)
 
   except Exception as ex:
     _, _, tb = sys.exc_info()

@@ -8,7 +8,7 @@ from correlation.decode_data import *
 
 
 
-def correlation_fix_shift_3():
+def correlation_fix_shift_3(path):
   try:
     tot_success = 0
     tot_size = 0

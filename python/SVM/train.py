@@ -10,7 +10,7 @@ from read_set import *
 
 
 
-def SVM_train():
+def SVM_train(path):
   try:
     train_set, answer_set = read_train_set("train")
 
