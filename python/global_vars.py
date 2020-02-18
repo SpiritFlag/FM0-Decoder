@@ -6,8 +6,10 @@ for a in ["100", "200", "300", "400"]:
 
 file_name_list = []
 #file_name_list = ["200_0_0"]
+#file_name_list = ["400_0_90"]
 file_name_list = file_name_list_all
 RN_index = 0
+databit_repition = 25
 
 
 
@@ -20,15 +22,23 @@ log_full_path = log_path + execute_time
 
 
 
-databit_path = "data/C_RN_databit/"
+#databit_path = "data/C_RN_databit/"
+databit_path = "data/C_RN_whole_databit/"
 #signal_path = "data/C_RN_std/"
+#signal_path = "data/C_RN_std_cliffing/"
 #signal_path = "data/C_RN_bit_with_correlation_std/"
-signal_path = "data/C_RN_2_bit_with_correlation_std/"
+#signal_path = "data/C_RN_bit_with_correlation_std_cliffing/"
+#signal_path = "data/C_RN_2_bit_with_correlation_std/"
+#signal_path = "data/C_RN_2_bit_with_correlation_std_cliffing/"
+#signal_path = "data/C_RN_whole_std/"
+signal_path = "data/C_RN_whole_std_cliffing/"
 #model_type = "one_bit"
-model_type = "two_bit"
-#model_type = "half_bit"
+#model_type = "two_bit"
+model_type = "whole"
 #model_postpix = "_onehot"
-model_postpix = "_lowhigh"
+#model_postpix = "_lowhigh"
+#model_postpix = "_extendlowhigh"
+model_postpix = "_rep"
 
 
 

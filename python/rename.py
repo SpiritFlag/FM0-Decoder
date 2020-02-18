@@ -3,13 +3,13 @@ import sys
 
 from global_vars import *
 
-def rename(ret):
+def rename(model, log):
   try:
-    if ret is True:
+    if model is True:
       print("[Model path] " + str(os.listdir(model_path)) + "\n")
       new_name = input("Input the model name: ").rstrip("\n")
       os.rename(model_full_path, model_path + new_name)
-    else:
+    if log is True:
       print("[Log path] " + str(os.listdir(log_path)) + "\n")
       new_name = input("Input the log name: ").rstrip("\n")
       os.rename(log_full_path, log_path + new_name)

@@ -12,21 +12,26 @@ file_name_list = file_name_list_all
 
 index_path = "../data/C_RNindex/"
 #databit_path = "../data/A_databit/"
-databit_path = "../data/C_RN_databit/"
+databit_path = "../data/B_databit_enc256/"
+#databit_path = "../data/C_RN_databit/"
 #signal_path = "../data/A_IQsignal/"
 #signal_path = "../data/B_CW_kalman/"
 #signal_path = "../data/B_CW_kalman_std/"
-#signal_path = "../data/B_CW_kalman_std_cliffing/"
+signal_path = "../data/B_CW_kalman_std_cliffing/"
 #signal_path = "../data/C_RN_std/"
-signal_path = "../data/C_RN_std_cliffing/"
+#signal_path = "../data/C_RN_std_cliffing/"
 #output_path = "../data/tmp/"
 #output_path = "../data/B_CW_kalman_std/"
+#output_path = "../data/B_databit_enc256/"
 #output_path = "../data/C_RNindex/"
 #output_path = "../data/C_RN_databit/"
 #output_path = "../data/C_RN_std/"
 #output_path = "../data/C_RN_std_cliffing/"
 #output_path = "../data/C_RN_2_bit_with_correlation_std/"
-output_path = "../data/C_RN_2_bit_with_correlation_std_cliffing/"
+#output_path = "../data/C_RN_bit_with_correlation_std_cliffing/"
+#output_path = "../data/C_RN_whole_std/"
+output_path = "../data/C_RN_whole_std_cliffing/"
+#output_path = "../data/C_RN_whole_databit/"
 output_path2 = ""
 #output_path2 = "../data/B_CW_kalman_std_cliffing/"
 
@@ -50,3 +55,7 @@ n_RNvalidation = 10
 n_RNtest = 100
 n_RNset = n_RNtrain + n_RNvalidation + n_RNtest
 n_RNsignal = int(n_signal/n_RNset)
+
+
+
+databit_repition = 1
