@@ -37,10 +37,10 @@ def count_success(mlp, test_set, answer_set):
         #file.close()
         #print(answer_set[0])
         for n in range(n_bit_preamble + n_bit_data):
-          st = int(databit_repition*n)
-          ed = int(databit_repition*(n+1))
+          st = int(2*databit_repition*n)
+          ed = int(2*databit_repition*(n+1))
           #print("out= " + str(n) + " " + str(predict_set[idx][n]) + " " + str(predict_set[idx][st:ed]) + " " + str(answer_set[idx][n]) + " " + str(answer_set[idx][st:ed]))
-          fail = determine_fail(predict_set[idx][int(databit_repition*n):int(databit_repition*(n+1))], answer_set[idx][int(databit_repition*n):int(databit_repition*(n+1))])
+          fail = determine_fail(predict_set[idx][st:ed], answer_set[idx][st:ed])
           if fail is True:
             break
 
