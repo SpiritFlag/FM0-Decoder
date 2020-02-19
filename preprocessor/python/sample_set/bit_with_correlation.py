@@ -55,13 +55,13 @@ def detect_bit(signal, databit, state):
     else:
       raise ValueError("Invalid databit and state")
 
-    max_score = 0
+    max_score = -10000
     max_idx = 0
 
     for idx in range(int(2 * n_tolerance_bit + 1)):
       score = 0
       for mask_idx in range(len(mask)):
-        score += mask[mask_idx] + signal[idx + mask_idx]
+        score += mask[mask_idx] * signal[idx + mask_idx]
       if score > max_score:
         max_score = score
         max_idx = idx
@@ -104,16 +104,21 @@ def fnc(file_name, set_name, set_size):
         state = -1
 
         for n in range(n_bit_data):
-          shift, type = detect_bit(signal[idx][start-n_tolerance_bit:start+n_bit+n_tolerance_bit+1], databit[idx][n], state)
+          end = start + n_bit + n_tolerance_bit
+          if end > n_sample:
+            start -= (end - n_sample)
+            end -= (end - n_sample)
+
+          shift, type = detect_bit(signal[idx][start-n_tolerance_bit:end+1], databit[idx][n], state)
           start += (shift - n_tolerance_bit)
 
           if set_name == "test":
-            #for sample in signal[idx][start-n_half_bit:start+n_bit+n_half_bit]:
-            for sample in signal[idx][start:start+n_bit]:
+            for sample in signal[idx][start-n_half_bit:start+n_bit+n_half_bit]:
+            #for sample in signal[idx][start:start+n_bit]:
               file[0].write(str(sample) + " ")
           else:
-            #for sample in signal[idx][start-n_half_bit:start+n_bit+n_half_bit]:
-            for sample in signal[idx][start:start+n_bit]:
+            for sample in signal[idx][start-n_half_bit:start+n_bit+n_half_bit]:
+            #for sample in signal[idx][start:start+n_bit]:
               file[type].write(str(sample) + " ")
             file[type].write("\n")
 

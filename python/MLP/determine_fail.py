@@ -31,10 +31,17 @@ def determine_fail(predict, answer):
           return True
 
     elif model_type == "whole":
-      #print("in= " + str(predict) + " " + str(predict[0]) + " " + str(answer) + " " + str(answer[0]))
       threshold = 0.5
+
       count = 0
       for n in range(databit_repition):
+        if (predict[n] < threshold and answer[n] < threshold) or (predict[n] > threshold and answer[n] > threshold):
+          count += 1
+      if count <= int(databit_repition / 2):
+        return True
+
+      count = 0
+      for n in range(databit_repition, 2*databit_repition):
         if (predict[n] < threshold and answer[n] < threshold) or (predict[n] > threshold and answer[n] > threshold):
           count += 1
       if count <= int(databit_repition / 2):

@@ -21,6 +21,8 @@ def read_train_set(set_name):
             for idx in range(n_lines):
               sample = file.readline().rstrip(" \n").split(" ")
               sample = [float(i) for i in sample]
+              if len(sample) < 100:
+                print(file_name, x, idx, len(sample))
               train_set.append(sample)
               answer_set.append(x)
 
