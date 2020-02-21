@@ -13,16 +13,21 @@ def read_train_set(set_name):
     for f in tqdm(range(len(file_name_list)), desc="READING", ncols=100, unit=" file"):
       file_name = file_name_list[f]
       try:
+        n0 = sum(1 for line in open(signal_path + file_name + "_RN" + str(RN_index) + "_" + set_name + "_" + str(0)))
+        n1 = sum(1 for line in open(signal_path + file_name + "_RN" + str(RN_index) + "_" + set_name + "_" + str(1)))
+        n2 = sum(1 for line in open(signal_path + file_name + "_RN" + str(RN_index) + "_" + set_name + "_" + str(2)))
+        n3 = sum(1 for line in open(signal_path + file_name + "_RN" + str(RN_index) + "_" + set_name + "_" + str(3)))
+        n_lines = [n0, n1, n2, n3]
+
         if model_type == "one_bit" or model_type == "two_bit":
           for x in range(4):
-            n_lines = sum(1 for line in open(signal_path + file_name + "_RN" + str(RN_index) + "_" + set_name + "_" + str(x)))
+            #n_lines = sum(1 for line in open(signal_path + file_name + "_RN" + str(RN_index) + "_" + set_name + "_" + str(x)))
             file = open(signal_path + file_name + "_RN" + str(RN_index) + "_" + set_name + "_" + str(x), "r")
-
-            for idx in range(n_lines):
+            
+            #for idx in range(n_lines):
+            for idx in range(int(n_lines[x]*0.37)):
               sample = file.readline().rstrip(" \n").split(" ")
               sample = [float(i) for i in sample]
-              if len(sample) < 100:
-                print(file_name, x, idx, len(sample))
               train_set.append(sample)
               answer_set.append(x)
 
@@ -59,16 +64,20 @@ def read_train_set(set_name):
 
 
 
-def read_test_set(file_name, postpix):
+def read_test_set(file_name):
   try:
     test_set = []
-    n_lines = sum(1 for line in open(signal_path + file_name + "_RN" + str(RN_index) + "_test" + postpix))
-    file = open(signal_path + file_name + "_RN" + str(RN_index) + "_test" + postpix, "r")
+    n_lines = sum(1 for line in open(signal_path + file_name + "_RN" + str(RN_index) + "_test"))
+    file = open(signal_path + file_name + "_RN" + str(RN_index) + "_test", "r")
 
     for idx in tqdm(range(n_lines), desc="READING", ncols=100, unit=" signal"):
       sample = file.readline().rstrip(" \n").split(" ")
-      sample = [float(i) for i in sample]
-      test_set.append(sample)
+
+      if len(sample) == 1:  # outlier
+        test_set.append([])
+      else:
+        sample = [float(i) for i in sample]
+        test_set.append(sample)
 
     file.close()
     return test_set

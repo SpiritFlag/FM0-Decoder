@@ -20,7 +20,7 @@ def SVM_train(path):
     joblib.dump(clf, model_full_path)
     print("\t\tTRAIN TIME= " + str(round(timeit.default_timer() - train_time, 3)) + " (sec)\n")
 
-    return True
+    return True, False
 
   except Exception as ex:
     _, _, tb = sys.exc_info()

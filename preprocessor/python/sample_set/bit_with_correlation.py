@@ -66,7 +66,7 @@ def detect_bit(signal, databit, state):
         max_score = score
         max_idx = idx
 
-    return max_idx, type
+    return max_score, max_idx, type
 
   except Exception as ex:
     _, _, tb = sys.exc_info()
@@ -102,43 +102,118 @@ def fnc(file_name, set_name, set_size):
       for idx in range(set_size):
         start = detect_preamble(signal[idx])
         state = -1
+        outlier = False
+
+        list0 = []
+        list1 = []
+        list2 = []
+        list3 = []
+        list = [list0, list1, list2, list3]
 
         for n in range(n_bit_data):
           end = start + n_bit + n_tolerance_bit
-          if end > n_sample:
-            start -= (end - n_sample)
-            end -= (end - n_sample)
+          if (extra_half_bit is False and end > n_sample) or (extra_half_bit is True and end+n_half_bit > n_sample):
+            outlier = True
+            break
 
-          shift, type = detect_bit(signal[idx][start-n_tolerance_bit:end+1], databit[idx][n], state)
+          score, shift, type = detect_bit(signal[idx][start-n_tolerance_bit:end+1], databit[idx][n], state)
           start += (shift - n_tolerance_bit)
 
-          if set_name == "test":
-            for sample in signal[idx][start-n_half_bit:start+n_bit+n_half_bit]:
-            #for sample in signal[idx][start:start+n_bit]:
-              file[0].write(str(sample) + " ")
-          else:
-            for sample in signal[idx][start-n_half_bit:start+n_bit+n_half_bit]:
-            #for sample in signal[idx][start:start+n_bit]:
-              file[type].write(str(sample) + " ")
-            file[type].write("\n")
+          if score >= correlation_threshold:
+            if extra_half_bit is False:
+              list[type].append(signal[idx][start:start+n_bit])
+            else:
+              list[type].append(signal[idx][start-n_half_bit:start+n_bit+n_half_bit])
 
           start += n_bit
-          if(databit[idx][n] == 1):
+          if databit[idx][n] is 1:
             state *= -1
 
-        if set_name == "test":
-          file[0].write("\n")
+        if outlier is False:
+          for i in range(4):
+            for j in range(len(list[i])):
+              for sample in list[i][j]:
+                file[i].write(str(sample) + " ")
+              file[i].write("\n")
+
+      file0.close()
+      file1.close()
+      file2.close()
+      file3.close()
 
   except Exception as ex:
     _, _, tb = sys.exc_info()
     print("[fnc:" + str(tb.tb_lineno) + "] " + str(ex) + "\n\n")
 
 
+
+def fnc_test(file_name, set_name, set_size):
+  try:
+    for x in tqdm(range(n_RNsignal), desc=set_name + "_set", ncols=100, unit=" signal"):
+      file = open(signal_path + file_name + "_RN" + str(x) + "_" + set_name, "r")
+      signal = []
+      for idx in range(set_size):
+        line = file.readline().rstrip(" \n").split(" ")
+        line = [float(i) for i in line]
+        signal.append(line)
+      file.close()
+
+      file = open(databit_path + file_name + "_RN" + str(x) + "_" + set_name, "r")
+      databit = []
+      for idx in range(set_size):
+        line = file.readline().rstrip(" \n")
+        line = [int(i) for i in line]
+        databit.append(line)
+      file.close()
+
+      file = open(output_path + file_name + "_RN" + str(x) + "_" + set_name, "w")
+
+      for idx in range(set_size):
+        start = detect_preamble(signal[idx])
+        state = -1
+        outlier = False
+
+        list = []
+
+        for n in range(n_bit_data):
+          end = start + n_bit + n_tolerance_bit
+          if (extra_half_bit is False and end > n_sample) or (extra_half_bit is True and end+n_half_bit > n_sample):
+            outlier = True
+            break
+
+          shift, type = detect_bit(signal[idx][start-n_tolerance_bit:end+1], databit[idx][n], state)
+          start += (shift - n_tolerance_bit)
+
+          if extra_half_bit is False:
+            list.append(signal[idx][start:start+n_bit])
+          else:
+            list.append(signal[idx][start-n_half_bit:start+n_bit+n_half_bit])
+
+          start += n_bit
+          if databit[idx][n] is 1:
+            state *= -1
+
+        if outlier is False:
+          for i in range(len(list)):
+            for sample in list[i]:
+              file.write(str(sample) + " ")
+          file.write("\n")
+        else:
+          file.write(" \n")
+
+      file.close()
+
+  except Exception as ex:
+    _, _, tb = sys.exc_info()
+    print("[fnc_test:" + str(tb.tb_lineno) + "] " + str(ex) + "\n\n")
+
+
+
 def bit_with_correlation(file_name):
   try:
     fnc(file_name, "train", n_RNtrain)
     fnc(file_name, "validation", n_RNvalidation)
-    fnc(file_name, "test", n_RNtest)
+    #fnc_test(file_name, "test", n_RNtest)
 
   except Exception as ex:
     _, _, tb = sys.exc_info()

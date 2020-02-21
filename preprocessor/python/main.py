@@ -12,6 +12,7 @@ from sample_set.generate_RNset import generate_RNset
 from sample_set.bit_with_correlation import bit_with_correlation
 from sample_set.generate_RNwhole_databit import generate_RNwhole_databit
 from sample_set.generate_RNwhole_set import generate_RNwhole_set
+from sample_set.generate_RNpreamble_set import generate_RNpreamble_set
 from databit.half_bit_repitition import half_bit_repitition
 
 
@@ -46,6 +47,7 @@ if __name__ == "__main__":
       print("4. bit_with_correlation")
       print("5. generate_RNwhole_databit")
       print("6. generate_RNwhole_set")
+      print("7. generate_RNpreamble_set")
       menu = int(input("\nSelect > "))
       if menu == 1:
         menu = generate_RNindex
@@ -59,6 +61,8 @@ if __name__ == "__main__":
         menu = generate_RNwhole_databit
       elif menu == 6:
         menu = generate_RNwhole_set
+      elif menu == 7:
+        menu = generate_RNpreamble_set
       else:
         raise ValueError("User Interrupt")
     elif menu == 3: # 3. databit
