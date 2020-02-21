@@ -11,6 +11,9 @@ def count_success(clf, test_set, answer_set):
   try:
     success = 0
     for idx in tqdm(range(len(answer_set)), desc="TESTING", ncols=100, unit=" signal"):
+      if len(test_set[idx]) == 0: # outlier
+        continue
+        
       fail = False
 
       for n in range(n_bit_data):
