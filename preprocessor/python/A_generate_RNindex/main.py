@@ -1,15 +1,19 @@
 import sys
 import numpy as np
 
-from tqdm import tqdm
 from global_vars import *
 
-# train 40 + validation 10 + test 100 = one set 150
-# set 150 × 20 = total 3000
+n_RNtrain = 640
+n_RNvalidation = 160
+n_RNtest = 200
+n_RNset = n_RNtrain + n_RNvalidation + n_RNtest
+n_RNsignal = int(n_signal/n_RNset)
+
+output_path = "../data/B_RNindex/"
 
 
 
-def generate_RNindex(file_name):
+def main(string):
   try:
     RN = np.arange(n_signal)
     np.random.shuffle(RN)
@@ -38,4 +42,4 @@ def generate_RNindex(file_name):
 
   except Exception as ex:
     _, _, tb = sys.exc_info()
-    print("[generate_RNindex:" + str(tb.tb_lineno) + "] " + str(ex) + "\n\n")
+    print("[A_generate_RNindex:main:" + str(tb.tb_lineno) + "] " + str(ex) + "\n\n")
