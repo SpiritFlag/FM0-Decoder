@@ -14,10 +14,12 @@ from MLP.test import MLP_test
 def MLP_train(tmp):
   try:
     mlp = MLP()
+    print("\n\n\t*** reading train set ***")
     train_set, answer_set = read_train_set("train")
+    print("\n\n\t*** reading validation set ***")
     validation_set, validation_answer_set = read_train_set("validation")
 
-    if (model_type == "one_bit" or model_type == "two_bit"):
+    if model_type == "bit_unit":
       answer_set = reshape_answer_set(answer_set)
       validation_answer_set = reshape_answer_set(validation_answer_set)
 

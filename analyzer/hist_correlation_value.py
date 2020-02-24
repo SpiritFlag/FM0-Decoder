@@ -13,8 +13,8 @@ file_name_list = []
 #file_name_list = ["100_0_0"]
 file_name_list = file_name_list_all
 
-input_path = "../data/Z_correlation_value/"
-output_path = "../data/Z_correlation_value/plt/"
+input_path = "../data/Z_C_signal_std_correlation_train/"
+output_path = input_path + "plt/"
 
 
 
@@ -30,20 +30,26 @@ if __name__ == "__main__":
 
         file = open(input_path + file_name + "_success", "r")
         success = file.readline().rstrip(" \n").split(" ")
-        success = [float(i) for i in success]
+        if len(success) == 1:
+          success = []
+        else:
+          success = [float(i) for i in success]
         tot_success += success
         file.close()
 
         file = open(input_path + file_name + "_fail", "r")
         fail = file.readline().rstrip(" \n").split(" ")
-        fail = [float(i) for i in fail]
+        if len(fail) == 1:
+          fail = []
+        else:
+          fail = [float(i) for i in fail]
         tot_fail += fail
         file.close()
 
         fileL.write(str(file_name) + "\t" + str(len(success)) + "\t" + str(len(fail)) + "\n")
 
-        plt.hist(success, bins=range(-70, 80, 10), alpha=0.5, rwidth=0.8, label="success")
-        plt.hist(fail, bins=range(-70, 80, 10), alpha=0.5, rwidth=0.8, label="fail")
+        plt.hist(success, bins=range(-150, 160, 10), alpha=0.5, rwidth=0.8, label="success")
+        plt.hist(fail, bins=range(-150, 160, 10), alpha=0.5, rwidth=0.8, label="fail")
         plt.title(file_name)
         plt.legend()
         #plt.show()
@@ -57,8 +63,8 @@ if __name__ == "__main__":
     fileL.write("TOTAL" + "\t" + str(len(tot_success)) + "\t" + str(len(tot_fail)) + "\n")
     fileL.close()
 
-    plt.hist(tot_success, bins=range(-70, 80, 10), alpha=0.5, rwidth=0.8, label="success")
-    plt.hist(tot_fail, bins=range(-70, 80, 10), alpha=0.5, rwidth=0.8, label="fail")
+    plt.hist(tot_success, bins=range(-150, 160, 10), alpha=0.5, rwidth=0.8, label="success")
+    plt.hist(tot_fail, bins=range(-150, 160, 10), alpha=0.5, rwidth=0.8, label="fail")
     plt.title("TOTAL")
     plt.legend()
     #plt.show()

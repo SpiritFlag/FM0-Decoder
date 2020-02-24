@@ -1,23 +1,22 @@
 import sys
 
 from global_vars import *
-
-
-
-mask = [1.0] * n_bit  # 1
-mask += [-1.0] * n_half_bit  # 2
-mask += [1.0] * n_half_bit
-mask += [-1.0] * n_bit  # 3
-mask += [1.0] * n_half_bit  # 4
-mask += [-1.0] * n_half_bit
-mask += [-1.0] * n_bit  # 5
-mask += [1.0] * n_bit  # 6
+from C_extract_bit_unit.global_vars import *
 
 
 
 def detect_preamble(signal):
   try:
-    max_score = -10000
+    mask = [1.0] * n_bit  # 1
+    mask += [-1.0] * n_half_bit  # 2
+    mask += [1.0] * n_half_bit
+    mask += [-1.0] * n_bit  # 3
+    mask += [1.0] * n_half_bit  # 4
+    mask += [-1.0] * n_half_bit
+    mask += [-1.0] * n_bit  # 5
+    mask += [1.0] * n_bit  # 6
+
+    max_score = 0
     max_idx = 0
 
     for idx in range(n_cw, n_extra):
@@ -32,4 +31,4 @@ def detect_preamble(signal):
 
   except Exception as ex:
     _, _, tb = sys.exc_info()
-    print("[detect_preamble:" + str(tb.tb_lineno) + "] " + str(ex))
+    print("[C_extract_bit_unit:detect_preamble:" + str(tb.tb_lineno) + "] " + str(ex) + "\n\n")

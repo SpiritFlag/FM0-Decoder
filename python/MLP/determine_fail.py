@@ -7,28 +7,10 @@ from global_vars import *
 
 def determine_fail(predict, answer):
   try:
-    if (model_type == "one_bit" or model_type == "two_bit") and model_postpix == "_onehot":
+    if model_type == "bit_unit":
       predict = predict.argmax()
       if ((predict == 0 or predict == 1) and answer != 0) or ((predict == 2 or predict == 3) and answer != 1):
         return True
-
-    elif (model_type == "one_bit" or model_type == "two_bit") and model_postpix == "_lowhigh":
-      threshold = 0.5
-      if answer == 0:
-        if (predict[0] < threshold and predict[1] < threshold) or (predict[0] > threshold and predict[1] > threshold):
-          return True
-      elif answer == 1:
-        if (predict[0] < threshold and predict[1] > threshold) or (predict[0] > threshold and predict[1] < threshold):
-          return True
-
-    elif model_type == "two_bit" and model_postpix == "_extendlowhigh":
-      threshold = 0.5
-      if answer == 0:
-        if (predict[1] < threshold and predict[2] < threshold) or (predict[1] > threshold and predict[2] > threshold):
-          return True
-      elif answer == 1:
-        if (predict[1] < threshold and predict[2] > threshold) or (predict[1] > threshold and predict[2] < threshold):
-          return True
 
     elif model_type == "whole":
       threshold = 0.5

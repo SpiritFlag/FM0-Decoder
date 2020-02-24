@@ -10,22 +10,14 @@ def read_train_set(set_name):
     train_set = []
     answer_set = []
 
-    for f in tqdm(range(len(file_name_list)), desc="READING", ncols=100, unit=" file"):
-      file_name = file_name_list[f]
+    for file_name in file_name_list:
       try:
-        n0 = sum(1 for line in open(signal_path + file_name + "_RN" + str(RN_index) + "_" + set_name + "_" + str(0)))
-        n1 = sum(1 for line in open(signal_path + file_name + "_RN" + str(RN_index) + "_" + set_name + "_" + str(1)))
-        n2 = sum(1 for line in open(signal_path + file_name + "_RN" + str(RN_index) + "_" + set_name + "_" + str(2)))
-        n3 = sum(1 for line in open(signal_path + file_name + "_RN" + str(RN_index) + "_" + set_name + "_" + str(3)))
-        n_lines = [n0, n1, n2, n3]
-
-        if model_type == "one_bit" or model_type == "two_bit":
+        if model_type == "bit_unit":
           for x in range(4):
-            #n_lines = sum(1 for line in open(signal_path + file_name + "_RN" + str(RN_index) + "_" + set_name + "_" + str(x)))
-            file = open(signal_path + file_name + "_RN" + str(RN_index) + "_" + set_name + "_" + str(x), "r")
-            
-            #for idx in range(n_lines):
-            for idx in range(int(n_lines[x]*0.37)):
+            n_lines = sum(1 for line in open(signal_path + file_name + "_RN" + str(RN_index) + "_signal_" + set_name + "_" + str(x)))
+            file = open(signal_path + file_name + "_RN" + str(RN_index) + "_signal_" + set_name + "_" + str(x), "r")
+
+            for idx in tqdm(range(n_lines), desc=file_name + " " + str(x+1), ncols=100, unit=" signal"):
               sample = file.readline().rstrip(" \n").split(" ")
               sample = [float(i) for i in sample]
               train_set.append(sample)
@@ -67,8 +59,8 @@ def read_train_set(set_name):
 def read_test_set(file_name):
   try:
     test_set = []
-    n_lines = sum(1 for line in open(signal_path + file_name + "_RN" + str(RN_index) + "_test"))
-    file = open(signal_path + file_name + "_RN" + str(RN_index) + "_test", "r")
+    n_lines = sum(1 for line in open(signal_path + file_name + "_RN" + str(RN_index) + "_signal_test"))
+    file = open(signal_path + file_name + "_RN" + str(RN_index) + "_signal_test", "r")
 
     for idx in tqdm(range(n_lines), desc="READING", ncols=100, unit=" signal"):
       sample = file.readline().rstrip(" \n").split(" ")
@@ -92,9 +84,9 @@ def read_answer_set(file_name):
   try:
     answer_set = []
 
-    if model_type == "one_bit" or model_type == "two_bit":
-      n_lines = sum(1 for line in open(databit_path + file_name + "_RN" + str(RN_index) + "_test"))
-      file = open(databit_path + file_name + "_RN" + str(RN_index) + "_test", "r")
+    if model_type == "bit_unit":
+      n_lines = sum(1 for line in open(signal_path + file_name + "_RN" + str(RN_index) + "_databit_test"))
+      file = open(signal_path + file_name + "_RN" + str(RN_index) + "_databit_test", "r")
     elif model_type == "whole":
       n_lines = sum(1 for line in open(databit_path + file_name + "_RN" + str(RN_index) + "_test_rep" + str(databit_repition)))
       file = open(databit_path + file_name + "_RN" + str(RN_index) + "_test_rep" + str(databit_repition), "r")
