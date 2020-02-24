@@ -8,7 +8,6 @@ file_name_list = []
 #file_name_list = ["100_0_0"]
 file_name_list = file_name_list_all
 RN_index = 0
-databit_repition = 1
 
 
 
@@ -21,27 +20,15 @@ log_full_path = log_path + execute_time
 
 
 
-databit_path = "data/C_RN_databit/"
-#databit_path = "data/C_RN_whole_databit/"
-#databit_path = "data/C_RN_preamble_std_DF/"
-#databit_path = "data/C_RN_corr_std_DF/"
-#signal_path = "data/C_RN_std/"
-#signal_path = "data/C_RN_std_cliffing/"
-signal_path = "data/C_RN_2_bit_with_correlation_std/"
-#signal_path = "data/C_RN_2_bit_with_correlation_std_cliffing/"
-#signal_path = "data/C_RN_2_bit_40_std/"
-#signal_path = "data/C_RN_2_bit_40_std_cliffing/"
-#signal_path = "data/C_RN_preamble_std_F/"
-#signal_path = "data/C_RN_corr_std_F/"
-#signal_path = "data/C_RN_whole_std/"
-#signal_path = "data/C_RN_whole_std_cliffing/"
-#model_type = "one_bit"
-model_type = "two_bit"
+#signal_path = "data/C_signal_std/"
+#signal_path = "data/D_bit_unit_std/"
+signal_path = "data/D_bit_unit_std_th0/"
+
+model_type = "bit_unit"
+bit_unit = 1
+model_postpix = "_" + str(bit_unit)
 #model_type = "whole"
-model_postpix = "_onehot"
-#model_postpix = "_lowhigh"
-#model_postpix = "_extendlowhigh"
-#model_postpix = "_rep"
+databit_repition = 1
 
 
 
