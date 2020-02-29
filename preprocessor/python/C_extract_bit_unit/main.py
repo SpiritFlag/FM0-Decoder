@@ -7,6 +7,7 @@ from C_extract_bit_unit.process import process
 
 set_name = ["_train", "_validation", "_test"]
 set_size = [640, 160, 200]
+#set_size = [1920, 480, 600]
 
 
 

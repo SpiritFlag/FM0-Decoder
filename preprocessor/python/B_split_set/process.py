@@ -1,6 +1,5 @@
 import sys
 
-from tqdm import tqdm
 from global_vars import *
 from B_split_set.global_vars import *
 
@@ -13,8 +12,10 @@ def process(signal, databit, file_name, x, postfix):
     list = [int(i) for i in list]
     file.close()
 
-    fileS = open(output_path + file_name + "_RN" + str(x) + "_signal" + postfix, "w")
-    fileD = open(output_path + file_name + "_RN" + str(x) + "_databit" + postfix, "w")
+    #fileS = open(output_path + file_name + "_RN" + str(x) + "_signal" + postfix, "w")
+    #fileD = open(output_path + file_name + "_RN" + str(x) + "_databit" + postfix, "w")
+    fileS = open(output_path + file_name + "_RN0_signal" + postfix, "a")
+    fileD = open(output_path + file_name + "_RN0_databit" + postfix, "a")
     for index in list:
       fileS.write(signal[index])
       fileD.write(databit[index])

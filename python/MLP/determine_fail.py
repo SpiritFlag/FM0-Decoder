@@ -8,25 +8,29 @@ from global_vars import *
 def determine_fail(predict, answer):
   try:
     if model_type == "bit_unit":
-      predict = predict.argmax()
-      if ((predict == 0 or predict == 1) and answer != 0) or ((predict == 2 or predict == 3) and answer != 1):
-        return True
+      if test_type == "corr":
+        predict = predict.argmax()
+        if ((predict == 0 or predict == 1) and answer != 0) or ((predict == 2 or predict == 3) and answer != 1):
+          return True
+      elif test_type == "shift":
+        if (predict == 0 and answer != 0) or (predict == 1 and answer != 1):
+          return True
 
     elif model_type == "whole":
       threshold = 0.5
 
       count = 0
-      for n in range(databit_repition):
+      for n in range(databit_repitition):
         if (predict[n] < threshold and answer[n] < threshold) or (predict[n] > threshold and answer[n] > threshold):
           count += 1
-      if count <= int(databit_repition / 2):
+      if count <= int(databit_repitition / 2):
         return True
 
       count = 0
-      for n in range(databit_repition, 2*databit_repition):
+      for n in range(databit_repitition, 2*databit_repitition):
         if (predict[n] < threshold and answer[n] < threshold) or (predict[n] > threshold and answer[n] > threshold):
           count += 1
-      if count <= int(databit_repition / 2):
+      if count <= int(databit_repitition / 2):
         return True
 
     else:

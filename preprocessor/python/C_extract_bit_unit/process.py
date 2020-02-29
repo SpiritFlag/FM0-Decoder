@@ -20,7 +20,7 @@ def process(signal, databit, file_name, set_name, set_size):
       file = [file0, file1, file2, file3]
 
     for idx in tqdm(range(set_size), desc="PROCESSING", ncols=100, unit=" signal"):
-      start = detect_preamble(signal[idx])
+      preamble_start = detect_preamble(signal[idx])
       state = -1
       outlier = False
 
@@ -30,21 +30,29 @@ def process(signal, databit, file_name, set_name, set_size):
       list3 = []
       list = [list0, list1, list2, list3]
 
+      start = preamble_start
       for n in range(n_bit_data):
+        if shift_bit is False:
+          start = int(preamble_start + n*len_bit)
         end = start + n_bit + n_tolerance_bit
         if end > n_sample:
           outlier = True
           break
 
-        score, shift, type = detect_bit(signal[idx][start-n_half_bit-n_tolerance_bit:end+n_half_bit+1], databit[idx][n], state)
-        start += (shift - n_tolerance_bit)
+        score, shift, type, success = detect_bit(signal[idx][start-n_half_bit-n_tolerance_bit:end+n_half_bit+1], databit[idx][n], state)
+        if shift_bit is True:
+          start += (shift - n_tolerance_bit)
 
         if set_name == "_test":
           list[0].append(signal[idx][start-n_half_bit:start+n_bit+n_half_bit])
-        elif score >= correlation_threshold:
-          list[type].append(signal[idx][start-n_half_bit:start+n_bit+n_half_bit])
+        else:
+          if success is False:
+            continue
+          elif score >= correlation_threshold:
+            list[type].append(signal[idx][start-n_half_bit:start+n_bit+n_half_bit])
 
-        start += n_bit
+        if shift_bit is True:
+          start += n_bit
         if databit[idx][n] is 1:
           state *= -1
 

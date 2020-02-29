@@ -26,15 +26,15 @@ def read_train_set(set_name):
             file.close()
 
         elif model_type == "whole":
-          n_lines = sum(1 for line in open(signal_path + file_name + "_" + set_name))
+          n_lines = sum(1 for line in open(signal_path + file_name + "_RN" + str(RN_index) + "_signal_" + set_name))
 
-          file = open(signal_path + file_name + "_" + set_name, "r")
-          for idx in range(n_lines):
+          file = open(signal_path + file_name + "_RN" + str(RN_index) + "_signal_" + set_name, "r")
+          for idx in tqdm(range(n_lines), desc=file_name, ncols=100, unit=" signal"):
             sample = file.readline().rstrip(" \n").split(" ")
             sample = [float(i) for i in sample]
             train_set.append(sample)
 
-          file = open(databit_path + file_name + "_" + set_name + "_rep" + str(databit_repition), "r")
+          file = open(signal_path + file_name + "_RN" + str(RN_index) + "_databit_" + set_name + "_rep" + str(databit_repitition), "r")
           for idx in range(n_lines):
             databit = file.readline().rstrip(" \n")
             databit = [int(i) for i in databit]
@@ -59,8 +59,8 @@ def read_train_set(set_name):
 def read_test_set(file_name):
   try:
     test_set = []
-    n_lines = sum(1 for line in open(signal_path + file_name + "_RN" + str(RN_index) + "_signal_test"))
-    file = open(signal_path + file_name + "_RN" + str(RN_index) + "_signal_test", "r")
+    n_lines = sum(1 for line in open(test_path + file_name + "_RN" + str(RN_index) + "_signal_test"))
+    file = open(test_path + file_name + "_RN" + str(RN_index) + "_signal_test", "r")
 
     for idx in tqdm(range(n_lines), desc="READING", ncols=100, unit=" signal"):
       sample = file.readline().rstrip(" \n").split(" ")
@@ -88,8 +88,8 @@ def read_answer_set(file_name):
       n_lines = sum(1 for line in open(signal_path + file_name + "_RN" + str(RN_index) + "_databit_test"))
       file = open(signal_path + file_name + "_RN" + str(RN_index) + "_databit_test", "r")
     elif model_type == "whole":
-      n_lines = sum(1 for line in open(databit_path + file_name + "_RN" + str(RN_index) + "_test_rep" + str(databit_repition)))
-      file = open(databit_path + file_name + "_RN" + str(RN_index) + "_test_rep" + str(databit_repition), "r")
+      n_lines = sum(1 for line in open(signal_path + file_name + "_RN" + str(RN_index) + "_databit_test_rep" + str(databit_repitition)))
+      file = open(signal_path + file_name + "_RN" + str(RN_index) + "_databit_test_rep" + str(databit_repitition), "r")
     else:
       raise ValueError("No function matching with model type named \"" + model_type + "\"!")
 
