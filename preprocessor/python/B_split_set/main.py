@@ -6,7 +6,7 @@ from B_split_set.global_vars import *
 from B_split_set.load import load
 from B_split_set.process import process
 
-n_RNsignal = 1
+n_RNsignal = 3
 
 
 

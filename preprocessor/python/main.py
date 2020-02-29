@@ -4,6 +4,7 @@ import timeit
 from global_vars import *
 from A_generate_RNindex.main import main as generate_RNindex
 from B_split_set.main import main as split_set
+from B_half_bit_repitition.main import main as half_bit_repitition
 from C_extract_bit_unit.main import main as extract_bit_unit
 
 if __name__ == "__main__":
@@ -12,7 +13,8 @@ if __name__ == "__main__":
     print("1. ")
     print("2. A_generate_RNindex")
     print("3. B_split_set")
-    print("4. C_extract_bit_unit")
+    print("4. B_half_bit_repitition")
+    print("5. C_extract_bit_unit")
     menu = int(input("\nSelect > "))
 
     if menu == 2:
@@ -22,20 +24,13 @@ if __name__ == "__main__":
       menu = split_set
       file = True
     elif menu == 4:
+      menu = half_bit_repitition
+      file = True
+    elif menu == 5:
       menu = extract_bit_unit
       file = True
     else:
       raise ValueError("Invalid menu number!")
-
-
-
-    #print("\n" + str(menu))
-    '''
-    chk = input("\nPress Y(y) to continue.. > ")
-    if chk != "Y" and chk != "y":
-      raise ValueError("User Interrupt")
-    '''
-
 
     tot_time = timeit.default_timer()
     if file is True:

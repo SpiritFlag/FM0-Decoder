@@ -12,7 +12,7 @@ class MLP(tf.keras.Model):
 
       optimizer = tf.keras.optimizers.Adam(learning_rate)
       self.model = eval("self.build_model_" + model_type + model_postpix)()
-      self.model.compile(loss="mse", optimizer=optimizer)
+      self.model.compile(loss=loss_function, optimizer=optimizer)
       self.model.summary()
 
     except Exception as ex:
@@ -39,10 +39,12 @@ class MLP(tf.keras.Model):
       self.activation_layer2 = tf.keras.layers.Activation(tf.nn.relu, name="activation2")
 
       self.output_layer = tf.keras.layers.Dense(units=size_output_layer, name="output")
+      self.output_activation_lyaer = tf.keras.layers.Activation(tf.nn.softmax, name="output_activation")
 
       layer = self.activation_layer1(self.batch_layer1(self.hidden_layer1(self.input_layer)))
       layer = self.activation_layer2(self.batch_layer2(self.hidden_layer2(layer)))
-      layer = self.output_layer(layer)
+      #layer = self.output_layer(layer)
+      layer = self.output_activation_lyaer(self.output_layer(layer))
       return tf.keras.Model(self.input_layer, layer)
 
     except Exception as ex:
@@ -60,7 +62,7 @@ class MLP(tf.keras.Model):
       size_hidden_layer4 = 6700
       size_hidden_layer5 = 1340
       size_hidden_layer6 = 1340
-      size_output_layer = int(268 * databit_repition)
+      size_output_layer = int(268 * databit_repitition)
 
       self.input_layer = tf.keras.layers.Input(shape=(size_input_layer,), name="input")
 
@@ -89,6 +91,7 @@ class MLP(tf.keras.Model):
       self.activation_layer6 = tf.keras.layers.Activation(tf.nn.relu, name="activation6")
 
       self.output_layer = tf.keras.layers.Dense(units=size_output_layer, name="output")
+      self.output_activation_lyaer = tf.keras.layers.Activation(tf.nn.sigmoid, name="output_activation")
 
       layer = self.activation_layer1(self.batch_layer1(self.hidden_layer1(self.input_layer)))
       layer = self.activation_layer2(self.batch_layer2(self.hidden_layer2(layer)))
@@ -96,7 +99,8 @@ class MLP(tf.keras.Model):
       layer = self.activation_layer4(self.batch_layer4(self.hidden_layer4(layer)))
       layer = self.activation_layer5(self.batch_layer5(self.hidden_layer5(layer)))
       layer = self.activation_layer6(self.batch_layer6(self.hidden_layer6(layer)))
-      layer = self.output_layer(layer)
+      #layer = self.output_layer(layer)
+      layer = self.output_activation_lyaer(self.output_layer(layer))
       return tf.keras.Model(self.input_layer, layer)
 
     except Exception as ex:

@@ -1,31 +1,20 @@
-import os
 import sys
-import numpy as np
+import timeit
 
 from tqdm import tqdm
 from global_vars import *
 from read_set import *
-from MLP.MLP import MLP
-from MLP.count_success import count_success
+from correlation.decode_data_no_shift import *
 
 
 
-def MLP_test(path):
+def correlation_fix_no_shift(path):
   try:
-    mlp = MLP()
     tot_success = 0
     tot_size = 0
 
     log = open(log_full_path, "a")
-    log.write("\t*** MLP_test *** model= " + model_type + model_postpix + " ***\n")
-
-    if path == "":
-      print("[Model path] " + str(os.listdir(model_path)) + "\n")
-      model_name = input("Input the model name: ").rstrip("\n")
-      path = model_path + model_name
-
-    mlp.restore_model(path)
-    log.write(path + " successfully loaded!\n")
+    log.write("\t*** correlation_fix_no_shift ***\n")
 
     for file_name in file_name_list:
       try:
@@ -34,7 +23,22 @@ def MLP_test(path):
 
         test_set = read_test_set(file_name)
         answer_set = read_answer_set(file_name)
-        success = count_success(mlp, test_set, answer_set, file_name)
+
+        success = 0
+        for idx in tqdm(range(len(answer_set)), desc="TESTING", ncols=100, unit=" signal"):
+          if len(test_set[idx]) == 1:
+            continue
+
+          predict, start = decode_data(test_set[idx])
+          fail = False
+
+          for n in range(n_bit_data):
+            if predict[n] != answer_set[idx][n]:
+              fail = True
+              break
+
+          if fail is False:
+            success += 1
 
         if len(answer_set) != 0:
           print("\t\tSUCCESS= " + str(success) + " / " + str(len(answer_set)) + "\t(" + str(round(100 * success / len(answer_set), 2)) + "%)\n")
@@ -48,7 +52,7 @@ def MLP_test(path):
 
       except Exception as ex:
         _, _, tb = sys.exc_info()
-        print("[MLP_test:" + file_name + ":" + str(tb.tb_lineno) + "] " + str(ex) + "\n\n")
+        print("[correlation_fix_no_shift:" + file_name + ":" + str(tb.tb_lineno) + "] " + str(ex) + "\n\n")
 
     if tot_size != 0:
       print("\n\n\t\tTOTAL SUCCESS= " + str(tot_success) + " / " + str(tot_size) + "\t(" + str(round(100 * tot_success / tot_size, 2)) + "%)\n")
@@ -56,9 +60,9 @@ def MLP_test(path):
     else:
       print("\n\n\t\tTOTAL SUCCESS= 0 / 0 (- %)\n")
       log.write("TOTAL 0 0\n")
-    log.close()
+
     return False, True
 
   except Exception as ex:
     _, _, tb = sys.exc_info()
-    print("[MLP_test:" + str(tb.tb_lineno) + "] " + str(ex) + "\n\n")
+    print("[correlation_fix_no_shift:" + str(tb.tb_lineno) + "] " + str(ex) + "\n\n")
