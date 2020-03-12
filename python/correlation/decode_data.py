@@ -42,12 +42,12 @@ def decode_data(signal):
         mask0 = mask0L
         mask1 = mask1L
 
-      max_score0 = 0
-      max_score1 = 0
+      max_score0 = -10000
+      max_score1 = -10000
       max_idx0 = 0
       max_idx1 = 0
 
-      for shift in [-3, -2, -1, 0, 1, 2, 3]:
+      for shift in [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5]:
         score0 = 0
         score1 = 0
 
@@ -72,7 +72,7 @@ def decode_data(signal):
         tot_shift += max_idx1
         state *= -1
 
-    return decoded_bit, start, tot_shift
+    return decoded_bit, start
 
   except Exception as ex:
     _, _, tb = sys.exc_info()

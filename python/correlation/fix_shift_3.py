@@ -51,7 +51,7 @@ def correlation_fix_shift_3(path):
           else:
             if fail is False:
               cnt[2] += 1
-              print(start)
+              #print(start)
             else:
               cnt[3] += 1
 

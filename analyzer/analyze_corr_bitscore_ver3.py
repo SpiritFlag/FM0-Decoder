@@ -10,11 +10,12 @@ for a in ["100", "200", "300", "400"]:
             file_name_list_all.append(a + "_" + b + "_" + c)
 
 file_name_list = []
-#file_name_list = ["100_0_0"]
+#file_name_list = ["100_0_90"]
 file_name_list = file_name_list_all
 
-signal_path = "../data/XB_signal/"
-output_path = "../data/XY_full_test/"
+signal_path = "../data/C_signal_std_full/"
+signal_path_2 = "../data/XB_signal/"
+output_path = "../data/Y_full_bitscore_ver3/"
 
 n_signal = 600
 n_sample = 6850
@@ -80,7 +81,9 @@ def decode_data(signal):
     state = -1
     tot_shift = 0
     decoded_bit = []
-    shift_list = []
+    shift_list = [0]
+    success_score = []
+    fail_score = []
 
     for bit in range(n_bit_data):
       cur_start = int(start + n_bit*bit) + tot_shift
@@ -92,8 +95,8 @@ def decode_data(signal):
         mask0 = mask0L
         mask1 = mask1L
 
-      max_score0 = 0
-      max_score1 = 0
+      max_score0 = -10000
+      max_score1 = -10000
       max_idx0 = 0
       max_idx1 = 0
 
@@ -117,14 +120,17 @@ def decode_data(signal):
       if max_score0 > max_score1:
         decoded_bit.append(0)
         tot_shift += max_idx0
-        shift_list.append(max_idx0)
+        success_score.append(max_score0)
+        fail_score.append(max_score1)
       else:
         decoded_bit.append(1)
         tot_shift += max_idx1
-        shift_list.append(max_idx1)
+        success_score.append(max_score1)
+        fail_score.append(max_score0)
         state *= -1
+      shift_list.append(tot_shift)
 
-    return decoded_bit, start, pre_score, shift_list
+    return decoded_bit, start, pre_score, shift_list, success_score, fail_score
 
   except Exception as ex:
     _, _, tb = sys.exc_info()
@@ -154,11 +160,9 @@ if __name__ == "__main__":
           databit.append(line)
         file.close()
 
-        file = open(output_path + file_name + "_corr", "w")
-        file2 = open(output_path + file_name + "_corr_shift", "w")
-
+        file = open(output_path + file_name, "w")
         for idx in tqdm(range(n_signal), desc=file_name, ncols=100, unit=" signal"):
-          predict, start, score, shift_list = decode_data(signal[idx])
+          predict, start, score, shift_list, success_score, fail_score = decode_data(signal[idx])
           last_idx = 128
 
           for n in range(n_bit_data):
@@ -166,19 +170,21 @@ if __name__ == "__main__":
               last_idx = n
               break
 
-          file.write(str(start-300) + "\t" + str(score) + "\t" + str(last_idx) + "\n")
-
-          for shift in shift_list:
-            file2.write(str(shift) + "\t")
-          file2.write("\n")
+          if last_idx >= 5 and last_idx < 128:
+            avg = 0
+            for n in range(last_idx-5, last_idx):
+              avg += success_score[n]
+            avg /= 5
+            file.write(str(avg) + "\t")
+          else:
+            file.write("-10000\t")
 
         file.close()
-        file2.close()
 
       except Exception as ex:
         _, _, tb = sys.exc_info()
-        print("[calc_correlation_value:" + file_name + ":" + str(tb.tb_lineno) + "] " + str(ex) + "\n\n")
+        print("[main:" + file_name + ":" + str(tb.tb_lineno) + "] " + str(ex) + "\n\n")
 
   except Exception as ex:
     _, _, tb = sys.exc_info()
-    print("[calc_correlation_value:" + str(tb.tb_lineno) + "] " + str(ex) + "\n\n")
+    print("[main:" + str(tb.tb_lineno) + "] " + str(ex) + "\n\n")

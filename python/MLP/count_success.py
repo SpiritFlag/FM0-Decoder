@@ -16,11 +16,12 @@ def count_success(mlp, test_set, answer_set, file_name):
       for sample in predict_set[0]:
         file.write(str(sample) + " ")
 
-    #file = open("data/tmp/" + file_name + "_mlp", "w")
+    file = open("data/XX_bit_shift/" + file_name + "_mlp", "w")
 
     success = 0
     for idx in tqdm(range(len(answer_set)), desc="TESTING", ncols=100, unit=" signal"):
       if len(test_set[idx]) == 0: # outlier
+        file.write("1\t")
         continue
 
       fail = False
@@ -33,7 +34,7 @@ def count_success(mlp, test_set, answer_set, file_name):
           predict_set = mlp.test_model(np.array(tmp_set))
 
         elif test_type == "shift":
-          predict_set = decode_data(mlp, test_set[idx])
+          predict_set = decode_data(file_name, mlp, test_set[idx])
 
         for n in range(n_bit_data):
           fail = determine_fail(predict_set[n], answer_set[idx][n])
@@ -53,11 +54,11 @@ def count_success(mlp, test_set, answer_set, file_name):
 
       if fail is False:
         success += 1
-        #file.write("0\t")
-      #else:
-        #file.write("1\t")
+        file.write("0\t")
+      else:
+        file.write("1\t")
 
-    #file.close()
+    file.close()
     return success
 
   except Exception as ex:
