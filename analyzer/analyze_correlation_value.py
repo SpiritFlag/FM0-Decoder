@@ -10,6 +10,7 @@ file_name_list = []
 #file_name_list = ["100_0_0"]
 file_name_list = file_name_list_all
 
+file_path = "../data/Y_full_test/"
 log_path = "../data/tmp/"
 
 n_signal = 600
@@ -18,23 +19,23 @@ idx_max = 79
 
 if __name__ == "__main__":
   try:
-    fileA = open(log_path + "_compare_corr_mlp", "w")
-    fileB = open(log_path + "_mlp_idx", "w")
+    fileA = open(log_path + "_compare_mlp_corr", "w")
+    fileB = open(log_path + "_idx_mlp_corr", "w")
     mlp_idx = []
 
     for file_name in file_name_list:
       try:
-        file = open(log_path + file_name + "_corr", "r")
+        file = open(file_path + file_name + "_corr", "r")
         index = []
         corr = []
 
         for idx in range(n_signal):
           line = file.readline().rstrip("\n").split("\t")
           index.append(int(line[0]))
-          corr.append(int(line[1]))
+          corr.append(int(line[2]))
         file.close()
 
-        file = open(log_path + file_name + "_mlp", "r")
+        file = open(file_path + file_name + "_mlp", "r")
         mlp = file.readline().rstrip("\t").split("\t")
         mlp = [int(i) for i in mlp]
         file.close()
@@ -42,7 +43,7 @@ if __name__ == "__main__":
         count = [0, 0, 0, 0, 0, 0, 0, 0, 0]
         for idx in range(n_signal):
           if index[idx] >= idx_min and index[idx] <= idx_max:
-            if corr[idx] == 0:
+            if corr[idx] == 128:
               count[0] += 1 # index success + corr success
               if mlp[idx] == 0:
                 count[1] += 1  # index success + corr success + mlp success

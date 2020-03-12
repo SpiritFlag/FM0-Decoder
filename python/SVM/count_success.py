@@ -13,13 +13,11 @@ def count_success(clf, test_set, answer_set):
     for idx in tqdm(range(len(answer_set)), desc="TESTING", ncols=100, unit=" signal"):
       if len(test_set[idx]) == 0: # outlier
         continue
-        
+
       fail = False
 
       for n in range(n_bit_data):
-        if model_type == "one_bit":
-          predict = clf.predict([test_set[idx][int(n_bit*n):int(n_bit*(n+1))]])
-        elif model_type == "two_bit":
+        if model_type == "bit_unit":
           predict = clf.predict([test_set[idx][int(n_bit*2*n):int(n_bit*2*(n+1))]])
         else:
           raise ValueError("No function matching with model type named \"" + model_type + "\"!")

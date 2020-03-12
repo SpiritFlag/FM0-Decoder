@@ -6,11 +6,12 @@ from correlation.detect_preamble import *
 
 
 
-def decode_data(mlp, signal):
+def decode_data(file_name, mlp, signal):
   try:
     start = detect_preamble(signal)
     state = -1
     tot_shift = 0
+    shift_list = []
     decoded_bit = []
 
     for bit in range(n_bit_data):
@@ -61,6 +62,16 @@ def decode_data(mlp, signal):
           decoded_bit.append(1)
           tot_shift += max_idx1
           state *= -1
+        shift_list.append(tot_shift)
+
+    '''
+    file = open("data/tmp_shift_shift/" + file_name + "_shift", "a")
+    file.write(str(start) + " ")
+    for shift in shift_list:
+      file.write(str(shift) + " ")
+    file.write("\n")
+    file.close()
+    '''
 
     return decoded_bit
 
