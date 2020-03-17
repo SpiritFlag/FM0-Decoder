@@ -1,8 +1,6 @@
 import sys
 
 from tqdm import tqdm
-#from sklearn import svm
-#from sklearn.externals import joblib
 from global_vars import *
 
 
