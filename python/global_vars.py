@@ -6,10 +6,10 @@ for a in ["100", "200", "300", "400"]:
             file_name_list_all.append(a + "_" + b + "_" + c)
 
 #file_name_list = []
-#file_name_list = ["100_0_0"]
+file_name_list = ["100_0_0"]
 #file_name_list = ["100_0_0", "100_0_45", "100_0_90", "100_0_135"]
 #file_name_list = ["400_r100_135"]
-file_name_list = file_name_list_all
+#file_name_list = file_name_list_all
 RN_index = 0
 
 
@@ -24,8 +24,8 @@ log_full_path = log_path + execute_time
 
 
 #signal_path = "data/C_signal_std/"
-#signal_path = "data/C_signal_std_full/"
-signal_path = "data/D_bit_unit_std_full/"
+signal_path = "data/C_signal_std_full/"
+#signal_path = "data/D_bit_unit_std_full/"
 #signal_path = "data/XB_signal/"
 #signal_path = "data/D_bit_unit_std_4924/"
 #signal_path = "data/D_bit_unit_std_th0/"
@@ -34,13 +34,13 @@ signal_path = "data/D_bit_unit_std_full/"
 test_path = signal_path
 #test_path = "data/D_bit_unit_std/"
 
-model_type = "bit_unit"     # select this model when using correlation
+#model_type = "bit_unit"     # select this model when using correlation
 #test_type = "corr"
 #test_type = "shift"
 bit_unit = 1
 model_postpix = "_" + str(bit_unit)
-#model_type = "whole"
-#model_postpix = "_rep"
+model_type = "whole"
+model_postpix = "_rep"
 databit_repitition = 1
 
 

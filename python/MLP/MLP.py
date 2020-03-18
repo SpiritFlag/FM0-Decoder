@@ -1,6 +1,7 @@
 import sys
 import tensorflow as tf
 
+from tensorflow.keras import backend as K
 from global_vars import *
 
 
@@ -139,7 +140,21 @@ class MLP(tf.keras.Model):
 
   def test_model(self, input):
     try:
-      return self.model.predict(input)
+      ret = self.model.predict(input)
+      #a = self.get_layer("hidden6")
+      #b = a.get_weights()
+
+      #for y in b[0]:
+      #  print(len(y))
+
+      intermediate_layer_model = tf.keras.Model(inputs=self.model.input, outputs=self.model.get_layer("output").output)
+      intermediate_output = intermediate_layer_model.predict(input)
+      for x in intermediate_output[0]:
+        print(x, end=" ")
+      print("")
+
+      return ret
+      #return self.model.predict(input)
 
     except Exception as ex:
       _, _, tb = sys.exc_info()

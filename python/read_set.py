@@ -59,7 +59,8 @@ def read_train_set(set_name):
 def read_test_set(file_name):
   try:
     test_set = []
-    n_lines = sum(1 for line in open(test_path + file_name + "_RN" + str(RN_index) + "_signal_test"))
+    #n_lines = sum(1 for line in open(test_path + file_name + "_RN" + str(RN_index) + "_signal_test"))
+    n_lines = 1
     file = open(test_path + file_name + "_RN" + str(RN_index) + "_signal_test", "r")
 
     for idx in tqdm(range(n_lines), desc="READING", ncols=100, unit=" signal"):

@@ -3,7 +3,8 @@ import timeit
 #import pickle
 
 from tqdm import tqdm
-from thundersvm import SVC
+from sklearn.svm import SVC
+#from thundersvm import SVC
 #from sklearn.externals import joblib
 from global_vars import *
 from read_set import *
