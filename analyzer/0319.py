@@ -23,23 +23,42 @@ n_signal = 600
 if __name__ == "__main__":
   try:
     fileW = open(output_path + "0319", "w")
-    fileWS = open(output_path + "0319_MLPS", "w")
-    fileWF = open(output_path + "0319_MLPF", "w")
-    fileWO = open(output_path + "0319_indexF", "w")
+    fileBS = open(output_path + "0319_bit_corr_S", "w")
+    fileBF = open(output_path + "0319_bit_corr_F", "w")
+    fileB2S = open(output_path + "0319_bit_shift_S", "w")
+    fileB2F = open(output_path + "0319_bit_shift_F", "w")
+    fileMS = open(output_path + "0319_mlp_S", "w")
+    fileMF = open(output_path + "0319_mlp_F", "w")
+    fileM2S = open(output_path + "0319_mlp25_S", "w")
+    fileM2F = open(output_path + "0319_mlp25_F", "w")
 
     for file_name in file_name_list:
       try:
         file = open(input_path + str(file_name), "r")
         fileC = open(input_path_2 + str(file_name) + "_corr", "r")
+        fileB = open(input_path_2 + str(file_name) + "_bit_corr", "r")
+        fileB2 = open(input_path_2 + str(file_name) + "_bit_shift", "r")
         fileM = open(input_path_2 + str(file_name) + "_mlp", "r")
+        fileM2 = open(input_path_2 + str(file_name) + "_mlp25", "r")
 
         fileW.write(file_name + "\t")
-        fileWS.write(file_name + "\t")
-        fileWF.write(file_name + "\t")
-        fileWO.write(file_name + "\t")
+        fileBS.write(file_name + "\t")
+        fileBF.write(file_name + "\t")
+        fileB2S.write(file_name + "\t")
+        fileB2F.write(file_name + "\t")
+        fileMS.write(file_name + "\t")
+        fileMF.write(file_name + "\t")
+        fileM2S.write(file_name + "\t")
+        fileM2F.write(file_name + "\t")
 
         mlp = fileM.readline().rstrip("\t\n").split("\t")
         mlp = [int(i) for i in mlp]
+
+        mlp = fileM.readline().rstrip("\t\n").split("\t")
+        mlp = [int(i) for i in mlp]
+
+        mlp25 = fileM2.readline().rstrip("\t\n").split("\t")
+        mlp25 = [int(i) for i in mlp25]
 
         for idx in tqdm(range(n_signal), desc=file_name, ncols=100, unit=" signal"):
           corr = fileC.readline().rstrip("\n").split("\t")

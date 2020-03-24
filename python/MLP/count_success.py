@@ -48,8 +48,9 @@ def count_success(mlp, test_set, answer_set, file_name):
           ed = int(2*databit_repitition*(n+1))
           cur_fail = determine_fail(predict_set[idx][st:ed], answer_set[idx][st:ed])
           if cur_fail is True:
+            cnt += 1
             fail = True
-            break
+            #break
         for x in predict_set[idx]:
           fileW.write(str(x) + "\t")
         fileW.write("\n")
