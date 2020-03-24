@@ -1,15 +1,15 @@
 file_name_list_all = []
 for a in ["100", "200", "300", "400"]:
-#for a in ["100"]:
+#for a in ["400"]:
     for b in ["0", "l100", "r100"]:
         for c in ["0", "45", "90", "135"]:
             file_name_list_all.append(a + "_" + b + "_" + c)
 
 #file_name_list = []
-file_name_list = ["100_0_0"]
+#file_name_list = ["100_0_0"]
 #file_name_list = ["100_0_0", "100_0_45", "100_0_90", "100_0_135"]
 #file_name_list = ["400_r100_135"]
-#file_name_list = file_name_list_all
+file_name_list = file_name_list_all
 RN_index = 0
 
 
@@ -40,8 +40,8 @@ test_path = signal_path
 bit_unit = 1
 model_postpix = "_" + str(bit_unit)
 model_type = "whole"
-model_postpix = "_rep"
-databit_repitition = 1
+databit_repitition = 25
+model_postpix = "_rep_" + str(databit_repitition)
 
 
 
@@ -56,10 +56,10 @@ n_extra = int(n_sample - n_bit * (n_bit_preamble + n_bit_data))
 
 learning_rate = 0.001
 
-#loss_function = "mse"
-#learning_epoch = 100
-#isEarlyStop = True
+loss_function = "mse"
+learning_epoch = 100
+isEarlyStop = True
 
-loss_function = "categorical_crossentropy"
-learning_epoch = 5
-isEarlyStop = False
+#loss_function = "categorical_crossentropy"
+#learning_epoch = 5
+#isEarlyStop = False
