@@ -54,7 +54,7 @@ class MLP(tf.keras.Model):
 
 
 
-  def build_model_whole_rep_1(self):
+  def build_model_whole_rep_25(self):
     try:
       size_input_layer = 6850
       size_hidden_layer1 = 3350
@@ -97,6 +97,7 @@ class MLP(tf.keras.Model):
       layer = self.activation_layer1(self.batch_layer1(self.hidden_layer1(self.input_layer)))
       layer = self.activation_layer2(self.batch_layer2(self.hidden_layer2(layer)))
       layer = self.activation_layer3(self.batch_layer3(self.hidden_layer3(layer)))
+      layer = self.activation_layer3(self.batch_layer3(self.hidden_layer3(self.input_layer)))
       layer = self.activation_layer4(self.batch_layer4(self.hidden_layer4(layer)))
       layer = self.activation_layer5(self.batch_layer5(self.hidden_layer5(layer)))
       layer = self.activation_layer6(self.batch_layer6(self.hidden_layer6(layer)))
@@ -110,16 +111,16 @@ class MLP(tf.keras.Model):
 
 
 
-  def build_model_whole_rep_25(self):
+  def build_model_whole_rep_1(self):
     try:
       size_input_layer = 6850
       size_hidden_layer1 = 3350
       size_hidden_layer2 = 3350
-      size_hidden_layer3 = 10050
-      size_hidden_layer4 = 10050
-      size_hidden_layer5 = 3350
-      size_hidden_layer6 = 3350
-      size_output_layer = 6700
+      size_hidden_layer3 = 10000
+      size_hidden_layer4 = 10000
+      size_hidden_layer5 = 6700
+      size_hidden_layer6 = 6700
+      size_output_layer = int(268 * databit_repitition)
 
       self.input_layer = tf.keras.layers.Input(shape=(size_input_layer,), name="input")
 
@@ -150,9 +151,10 @@ class MLP(tf.keras.Model):
       self.output_layer = tf.keras.layers.Dense(units=size_output_layer, name="output")
       self.output_activation_lyaer = tf.keras.layers.Activation(tf.nn.sigmoid, name="output_activation")
 
-      layer = self.activation_layer1(self.batch_layer1(self.hidden_layer1(self.input_layer)))
-      layer = self.activation_layer2(self.batch_layer2(self.hidden_layer2(layer)))
-      layer = self.activation_layer3(self.batch_layer3(self.hidden_layer3(layer)))
+      #layer = self.activation_layer1(self.batch_layer1(self.hidden_layer1(self.input_layer)))
+      #layer = self.activation_layer2(self.batch_layer2(self.hidden_layer2(layer)))
+      #layer = self.activation_layer3(self.batch_layer3(self.hidden_layer3(layer)))
+      layer = self.activation_layer3(self.batch_layer3(self.hidden_layer3(self.input_layer)))
       layer = self.activation_layer4(self.batch_layer4(self.hidden_layer4(layer)))
       layer = self.activation_layer5(self.batch_layer5(self.hidden_layer5(layer)))
       layer = self.activation_layer6(self.batch_layer6(self.hidden_layer6(layer)))
@@ -203,13 +205,15 @@ class MLP(tf.keras.Model):
       #for y in b[0]:
       #  print(len(y))
 
-      #intermediate_layer_model = tf.keras.Model(inputs=self.model.input, outputs=self.model.get_layer("output").output)
-      #intermediate_output = intermediate_layer_model.predict(input)
-      #for x in intermediate_output[0]:
-      #  print(x, end=" ")
-      #print("")
+      '''
+      intermediate_layer_model = tf.keras.Model(inputs=self.model.input, outputs=self.model.get_layer("hidden3").output)
+      intermediate_output = intermediate_layer_model.predict(input)
+      for x in intermediate_output[0]:
+        print(x, end=" ")
+      print("")
 
-      #return ret
+      return ret
+      '''
       return self.model.predict(input)
 
     except Exception as ex:
