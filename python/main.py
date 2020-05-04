@@ -6,9 +6,7 @@ from tqdm import tqdm
 from global_vars import *
 
 from rename import rename
-from correlation.fix_shift_3 import correlation_fix_shift_3
-from correlation.find_total_len import correlation_find_total_len
-from correlation.fix_no_shift import correlation_fix_no_shift
+from correlation.test import correlation_test
 from SVM.train import SVM_train
 from SVM.test import SVM_test
 from MLP.train import MLP_train
@@ -31,18 +29,7 @@ if __name__ == "__main__":
 
     print("\n\n\t*** Select Function ***")
     if menu == 1: # 1. correlation
-      print("1. fix_shift_3")
-      print("2. find_total_len")
-      print("3. fix_no_shift")
-      menu = int(input("\nSelect > "))
-      if menu == 1:
-        menu = correlation_fix_shift_3
-      elif menu == 2:
-        menu = correlation_find_total_len
-      elif menu == 3:
-        menu = correlation_fix_no_shift
-      else:
-        raise ValueError("Invalid menu number!")
+      menu = correlation_test
     elif menu == 2: # 2. SVM
       print("1. train")
       print("2. test")

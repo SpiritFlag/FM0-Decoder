@@ -1,24 +1,23 @@
 import sys
 
+from tqdm import tqdm
 from global_vars import *
 from B_split_set.global_vars import *
 
 
 
-def process(signal, databit, file_name, x, postfix):
+def process(signal, databit, file_name, postfix):
   try:
-    file = open(index_path + "RN" + str(x) + postfix, "r")
-    list = file.readline().rstrip(" \n").split(" ")
+    file = open(index_path + RN_postfix + postfix, "r")
+    list = file.readline().rstrip("\n").split(" ")
     list = [int(i) for i in list]
     file.close()
 
-    #fileS = open(output_path + file_name + "_RN" + str(x) + "_signal" + postfix, "w")
-    #fileD = open(output_path + file_name + "_RN" + str(x) + "_databit" + postfix, "w")
-    fileS = open(output_path + file_name + "_RN0_signal" + postfix, "a")
-    fileD = open(output_path + file_name + "_RN0_databit" + postfix, "a")
-    for index in list:
-      fileS.write(signal[index])
-      fileD.write(databit[index])
+    fileS = open(output_path + file_name + "_signal" + postfix, "w")
+    fileD = open(output_path + file_name + "_databit" + postfix, "w")
+    for idx in tqdm(range(len(list)), desc="PROCESSING", ncols=100, unit=" signal"):
+      fileS.write(signal[list[idx]])
+      fileD.write(databit[list[idx]])
     fileS.close()
     fileD.close()
 

@@ -28,7 +28,7 @@ def detect_preamble(signal):
         max_score = score
         max_idx = idx
 
-    return int(max_idx + n_bit * n_bit_preamble)
+    return int(max_idx + n_bit * n_bit_preamble), max_score
 
   except Exception as ex:
     _, _, tb = sys.exc_info()

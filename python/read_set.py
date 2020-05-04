@@ -56,20 +56,16 @@ def read_train_set(set_name):
 
 
 
-def read_test_set(file_name):
+def read_test_set(test_path, file_name):
   try:
     test_set = []
-    n_lines = sum(1 for line in open(test_path + file_name + "_RN" + str(RN_index) + "_signal_test"))
-    file = open(test_path + file_name + "_RN" + str(RN_index) + "_signal_test", "r")
+    n_lines = sum(1 for line in open(test_path + file_name + "_signal_test"))
+    file = open(test_path + file_name + "_signal_test", "r")
 
     for idx in tqdm(range(n_lines), desc="READING", ncols=100, unit=" signal"):
       sample = file.readline().rstrip(" \n").split(" ")
-
-      if len(sample) == 1:  # outlier
-        test_set.append([])
-      else:
-        sample = [float(i) for i in sample]
-        test_set.append(sample)
+      sample = [float(i) for i in sample]
+      test_set.append(sample)
 
     file.close()
     return test_set
@@ -80,21 +76,14 @@ def read_test_set(file_name):
 
 
 
-def read_answer_set(file_name):
+def read_answer_set(test_path, file_name):
   try:
     answer_set = []
+    n_lines = sum(1 for line in open(test_path + file_name + "_databit_test"))
+    file = open(test_path + file_name + "_databit_test", "r")
 
-    if model_type == "bit_unit":
-      n_lines = sum(1 for line in open(signal_path + file_name + "_RN" + str(RN_index) + "_databit_test"))
-      file = open(signal_path + file_name + "_RN" + str(RN_index) + "_databit_test", "r")
-    elif model_type == "whole":
-      n_lines = sum(1 for line in open(signal_path + file_name + "_RN" + str(RN_index) + "_databit_test_rep" + str(databit_repitition)))
-      file = open(signal_path + file_name + "_RN" + str(RN_index) + "_databit_test_rep" + str(databit_repitition), "r")
-    else:
-      raise ValueError("No function matching with model type named \"" + model_type + "\"!")
-
-    for idx in range(n_lines):
-      databit = file.readline().rstrip(" \n")
+    for idx in tqdm(range(n_lines), desc="READING", ncols=100, unit=" signal"):
+      databit = file.readline().rstrip("\n")
       databit = [int(i) for i in databit]
       answer_set.append(databit)
 
