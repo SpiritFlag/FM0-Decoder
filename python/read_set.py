@@ -5,13 +5,38 @@ from global_vars import *
 
 
 
-def read_train_set(set_name):
+def read_train_set(train_path, postfix):
   try:
     train_set = []
     answer_set = []
 
     for file_name in file_name_list:
       try:
+        for x in range(4):
+          n_lines = sum(1 for line in open(train_path + file_name + "_signal_" + postfix + "_" + str(x)))
+          file = open(train_path + file_name + "_signal_" + postfix + "_" + str(x), "r")
+
+          for idx in tqdm(range(n_lines), desc=file_name+" "+str(x), ncols=100, unit=" signal"):
+            line = file.readline().rstrip(" \n").split(" ")
+            train_set.append([float(i) for i in line])
+            answer_set.append(x)
+
+          file.close()
+
+
+        '''
+        n_lines = sum(1 for line in open(train_path + file_name + "_databit_" + postfix))
+        file = open(train_path + file_name + "_databit_" + postfix, "r")
+
+        for idx in range(n_lines):
+          databit = file.readline().rstrip("\n")
+          databit = [int(i) for i in databit]
+          answer_set.append(databit)
+
+        file.close()
+        '''
+
+        '''
         if model_type == "bit_unit":
           for x in range(4):
             n_lines = sum(1 for line in open(signal_path + file_name + "_RN" + str(RN_index) + "_signal_" + set_name + "_" + str(x)))
@@ -43,6 +68,7 @@ def read_train_set(set_name):
 
         else:
           raise ValueError("No function matching with model type named \"" + model_type + "\"!")
+        '''
 
       except Exception as ex:
         _, _, tb = sys.exc_info()

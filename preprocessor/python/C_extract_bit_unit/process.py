@@ -3,82 +3,47 @@ import sys
 from tqdm import tqdm
 from global_vars import *
 from C_extract_bit_unit.global_vars import *
-from C_extract_bit_unit.detect_preamble import detect_preamble
-from C_extract_bit_unit.detect_bit import detect_bit
+from C_extract_bit_unit.load import load
+from C_extract_bit_unit.decode_data import decode_data
 
 
 
-def process(signal, databit, file_name, set_name, set_size):
+def process(file_name, set_name):
   try:
+    signal, databit = load(file_name, set_name)
+
     if set_name == "_test":
-      file = open(output_path + file_name + "_RN" + str(RN) + "_signal" + set_name, "w")
+      file = open(output_path + file_name + "_signal" + set_name, "w")
     else:
-      file0 = open(output_path + file_name + "_RN" + str(RN) + "_signal" + set_name + "_0", "w")
-      file1 = open(output_path + file_name + "_RN" + str(RN) + "_signal" + set_name + "_1", "w")
-      file2 = open(output_path + file_name + "_RN" + str(RN) + "_signal" + set_name + "_2", "w")
-      file3 = open(output_path + file_name + "_RN" + str(RN) + "_signal" + set_name + "_3", "w")
-      file = [file0, file1, file2, file3]
+      file0 = open(output_path + file_name + "_signal" + set_name + "_0", "w")
+      file1 = open(output_path + file_name + "_signal" + set_name + "_1", "w")
+      file2 = open(output_path + file_name + "_signal" + set_name + "_2", "w")
+      file3 = open(output_path + file_name + "_signal" + set_name + "_3", "w")
+      file_list = [file0, file1, file2, file3]
 
-    for idx in tqdm(range(set_size), desc="PROCESSING", ncols=100, unit=" signal"):
-      preamble_start = detect_preamble(signal[idx])
-      state = -1
-      outlier = False
-
-      list0 = []
-      list1 = []
-      list2 = []
-      list3 = []
-      list = [list0, list1, list2, list3]
-
-      start = preamble_start
-      for n in range(n_bit_data):
-        if shift_bit is False:
-          start = int(preamble_start + n*len_bit)
-        end = start + n_bit + n_tolerance_bit
-        if end > n_sample:
-          outlier = True
-          break
-
-        score, shift, type, success = detect_bit(signal[idx][start-n_half_bit-n_tolerance_bit:end+n_half_bit+1], databit[idx][n], state)
-        if shift_bit is True:
-          start += (shift - n_tolerance_bit)
-
-        if set_name == "_test":
-          list[0].append(signal[idx][start-n_half_bit:start+n_bit+n_half_bit])
-        else:
-          if success is False:
-            continue
-          elif score >= correlation_threshold:
-            list[type].append(signal[idx][start-n_half_bit:start+n_bit+n_half_bit])
-
-        if shift_bit is True:
-          start += n_bit
-        if databit[idx][n] is 1:
-          state *= -1
+    for idx in tqdm(range(len(signal)), desc="PROCESSING", ncols=100, unit=" signal"):
+      decoded_bit, decoded_index = decode_data(signal[idx], databit[idx])
 
       if set_name == "_test":
-        if outlier is False:
-          for j in range(len(list[0])):
-            for sample in list[0][j]:
-              file.write(str(sample) + " ")
-          file.write("\n")
-        else:
-          file.write(" \n")
+        for n in range(n_bit_data):
+          if len(decoded_bit[n]) == 0:
+            file.write("-1 ")
+            break
+          else:
+            file.write(" ".join([str(i) for i in decoded_bit[n]]) + " ")
+        file.write("\n")
       else:
-        if outlier is False:
-          for i in range(4):
-            for j in range(len(list[i])):
-              for sample in list[i][j]:
-                file[i].write(str(sample) + " ")
-              file[i].write("\n")
+        for n in range(n_bit_data):
+          if len(decoded_bit[n]) == 0:
+            break
+          else:
+            file_list[decoded_index[n]].write(" ".join([str(i) for i in decoded_bit[n]]) + "\n")
 
     if set_name == "_test":
       file.close()
     else:
-      file0.close()
-      file1.close()
-      file2.close()
-      file3.close()
+      for file in file_list:
+        file.close()
 
   except Exception as ex:
     _, _, tb = sys.exc_info()

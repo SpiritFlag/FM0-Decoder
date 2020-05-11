@@ -2,21 +2,27 @@ import sys
 
 from global_vars import *
 from C_extract_bit_unit.global_vars import *
-from C_extract_bit_unit.load import load
 from C_extract_bit_unit.process import process
-
-set_name = ["_train", "_validation", "_test"]
-set_size = [640, 160, 200]
-#set_size = [1920, 480, 600]
+from Z_common.process import common_process
 
 
 
-def main(file_name):
+def main_fnc(file_name):
   try:
-    for idx in range(3):
-      signal, databit = load(file_name, set_name[idx], set_size[idx])
-      process(signal, databit, file_name, set_name[idx], set_size[idx])
+    process(file_name, "_train")
+    process(file_name, "_validation")
+    process(file_name, "_test")
 
   except Exception as ex:
     _, _, tb = sys.exc_info()
-    print("[C_extract_bit_unit:main:" + str(tb.tb_lineno) + "] " + str(ex) + "\n\n")
+    print("[C_extract_bit_unit:" + str(tb.tb_lineno) + "] " + str(ex) + "\n\n")
+
+
+
+def main():
+  try:
+    common_process(output_path + file_name_list[0] + "_signal_train_0", main_fnc, True)
+
+  except Exception as ex:
+    _, _, tb = sys.exc_info()
+    print("[C_extract_bit_unit:" + str(tb.tb_lineno) + "] " + str(ex) + "\n\n")

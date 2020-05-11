@@ -1,13 +1,50 @@
-import os
 import sys
-import pickle
+import os
+#import pickle
 
-from tqdm import tqdm
 from sklearn import svm
 from sklearn.externals import joblib
 from global_vars import *
+from common.test import common_test
+
+
+
+
+from tqdm import tqdm
 from read_set import *
 from SVM.count_success import count_success
+
+
+
+
+
+def main_fnc(file_name, test_set, answer_set):
+  try:
+    return process(file_name, test_set, answer_set)
+
+  except Exception as ex:
+    _, _, tb = sys.exc_info()
+    print("[correlation_test:" + str(tb.tb_lineno) + "] " + str(ex) + "\n\n")
+
+
+
+def SVM_test(path):
+  try:
+    if common_test(signal_path, main_fnc):
+      return False, True    # normal
+    else:
+      return False, False   # aborted
+
+  except Exception as ex:
+    _, _, tb = sys.exc_info()
+    print("[correlation_test:" + str(tb.tb_lineno) + "] " + str(ex) + "\n\n")
+
+
+
+
+
+
+
 
 
 

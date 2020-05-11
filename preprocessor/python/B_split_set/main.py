@@ -1,6 +1,5 @@
 import sys
 
-from tqdm import tqdm
 from global_vars import *
 from B_split_set.global_vars import *
 from B_split_set.load import load

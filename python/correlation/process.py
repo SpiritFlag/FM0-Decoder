@@ -35,7 +35,7 @@ def process(file_name, test_set, answer_set):
       file.write("\n")
 
     file.close()
-    return success
+    return success, []
 
   except Exception as ex:
     _, _, tb = sys.exc_info()

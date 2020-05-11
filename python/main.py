@@ -1,6 +1,5 @@
 import os
 import sys
-import timeit
 
 from tqdm import tqdm
 from global_vars import *
@@ -51,9 +50,7 @@ if __name__ == "__main__":
       else:
         raise ValueError("Invalid menu number!")
 
-    tot_time = timeit.default_timer()
     model, log = menu("")
-    print("\t\tTOTAL EXECUTION TIME= " + str(round(timeit.default_timer() - tot_time, 3)) + " (sec)\n")
     rename(model, log)
 
   except Exception as ex:

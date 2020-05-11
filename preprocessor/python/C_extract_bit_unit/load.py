@@ -6,24 +6,22 @@ from C_extract_bit_unit.global_vars import *
 
 
 
-def load(file_name, set_name, set_size):
+def load(file_name, set_name):
   try:
-    file = open(signal_path + file_name + "_RN" + str(RN) + "_signal" + set_name, "r")
+    n_lines = sum(1 for line in open(signal_path + file_name + "_signal" + set_name))
+    file = open(signal_path + file_name + "_signal" + set_name, "r")
     signal = []
-    for idx in tqdm(range(set_size), desc="READING", ncols=100, unit=" signal"):
+    for idx in tqdm(range(n_lines), desc="READING", ncols=100, unit=" signal"):
       line = file.readline().rstrip(" \n").split(" ")
-      line = [float(i) for i in line]
-      for n in range(n_half_bit):
-        line.append(0)
-      signal.append(line)
+      signal.append([float(i) for i in line])
     file.close()
 
-    file = open(signal_path + file_name + "_RN" + str(RN) + "_databit" + set_name, "r")
+    n_lines = sum(1 for line in open(signal_path + file_name + "_databit" + set_name))
+    file = open(signal_path + file_name + "_databit" + set_name, "r")
     databit = []
-    for idx in range(n_signal):
-      line = file.readline().rstrip(" \n")
-      line = [int(i) for i in line]
-      databit.append(line)
+    for idx in range(n_lines):
+      line = file.readline().rstrip("\n")
+      databit.append([int(i) for i in line])
     file.close()
 
     return signal, databit

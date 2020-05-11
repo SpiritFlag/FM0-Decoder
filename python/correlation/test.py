@@ -21,8 +21,10 @@ def main_fnc(file_name, test_set, answer_set):
 
 def correlation_test(path):
   try:
-    common_test(test_path, main_fnc)
-    return False, True
+    if common_test(test_path, main_fnc):
+      return False, True    # normal
+    else:
+      return False, False   # aborted
 
   except Exception as ex:
     _, _, tb = sys.exc_info()

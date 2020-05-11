@@ -13,6 +13,7 @@ def rename(model, log):
       print("[Log path] " + str(os.listdir(log_path)) + "\n")
       new_name = input("Input the log name: ").rstrip("\n")
       os.rename(log_full_path, log_path + new_name)
+      os.rename(log_path + "detail/", log_path + new_name + "__detail/")
 
   except Exception as ex:
     _, _, tb = sys.exc_info()
