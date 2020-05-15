@@ -5,21 +5,35 @@ from global_vars import *
 
 
 
-def read_train_set(train_path, postfix):
+def read_train_set(train_path, postfix, model_type):
   try:
     train_set = []
     answer_set = []
 
     for file_name in file_name_list:
       try:
-        for x in range(4):
-          n_lines = sum(1 for line in open(train_path + file_name + "_signal_" + postfix + "_" + str(x)))
-          file = open(train_path + file_name + "_signal_" + postfix + "_" + str(x), "r")
+        if model_type == "bit":
+          for x in range(4):
+            n_lines = sum(1 for line in open(train_path + file_name + "_signal_" + postfix + "_" + str(x)))
+            file = open(train_path + file_name + "_signal_" + postfix + "_" + str(x), "r")
 
-          for idx in tqdm(range(n_lines), desc=file_name+" "+str(x), ncols=100, unit=" signal"):
+            for idx in tqdm(range(n_lines), desc=file_name+" "+str(x), ncols=100, unit=" signal"):
+              line = file.readline().rstrip(" \n").split(" ")
+              train_set.append([float(i) for i in line])
+              answer_set.append(x)
+
+            file.close()
+
+        elif model_type == "signal":
+          n_lines = sum(1 for line in open(train_path + file_name + "_signal_" + postfix))
+          file = open(train_path + file_name + "_signal_" + postfix, "r")
+          file2 = open(train_path + file_name + "_databit_" + postfix, "r")
+
+          for idx in tqdm(range(n_lines), desc=file_name, ncols=100, unit=" signal"):
             line = file.readline().rstrip(" \n").split(" ")
             train_set.append([float(i) for i in line])
-            answer_set.append(x)
+            line = file2.readline().rstrip("\n")
+            answer_set.append([int(i) for i in line])
 
           file.close()
 

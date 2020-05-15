@@ -7,7 +7,7 @@ from read_set import *
 
 
 
-def common_test(test_path, fnc):
+def common_test(model=None, test_path="", fnc=None):
   try:
     if os.path.exists(log_path + "detail/"):
       select = input("The detailed log path is already exist. Press 'Y' if you want to rewrite. ")
@@ -34,7 +34,10 @@ def common_test(test_path, fnc):
         answer_set = read_answer_set(test_path, file_name)
 
         time = timeit.default_timer()
-        success, fnc_time = fnc(file_name, test_set, answer_set)
+        if model is None:
+          success, fnc_time = fnc(file_name, test_set, answer_set)
+        else:
+          success, fnc_time = fnc(model, file_name, test_set, answer_set)
 
         if len(answer_set) != 0:
           print("\t\tSUCCESS= " + str(success) + " / " + str(len(answer_set)) + "\t(" + str(round(100 * success / len(answer_set), 2)) + "%)\n")
@@ -44,7 +47,7 @@ def common_test(test_path, fnc):
           log.write("0\t0\t")
 
         if len(fnc_time) > 0:
-          log.write("\t".join([str(i) for i in fnc_time]))
+          log.write("\t".join([str(i) for i in fnc_time]) + "\t")
 
         tot_success += success
         tot_size += len(answer_set)
@@ -59,14 +62,14 @@ def common_test(test_path, fnc):
 
     if tot_size != 0:
       print("\n\n\t\tTOTAL SUCCESS= " + str(tot_success) + " / " + str(tot_size) + "\t(" + str(round(100 * tot_success / tot_size, 2)) + "%)\n")
-      log.write("TOTAL " + str(tot_success) + "\t" + str(tot_size) + "\n")
+      log.write("TOTAL\t" + str(tot_success) + "\t" + str(tot_size) + "\n")
     else:
       print("\n\n\t\tTOTAL SUCCESS= 0 / 0 (- %)\n")
       log.write("TOTAL 0\t0\n")
 
     exec_time = timeit.default_timer() - tot_time
     print("\t\tTOTAL TEST TIME= " + str(round(exec_time, 3)) + " (sec)\n")
-    log.write(str(exec_time) + "\n")
+    log.write("TIME\t" + str(exec_time) + "\n")
     log.close()
 
     return True

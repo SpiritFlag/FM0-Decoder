@@ -12,6 +12,12 @@ RN_index = 0
 
 
 
+#cuda_device_id = "-1"
+cuda_device_id = "0"
+#cuda_device_id = "1"
+
+
+
 import datetime
 execute_time = datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
 model_path = "model/"

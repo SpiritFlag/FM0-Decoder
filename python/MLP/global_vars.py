@@ -1,0 +1,27 @@
+#signal_path = "data/C_signal/"
+signal_path = "data/C_signal_std/"
+#signal_path = "data/C_signal_std_cliffing/"
+
+
+
+#model_type = "bit"
+model_type = "signal"
+
+model_postpix = "_" + model_type
+
+
+
+if model_type == "bit":
+  loss_function = "categorical_crossentropy"
+
+elif model_type == "signal":
+  amp_rep = 25
+
+  size_hidden_layer = [5000, 4000, 3000, 2000, 1000, 268, 1000, 2000, 3000, 4000, 5000]
+  is_batch_normalization = True
+
+  learning_rate = 0.001
+  batch_size = 64
+  patience = 5
+  learning_epoch = 200
+  loss_function = "mse"

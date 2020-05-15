@@ -3,11 +3,76 @@ import numpy as np
 
 from tqdm import tqdm
 from global_vars import *
-from MLP.determine_fail import determine_fail
-from MLP.decode_data import decode_data
+from MLP.global_vars import *
+#from MLP.determine_fail import determine_fail
+#from MLP.decode_data import decode_data
 
 
 
+def count_success(predict_set, answer_set, countBit=False):
+  try:
+    if model_type == "signal":
+      threshold = 0.5
+      success = 0
+      error_idx_list = []
+      n_error_list = []
+
+      for idx in tqdm(range(len(answer_set)), desc="TESTING", ncols=100, unit=" signal"):
+        cur_fail = False
+        error_idx = -1
+        n_error = 0
+
+        for bit in range(n_bit_preamble, n_bit_preamble+n_bit_data):
+          predict = predict_set[idx][int(2*amp_rep*bit):int(2*amp_rep*(bit+1))]
+          answer = answer_set[idx][int(2*amp_rep*bit):int(2*amp_rep*(bit+1))]
+
+          count = 0
+          for n in range(amp_rep):
+            if (predict[n] < threshold and answer[n] < threshold) or (predict[n] > threshold and answer[n] > threshold):
+              count += 1
+          if count <= int(amp_rep / 2):
+            if countBit is True:
+              if cur_fail is False:
+                error_idx = bit
+                cur_fail = True
+              n_error += 1
+              continue
+            else:
+              cur_fail = True
+              break
+
+          count = 0
+          for n in range(amp_rep, 2*amp_rep):
+            if (predict[n] < threshold and answer[n] < threshold) or (predict[n] > threshold and answer[n] > threshold):
+              count += 1
+          if count <= int(amp_rep / 2):
+            if countBit is True:
+              if cur_fail is False:
+                error_idx = bit
+                cur_fail = True
+              n_error += 1
+            else:
+              cur_fail = True
+              break
+
+        if cur_fail is False:
+          success += 1
+        if countBit is True:
+          error_idx_list.append(error_idx)
+          n_error_list.append(n_error)
+
+      if countBit is True:
+        return success, error_idx_list, n_error_list
+      else:
+        return success
+
+  except Exception as ex:
+    _, _, tb = sys.exc_info()
+    print("[count_success:" + str(tb.tb_lineno) + "] " + str(ex) + "\n\n")
+
+
+
+'''
 def count_success(mlp, test_set, answer_set, file_name):
   try:
     if model_type == "whole":
@@ -72,3 +137,4 @@ def count_success(mlp, test_set, answer_set, file_name):
   except Exception as ex:
     _, _, tb = sys.exc_info()
     print("[count_success:" + str(tb.tb_lineno) + "] " + str(ex) + "\n\n")
+'''
