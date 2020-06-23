@@ -24,94 +24,42 @@ class MLP(tf.keras.Model):
       print("[MLP.__init__:" + str(tb.tb_lineno) + "] " + str(ex) + "\n\n")
 
 
-  '''
-  def build_model_bit_unit_1(self):
+
+  def build_model_bit(self):
     try:
       size_input_layer = 100
-      size_hidden_layer1 = 100
-      size_hidden_layer2 = 50
       size_output_layer = 4
 
       self.input_layer = tf.keras.layers.Input(shape=(size_input_layer,), name="input")
-
-      self.hidden_layer1 = tf.keras.layers.Dense(units=size_hidden_layer1, name="hidden1")
-      self.batch_layer1 = tf.keras.layers.BatchNormalization(name="batch1")
-      self.activation_layer1 = tf.keras.layers.Activation(tf.nn.relu, name="activation1")
-
-      self.hidden_layer2 = tf.keras.layers.Dense(units=size_hidden_layer2, name="hidden2")
-      self.batch_layer2 = tf.keras.layers.BatchNormalization(name="batch2")
-      self.activation_layer2 = tf.keras.layers.Activation(tf.nn.relu, name="activation2")
-
+      self.hidden_layer = []
+      if is_batch_normalization is True:
+        self.batch_layer = []
+      self.activation_layer = []
       self.output_layer = tf.keras.layers.Dense(units=size_output_layer, name="output")
       self.output_activation_lyaer = tf.keras.layers.Activation(tf.nn.softmax, name="output_activation")
 
-      layer = self.activation_layer1(self.batch_layer1(self.hidden_layer1(self.input_layer)))
-      layer = self.activation_layer2(self.batch_layer2(self.hidden_layer2(layer)))
-      #layer = self.output_layer(layer)
+      layer = self.input_layer
+
+      for idx in range(len(size_hidden_layer)):
+        hidden_layer = tf.keras.layers.Dense(units=size_hidden_layer[idx], name="hidden"+str(idx+1))
+        self.hidden_layer.append(hidden_layer)
+        if is_batch_normalization is True:
+          batch_layer = tf.keras.layers.BatchNormalization(name="batch"+str(idx+1))
+          self.batch_layer.append(batch_layer)
+        activation_layer = tf.keras.layers.Activation(tf.nn.relu, name="activation"+str(idx+1))
+        self.activation_layer.append(activation_layer)
+
+        layer = hidden_layer(layer)
+        if is_batch_normalization is True:
+          layer = batch_layer(layer)
+        layer = activation_layer(layer)
+
       layer = self.output_activation_lyaer(self.output_layer(layer))
       return tf.keras.Model(self.input_layer, layer)
 
     except Exception as ex:
       _, _, tb = sys.exc_info()
-      print("[MLP.build_model_bit_unit_1:" + str(tb.tb_lineno) + "] " + str(ex) + "\n\n")
-
-
-
-  def build_model_whole_rep_25(self):
-    try:
-      size_input_layer = 6850
-      size_hidden_layer1 = 3350
-      size_hidden_layer2 = 3350
-      size_hidden_layer3 = 6700
-      size_hidden_layer4 = 6700
-      size_hidden_layer5 = 1340
-      size_hidden_layer6 = 1340
-      size_output_layer = int(268 * databit_repitition)
-
-      self.input_layer = tf.keras.layers.Input(shape=(size_input_layer,), name="input")
-
-      self.hidden_layer1 = tf.keras.layers.Dense(units=size_hidden_layer1, name="hidden1")
-      self.batch_layer1 = tf.keras.layers.BatchNormalization(name="batch1")
-      self.activation_layer1 = tf.keras.layers.Activation(tf.nn.relu, name="activation1")
-
-      self.hidden_layer2 = tf.keras.layers.Dense(units=size_hidden_layer2, name="hidden2")
-      self.batch_layer2 = tf.keras.layers.BatchNormalization(name="batch2")
-      self.activation_layer2 = tf.keras.layers.Activation(tf.nn.relu, name="activation2")
-
-      self.hidden_layer3 = tf.keras.layers.Dense(units=size_hidden_layer3, name="hidden3")
-      self.batch_layer3 = tf.keras.layers.BatchNormalization(name="batch3")
-      self.activation_layer3 = tf.keras.layers.Activation(tf.nn.relu, name="activation3")
-
-      self.hidden_layer4 = tf.keras.layers.Dense(units=size_hidden_layer4, name="hidden4")
-      self.batch_layer4 = tf.keras.layers.BatchNormalization(name="batch4")
-      self.activation_layer4 = tf.keras.layers.Activation(tf.nn.relu, name="activation4")
-
-      self.hidden_layer5 = tf.keras.layers.Dense(units=size_hidden_layer5, name="hidden5")
-      self.batch_layer5 = tf.keras.layers.BatchNormalization(name="batch5")
-      self.activation_layer5 = tf.keras.layers.Activation(tf.nn.relu, name="activation5")
-
-      self.hidden_layer6 = tf.keras.layers.Dense(units=size_hidden_layer6, name="hidden6")
-      self.batch_layer6 = tf.keras.layers.BatchNormalization(name="batch6")
-      self.activation_layer6 = tf.keras.layers.Activation(tf.nn.relu, name="activation6")
-
-      self.output_layer = tf.keras.layers.Dense(units=size_output_layer, name="output")
-      self.output_activation_lyaer = tf.keras.layers.Activation(tf.nn.sigmoid, name="output_activation")
-
-      layer = self.activation_layer1(self.batch_layer1(self.hidden_layer1(self.input_layer)))
-      layer = self.activation_layer2(self.batch_layer2(self.hidden_layer2(layer)))
-      layer = self.activation_layer3(self.batch_layer3(self.hidden_layer3(layer)))
-      layer = self.activation_layer3(self.batch_layer3(self.hidden_layer3(self.input_layer)))
-      layer = self.activation_layer4(self.batch_layer4(self.hidden_layer4(layer)))
-      layer = self.activation_layer5(self.batch_layer5(self.hidden_layer5(layer)))
-      layer = self.activation_layer6(self.batch_layer6(self.hidden_layer6(layer)))
-      layer = self.output_layer(layer)
-      #layer = self.output_activation_lyaer(self.output_layer(layer))
-      return tf.keras.Model(self.input_layer, layer)
-
-    except Exception as ex:
-      _, _, tb = sys.exc_info()
-      print("[MLP.build_model_whole_rep:" + str(tb.tb_lineno) + "] " + str(ex) + "\n\n")
-  '''
+      print("[MLP.build_model_bit:" + str(tb.tb_lineno) + "] " + str(ex) + "\n\n")
 
 
 

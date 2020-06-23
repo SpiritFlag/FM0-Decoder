@@ -1,18 +1,27 @@
 #signal_path = "data/C_signal/"
-signal_path = "data/C_signal_std/"
+#signal_path = "data/C_signal_std/"
 #signal_path = "data/C_signal_std_cliffing/"
+signal_path = "data/D_signal_std_bit_RN0/"
 
 
-
-#model_type = "bit"
-model_type = "signal"
+model_type = "bit"
+#model_type = "signal"
 
 model_postpix = "_" + model_type
 
 
 
 if model_type == "bit":
+  size_hidden_layer = [100, 50]
+  is_batch_normalization = True
+
+  learning_rate = 0.001
+  batch_size = 64
+  patience = 5
+  learning_epoch = 200
   loss_function = "categorical_crossentropy"
+
+
 
 elif model_type == "signal":
   amp_rep = 1

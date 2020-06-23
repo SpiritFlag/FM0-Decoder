@@ -10,7 +10,20 @@ def reshape_answer_set(answer_set):
   try:
     new_answer_set = []
 
-    if model_type == "signal":
+    if model_type == "bit":
+      for answer in answer_set:
+        if answer == 0:
+          new_answer_set.append([1, 0, 0, 0])
+        elif answer == 1:
+          new_answer_set.append([0, 1, 0, 0])
+        elif answer == 2:
+          new_answer_set.append([0, 0, 1, 0])
+        elif answer == 3:
+          new_answer_set.append([0, 0, 0, 1])
+        else:
+          new_answer_set.append([0, 0, 0, 0])
+
+    elif model_type == "signal":
       for answer_line in answer_set:
         new_answer = []
 
@@ -42,20 +55,6 @@ def reshape_answer_set(answer_set):
               new_answer += [0] * amp_rep
 
         new_answer_set.append(new_answer)
-    '''
-    for idx in range(len(answer_set)):
-      if model_type == "bit_unit":
-        if answer_set[idx] == 0:
-          new_answer_set.append([1, 0, 0, 0])
-        elif answer_set[idx] == 1:
-          new_answer_set.append([0, 1, 0, 0])
-        elif answer_set[idx] == 2:
-          new_answer_set.append([0, 0, 1, 0])
-        elif answer_set[idx] == 3:
-          new_answer_set.append([0, 0, 0, 1])
-        else:
-          raise ValueError("The value answer_set[" + str(idx) + "]= " + str(answer_set[idx]) + " must be within 0 to 3!")
-    '''
 
     return new_answer_set
 

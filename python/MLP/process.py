@@ -15,10 +15,6 @@ def process(model, file_name, test_set, answer_set):
 
     inference_time = timeit.default_timer()
     predict_set = model.test_model(np.array(test_set))
-    file22 = open(log_path + "tmplog", "w")
-    for predict in predict_set:
-      file22.write(" ".join([str(i) for i in predict]) + "\n")
-    file22.close()
     #answer_set = reshape_answer_set(answer_set)
     inference_time = timeit.default_timer() - inference_time
 

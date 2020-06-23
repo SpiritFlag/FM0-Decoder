@@ -5,9 +5,7 @@ for a in ["100", "200", "300", "400"]:
             file_name_list_all.append(a + "_" + b + "_" + c)
 
 #file_name_list = ["100_0_0"]
-#file_name_list = ["100_0_0", "100_0_45", "100_0_90", "100_0_135"]
-#file_name_list = ["100_0_90"]
-file_name_list = ["400_l100_45"]
+file_name_list = ["100_0_0", "100_0_45", "100_0_90", "100_0_135"]
 #file_name_list = file_name_list_all
 RN_index = 0
 
