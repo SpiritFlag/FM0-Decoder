@@ -22,18 +22,18 @@ def process(file_name, set_name):
       file_list = [file0, file1, file2, file3]
 
     for idx in tqdm(range(len(signal)), desc="PROCESSING", ncols=100, unit=" signal"):
-      decoded_bit, decoded_index = decode_data(signal[idx], databit[idx])
-
       if set_name == "_test":
+        decoded_bit, decoded_index = decode_data(signal[idx], databit[idx], end=n_bit_data)
         for n in range(n_bit_data):
           if len(decoded_bit[n]) == 0:
-            file.write("-1 ")
+            file.write(" ".join(["-1" for i in range(int(2*n_bit*(n_bit_data-n)))]) + " ")
             break
           else:
             file.write(" ".join([str(i) for i in decoded_bit[n]]) + " ")
         file.write("\n")
       else:
-        for n in range(n_bit_data):
+        decoded_bit, decoded_index = decode_data(signal[idx], databit[idx], end=n_extract_bit)
+        for n in range(n_extract_bit):
           if len(decoded_bit[n]) == 0:
             break
           else:

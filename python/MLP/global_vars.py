@@ -1,7 +1,8 @@
 #signal_path = "data/C_signal/"
 #signal_path = "data/C_signal_std/"
 #signal_path = "data/C_signal_std_cliffing/"
-signal_path = "data/D_signal_std_bit_RN0/"
+#signal_path = "data/D_signal_std_bit_RN0/"
+signal_path = "data/D_signal_std_bit_16_RN0/"
 
 
 model_type = "bit"

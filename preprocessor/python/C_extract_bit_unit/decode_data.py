@@ -26,7 +26,7 @@ mask1H += [-1.0] * n_half_bit
 
 
 
-def decode_data(signal, databit):
+def decode_data(signal, databit, end=n_bit_data):
   try:
     pre_start = detect_preamble(signal)
     state = -1
@@ -34,7 +34,7 @@ def decode_data(signal, databit):
     decoded_bit = []
     decoded_index = []
 
-    for bit in range(n_bit_data):
+    for bit in range(end):
       cur_start = int(pre_start + n_bit*bit) + tot_shift
       if cur_start + 1.5*n_bit + n_shift >= len(signal):
         decoded_bit.append([])

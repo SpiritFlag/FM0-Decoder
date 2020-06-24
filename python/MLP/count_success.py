@@ -14,9 +14,41 @@ def count_success(predict_set, answer_set, countBit=False):
     n_error_list = []
 
     if model_type == "bit":
-      for idx in tqdm(range(len(answer_set)), desc="TESTING", ncols=100, unit=" signal"):
-        if predict_set[idx].argmax() == answer_set[idx].argmax():
-          success += 1
+      if countBit is False:
+        for idx in tqdm(range(len(answer_set)), desc="TESTING", ncols=100, unit=" signal"):
+          if predict_set[idx].argmax() == answer_set[idx].argmax():
+            success += 1
+      else:
+        for idx in tqdm(range(len(answer_set)), desc="TESTING", ncols=100, unit=" signal"):
+          cur_fail = False
+          error_idx = -1
+          n_error = 0
+
+          for bit in range(n_bit_data):
+            predict = predict_set[idx][bit].argmax()
+            answer = answer_set[idx][bit]
+
+            if predict == 0 or predict == 1:
+              predict_bit = 0
+            elif predict == 2 or predict == 3:
+              predict_bit = 1
+
+            if predict_bit != answer:
+              if countBit is True:
+                if cur_fail is False:
+                  error_idx = bit
+                  cur_fail = True
+                n_error += 1
+                continue
+              else:
+                cur_fail = True
+                break
+
+          if cur_fail is False:
+            success += 1
+          if countBit is True:
+            error_idx_list.append(error_idx)
+            n_error_list.append(n_error)
 
     elif model_type == "signal":
       threshold = 0.5

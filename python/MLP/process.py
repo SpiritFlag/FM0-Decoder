@@ -3,8 +3,8 @@ import timeit
 import numpy as np
 
 from global_vars import *
+from MLP.global_vars import *
 from MLP.MLP import MLP
-from MLP.reshape_answer_set import reshape_answer_set
 from MLP.count_success import count_success
 
 
@@ -15,7 +15,6 @@ def process(model, file_name, test_set, answer_set):
 
     inference_time = timeit.default_timer()
     predict_set = model.test_model(np.array(test_set))
-    #answer_set = reshape_answer_set(answer_set)
     inference_time = timeit.default_timer() - inference_time
 
     test_time = timeit.default_timer()

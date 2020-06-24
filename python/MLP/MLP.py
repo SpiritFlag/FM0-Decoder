@@ -1,8 +1,9 @@
 import sys
 import os
+import numpy as np
 import tensorflow as tf
 
-#from tensorflow.keras import backend as K
+from tqdm import tqdm
 from global_vars import *
 from MLP.global_vars import *
 from MLP.EarlyStoppingWithDecodingRate import EarlyStoppingWithDecodingRate
@@ -128,7 +129,20 @@ class MLP(tf.keras.Model):
 
   def test_model(self, input):
     try:
-      return self.model.predict(input)
+      if model_type == "bit":
+        output = []
+
+        for idx in tqdm(range(len(input)), desc="PREDICTING", ncols=100, unit=" signal"):
+          test = []
+          for x in range(n_bit_data):
+            test.append(input[idx][int(100*x):int(100*(x+1))])
+          result = self.model.predict(np.array(test))
+          output.append(result)
+
+        return output
+
+      else:
+        return self.model.predict(input)
 
     except Exception as ex:
       _, _, tb = sys.exc_info()
