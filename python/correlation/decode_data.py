@@ -73,12 +73,24 @@ def decode_data(signal):
           max_idx1 = shift
 
       if max_score0 > max_score1:
-        decoded_bit.append(0)
+        #decoded_bit.append(0)
+        if state == -1:
+          decoded_bit.append(0)
+          decoded_bit.append(1)
+        else:
+          decoded_bit.append(1)
+          decoded_bit.append(0)
         bit_index.append(cur_start + max_idx0)
         bit_score.append(max_score0)
         tot_shift += max_idx0
       else:
-        decoded_bit.append(1)
+        #decoded_bit.append(1)
+        if state == -1:
+          decoded_bit.append(0)
+          decoded_bit.append(0)
+        else:
+          decoded_bit.append(1)
+          decoded_bit.append(1)
         bit_index.append(cur_start + max_idx1)
         bit_score.append(max_score1)
         tot_shift += max_idx1

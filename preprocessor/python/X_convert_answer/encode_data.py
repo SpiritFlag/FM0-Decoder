@@ -1,74 +1,74 @@
 import sys
-
-from global_vars import *
-from X_make_signal_answer.global_vars import *
+import numpy as np
 
 
 
-def encode_data(file, databit):
+def encode_data(answer, encoding_unit, encoding_type):
   try:
+    result = []
+
     if encoding_type == "onehot":
       level = -1
 
-      for bit in databit:
+      for bit in answer:
         if encoding_unit == "bit":
           # L(10) H(01)
           if bit == 1:
             if level == 1:
               # State 1: HH
-              file.write("0101")
+              result.extend([0, 1, 0, 1])
             else:
               # State 4: LL
-              file.write("1010")
+              result.extend([1, 0, 1, 0])
             level *= -1
           else:
             if level == 1:
               # State 2: HL
-              file.write("0110")
+              result.extend([0, 1, 1, 0])
             else:
               # State 3: LH
-              file.write("1001")
+              result.extend([1, 0, 0, 1])
 
         elif encoding_unit == "signal":
           if bit == 1:
             if level == 1:
               # State 1: HH
-              file.write("1000")
+              result.extend([1, 0, 0, 0])
             else:
               # State 4: LL
-              file.write("0001")
+              result.extend([0, 0, 0, 1])
             level *= -1
           else:
             if level == 1:
               # State 2: HL
-              file.write("0100")
+              result.extend([0, 1, 0, 0])
             else:
               # State 3: LH
-              file.write("0010")
+              result.extend([0, 0, 1, 0])
 
     elif encoding_type == "regression":
       level = -1
 
-      for bit in databit:
+      for bit in answer:
         # L(0) H(1)
         if bit == 1:
           if level == 1:
             # State 1: HH
-            file.write("11")
+            result.extend([1, 1])
           else:
             # State 4: LL
-            file.write("00")
+            result.extend([0, 0])
           level *= -1
         else:
           if level == 1:
             # State 2: HL
-            file.write("10")
+            result.extend([1, 0])
           else:
             # State 3: LH
-            file.write("01")
+            result.extend([0, 1])
 
-    file.write("\n")
+    return np.array(result)
 
   except Exception as ex:
     _, _, tb = sys.exc_info()
-    print("[X_make_signal_answer:encode_data:" + str(tb.tb_lineno) + "] " + str(ex) + "\n\n")
+    print("[X_convert_answer:encode_data:" + str(tb.tb_lineno) + "] " + str(ex) + "\n\n")

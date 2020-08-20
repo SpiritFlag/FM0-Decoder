@@ -28,7 +28,7 @@ def MLP_test(path):
       path = model_path + model_name
     mlp.restore_model(path)
 
-    if common_test(model=mlp, test_path=signal_path, answer_path=answer_path, answer_type=answer_type, model_type=model_type, fnc=main_fnc):
+    if common_test(model=mlp, test_path=signal_path, answer_path=answer_path, answer_type=answer_type, fnc=main_fnc):
       return False, True    # normal
     else:
       return False, False   # aborted

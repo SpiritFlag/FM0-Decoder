@@ -1,12 +1,12 @@
 #signal_path = "data/C_signal/"
 #signal_path = "data/C_signal_std/"
-signal_path = "data/C_signal_std_cliffing/"
+signal_path = "data/exp01_B_signal_std_cliffing/"
 #signal_path = "data/D_signal_std_bit_RN0/"
 #signal_path = "data/D_signal_std_bit_49.24_RN0/"
 #signal_path = "data/E_augment_static_5_center/"
 #signal_path = "data/E_augment_random_4/"
 #signal_path = "data/E_augment_random_49.1_double/"
-answer_path = "data/X_signal_answer/"
+answer_path = "data/exp01_X_answer/"
 #answer_path = "data/X_signal_answer_double/"
 
 #signal_path = "data/J1_B_signal_std_cliffing/"
@@ -21,32 +21,32 @@ model_postpix = "_" + model_type
 
 
 
-#answer_type = "_pre_bit_onehot"
-#answer_type = "_nopre_bit_onehot"
-answer_type = "_pre_signal_onehot"
-#answer_type = "_nopre_signal_onehot"
-#answer_type = "_pre_bit_regression"
-#answer_type = "_nopre_bit_regression"
+#answer_type = "pre_bit_onehot"
+#answer_type = "nopre_bit_onehot"
+answer_type = "pre_signal_onehot"
+#answer_type = "nopre_signal_onehot"
+#answer_type = "pre_bit_regression"
+#answer_type = "nopre_bit_regression"
 
 
 
-if answer_type == "_pre_bit_onehot" or answer_type == "_pre_signal_onehot" or answer_type == "_pre_bit_regression":
+if answer_type == "pre_bit_onehot" or answer_type == "pre_signal_onehot" or answer_type == "pre_bit_regression":
   ispreamble = True
-if answer_type == "_nopre_bit_onehot" or answer_type == "_nopre_signal_onehot" or answer_type == "_nopre_bit_regression":
+if answer_type == "nopre_bit_onehot" or answer_type == "nopre_signal_onehot" or answer_type == "nopre_bit_regression":
   ispreamble = False
 
-if answer_type == "_pre_bit_onehot" or answer_type == "_nopre_bit_onehot"\
-  or answer_type == "_pre_bit_regression" or answer_type == "_nopre_bit_regression":
+if answer_type == "pre_bit_onehot" or answer_type == "nopre_bit_onehot"\
+  or answer_type == "pre_bit_regression" or answer_type == "nopre_bit_regression":
   encoding_unit = "bit"
   size_slice = 2
-if answer_type == "_pre_signal_onehot" or answer_type == "_nopre_signal_onehot":
+if answer_type == "pre_signal_onehot" or answer_type == "nopre_signal_onehot":
   encoding_unit = "signal"
   size_slice = 4
 
-if answer_type == "_nopre_bit_onehot" or answer_type == "_pre_bit_onehot"\
-  or answer_type == "_nopre_signal_onehot" or answer_type == "_pre_signal_onehot":
+if answer_type == "nopre_bit_onehot" or answer_type == "pre_bit_onehot"\
+  or answer_type == "nopre_signal_onehot" or answer_type == "pre_signal_onehot":
   encoding_type = "onehot"
-if answer_type == "_pre_bit_regression" or answer_type == "_nopre_bit_regression":
+if answer_type == "pre_bit_regression" or answer_type == "nopre_bit_regression":
   encoding_type = "regression"
 
 

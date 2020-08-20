@@ -81,8 +81,8 @@ class MLP(tf.keras.Model):
 
   def build_model_signal(self, size_hidden_layer):
     try:
-      size_input_layer = 6850
-      #size_input_layer = 7300
+      #size_input_layer = 6850
+      size_input_layer = 7300
 
       self.input_layer = tf.keras.layers.Input(shape=(size_input_layer,), name="input")
       self.hidden_layer = []

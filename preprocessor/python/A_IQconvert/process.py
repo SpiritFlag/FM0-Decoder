@@ -11,42 +11,49 @@ from A_IQconvert.kalman_filter import kalman_filter
 
 def process(file_name):
   try:
-    Isignal, Qsignal = read_signal(file_name)
+    Isignal, Qsignal, answer = read_signal(file_name)
 
-    file = open(output_path + file_name + "_signal", "w")
-    file_s = open(output_path_std + file_name + "_signal", "w")
-    file_c = open(output_path_std_cliffing + file_name + "_signal", "w")
+    npy_signal = []
+    npy_signal_std = []
+    npy_signal_std_cliffing = []
+
 
     for idx in tqdm(range(n_signal), desc="PROCESSING", ncols=100, unit=" signal"):
+      signal = []
       Icenter, Qcenter = kalman_filter(Isignal[idx], Qsignal[idx])
-      convert = []
+
       for n in range(n_sample):
-        convert.append(np.sqrt((Isignal[idx][n] - Icenter) ** 2 + (Qsignal[idx][n] - Qcenter) ** 2))
-      file.write(" ".join([str(i) for i in convert]))
-      file.write("\n")
+        signal.append(np.sqrt((Isignal[idx][n] - Icenter) ** 2 + (Qsignal[idx][n] - Qcenter) ** 2))
 
-      convert = np.array(convert)
-      avg = np.mean(convert)
-      std = np.std(convert)
+      signal = np.array(signal)
+      npy_signal.append(signal)
 
-      for sample in convert:
-        result = (sample - avg) / std
-        file_s.write(str(result) + " ")
-        
-        if result > 1:
-          file_c.write("1 ")
-        elif result < -1:
-          file_c.write("-1 ")
+
+      signal_std = []
+      signal_std_cliffing = []
+      avg = np.mean(signal)
+      std = np.std(signal)
+
+      for sample in signal:
+        sample_std = (sample - avg) / std
+        signal_std.append(sample_std)
+
+        if sample_std > 1:
+          signal_std_cliffing.append(1)
+        elif sample_std < -1:
+          signal_std_cliffing.append(-1)
         else:
-          file_c.write(str(result) + " ")
+          signal_std_cliffing.append(sample_std)
 
-      file_s.write("\r\n")
-      file_c.write("\r\n")
+      npy_signal_std.append(signal_std)
+      npy_signal_std_cliffing.append(signal_std_cliffing)
 
-    file.close()
-    file_s.close()
-    file_c.close()
+    np.save(output_path + file_name + "_signal", npy_signal)
+    np.save(output_path2 + file_name + "_signal", npy_signal_std)
+    np.save(output_path3 + file_name + "_signal", npy_signal_std_cliffing)
+    np.save(answer_output_path + file_name + "_answer", answer)
+
 
   except Exception as ex:
     _, _, tb = sys.exc_info()
-    print("[A_IQconvert:process:" + str(tb.tb_lineno) + "] " + str(ex) + "\n\n")
+    print("[IQconvert:process:" + str(tb.tb_lineno) + "] " + str(ex) + "\n\n")

@@ -1,7 +1,6 @@
 import sys
 
 from global_vars import *
-from A_IQconvert.global_vars import *
 
 
 
@@ -21,7 +20,7 @@ def kalman_filter_process(signal):
 
   except Exception as ex:
     _, _, tb = sys.exc_info()
-    print("[A_IQconvert:kalman_filter_process:" + str(tb.tb_lineno) + "] " + str(ex) + "\n\n")
+    print("[IQconvert:kalman_filter_process:" + str(tb.tb_lineno) + "] " + str(ex) + "\n\n")
 
 
 
@@ -34,4 +33,4 @@ def kalman_filter(Isignal, Qsignal):
 
   except Exception as ex:
     _, _, tb = sys.exc_info()
-    print("[A_IQconvert:kalman_filter:" + str(tb.tb_lineno) + "] " + str(ex) + "\n\n")
+    print("[IQconvert:kalman_filter:" + str(tb.tb_lineno) + "] " + str(ex) + "\n\n")

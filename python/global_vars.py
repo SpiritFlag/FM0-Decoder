@@ -6,10 +6,10 @@ for a in ["100", "200"]:
         for c in ["0", "45", "90", "135"]:
             file_name_list_all.append(a + "_" + b + "_" + c)
 
-#file_name_list = ["100_0_0"]
+file_name_list = ["100_0_0"]
 #file_name_list = ["100_0_0", "100_0_45", "100_0_90", "100_0_135"]
-file_name_list = file_name_list_all
-RN_index = 0
+#file_name_list = file_name_list_all
+#RN_index = 0
 
 #file_name_list = ["045", "046", "047", "107", "108", "109", "143"]
 #file_name_list = ["050", "060", "070", "080", "090", "100", "110", "120", "130", "140", "150", "160", "170", "190", "200"]
@@ -47,7 +47,7 @@ log_full_path = log_path + execute_time
 
 
 
-n_sample = 6850
+n_sample = 7300
 n_cw = 50
 n_bit = 50
 n_half_bit = int(n_bit / 2)
