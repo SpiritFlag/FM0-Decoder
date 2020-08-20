@@ -1,14 +1,14 @@
 file_name_list_all = []
-#for a in ["100", "200", "300", "400"]:
+for a in ["100", "200", "300", "400"]:
 #for a in ["100"]:
-for a in ["100", "200"]:
+#for a in ["100", "200"]:
     for b in ["0", "l100", "r100"]:
         for c in ["0", "45", "90", "135"]:
             file_name_list_all.append(a + "_" + b + "_" + c)
 
-file_name_list = ["100_0_0"]
+#file_name_list = ["100_0_0"]
 #file_name_list = ["100_0_0", "100_0_45", "100_0_90", "100_0_135"]
-#file_name_list = file_name_list_all
+file_name_list = file_name_list_all
 #RN_index = 0
 
 #file_name_list = ["045", "046", "047", "107", "108", "109", "143"]
@@ -23,8 +23,8 @@ cuda_device_id = "0"
 
 
 # for augement training only
-augment_training = False
-#augment_training = True
+#augment_training = False
+augment_training = True
 #augment_list = [48, 49, 50, 51, 52]
 augment_list = [48.1, 49.1, 50.1, 51.1]
 #augment_list = [48.1, 49.1]

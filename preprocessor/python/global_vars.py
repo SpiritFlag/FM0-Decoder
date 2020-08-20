@@ -14,8 +14,8 @@ if exp_num == 1:
           for c in ["0", "45", "90", "135"]:
               file_name_list_all.append(a + "_" + b + "_" + c)
 
-  file_name_list = ["100_0_0"]
-  #file_name_list = file_name_list_all
+  #file_name_list = ["100_0_0"]
+  file_name_list = file_name_list_all
 
   n_signal = 3000
 

@@ -1,6 +1,7 @@
 #signal_path = "data/C_signal/"
 #signal_path = "data/C_signal_std/"
 signal_path = "data/exp01_B_signal_std_cliffing/"
+signal_path = "data/exp01_C_augment_random_x4/"
 #signal_path = "data/D_signal_std_bit_RN0/"
 #signal_path = "data/D_signal_std_bit_49.24_RN0/"
 #signal_path = "data/E_augment_static_5_center/"
