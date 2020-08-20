@@ -8,7 +8,7 @@ from correlation.decode_data import decode_data
 
 def process(file_name, test_set, answer_set):
   try:
-    file = open(log_path + "detail/" + file_name, "w")
+    file = open(log_full_path + "_detail/" + file_name, "w")
     success = 0
 
     for idx in tqdm(range(len(answer_set)), desc="TESTING", ncols=100, unit=" signal"):

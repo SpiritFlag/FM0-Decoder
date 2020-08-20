@@ -51,77 +51,43 @@ def count_success(predict_set, answer_set, countBit=False):
             n_error_list.append(n_error)
 
     elif model_type == "signal":
-      threshold = 0.5
-
-      for idx in tqdm(range(len(answer_set)), desc="TESTING", ncols=100, unit=" signal"):
+      for idx in tqdm(range(len(predict_set)), desc="TESTING", ncols=100, unit=" signal"):
         cur_fail = False
         error_idx = -1
         n_error = 0
 
-        # reshape predcit set
-        predict = []
-        if test_type == 1 or test_type == 2:
-          for bit in range(int(2*(n_bit_preamble + n_bit_data))):
-            predict.append(predict_set[idx][int(amp_rep*bit)])
-        elif test_type == 3:
-          for bit in range(int(2*(n_bit_preamble + n_bit_data))):
-            predict.append(np.mean(predict_set[idx][int(amp_rep*bit):int(amp_rep*(bit+1))]))
+        if ispreamble is True:
+          n_range = n_bit_preamble + n_bit_data
+        else:
+          n_range = n_bit_data
 
-        # mask set
-        if test_type == 2 or test_type == 3:
-          mask0L = [1, 0, 1, 0]
-          mask0H = [0, 1, 0, 1]
-          mask1L = [1, 0, 0, 1]
-          mask1H = [0, 1, 1, 0]
-          level = -1
-          predict.append(0.5)
+        if encoding_unit == "bit":
+          n_range *= 2
 
         # decoding
-        for bit in range(n_bit_data):
-          answer = answer_set[idx][bit]
-
-          if test_type == 1:
-            level1 = predict[int(2 * (bit + n_bit_preamble))] - threshold
-            level2 = predict[int(2 * (bit + n_bit_preamble) + 1)] - threshold
-
-            if not((level1 * level2 < 0 and answer == 0) or (level1 * level2 > 0 and answer == 1)):
-              if countBit is True:
-                if cur_fail is False:
-                  error_idx = bit
-                  cur_fail = True
-                n_error += 1
-                continue
-              else:
-                cur_fail = True
-                break
-
-          elif test_type == 2 or test_type == 3:
-            if level == -1:
-              mask0 = mask0L
-              mask1 = mask1L
+        for bit in range(n_range):
+          if encoding_type == "onehot":
+            predict = np.array(predict_set[idx][int(size_slice*bit):int(size_slice*(bit+1))]).argmax()
+            answer = np.array(answer_set[idx][int(size_slice*bit):int(size_slice*(bit+1))]).argmax()
+          elif encoding_type == "regression":
+            threshold = 0.5
+            predict = predict_set[idx][bit]
+            if predict < threshold:
+              predict = 0
             else:
-              mask0 = mask0H
-              mask1 = mask1H
+              predict = 1
+            answer = answer_set[idx][bit]
 
-            score0 = 0
-            score1 = 0
-            for x in range(4):
-              score0 += mask0[x] * predict[2 * (bit + n_bit_preamble) - 1 + x]
-              score1 += mask1[x] * predict[2 * (bit + n_bit_preamble) - 1 + x]
-
-            if score1 >= score0:
-              level *= -1
-
-            if not ((score0 > score1 and answer == 0) or (score0 < score1 and answer == 1)):
-              if countBit is True:
-                if cur_fail is False:
-                  error_idx = bit
-                  cur_fail = True
-                n_error += 1
-                continue
-              else:
+          if predict != answer:
+            if countBit is True:
+              if cur_fail is False:
+                error_idx = bit
                 cur_fail = True
-                break
+              n_error += 1
+              continue
+            else:
+              cur_fail = True
+              break
 
         if cur_fail is False:
           success += 1

@@ -3,8 +3,8 @@ import timeit
 import numpy as np
 
 from tqdm import tqdm
-from sklearn.svm import SVC
-from sklearn.externals import joblib
+#from sklearn.svm import SVC
+#from sklearn.externals import joblib
 from global_vars import *
 from SVM.global_vars import *
 from read_set import *

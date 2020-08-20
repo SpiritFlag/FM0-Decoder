@@ -11,7 +11,7 @@ from MLP.count_success import count_success
 
 def process(model, file_name, test_set, answer_set):
   try:
-    file = open(log_path + "detail/" + file_name, "w")
+    file = open(log_full_path + "_detail/" + file_name, "w")
 
     inference_time = timeit.default_timer()
     predict_set = model.test_model(np.array(test_set))

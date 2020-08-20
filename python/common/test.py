@@ -7,19 +7,9 @@ from read_set import *
 
 
 
-def common_test(model=None, test_path="", fnc=None):
+def common_test(model=None, test_path="", answer_path="", answer_type="", model_type="", fnc=None):
   try:
-    if os.path.exists(log_path + "detail/"):
-      select = input("The detailed log path is already exist. Press 'Y' if you want to rewrite. ")
-      if select != 'Y':
-        print("Execution aborted..")
-        return False
-      else:
-        log_files = os.listdir(log_path + "detail/")
-        for log in log_files:
-          os.remove(log_path + "detail/" + log)
-    else:
-      os.mkdir(log_path + "detail/")
+    os.mkdir(log_full_path + "_detail/")
 
     tot_time = timeit.default_timer()
     log = open(log_full_path, "w")
@@ -30,8 +20,9 @@ def common_test(model=None, test_path="", fnc=None):
       try:
         print("\n\n\t*** " + file_name + " ***")
         log.write(file_name + "\t")
-        test_set = read_test_set(test_path, file_name)
-        answer_set = read_answer_set(test_path, file_name)
+        test_set, answer_set = read_train_set(test_path, answer_path, answer_type, "_test", model_type, [file_name])
+        #test_set = read_test_set(test_path, answer_type, file_name)
+        #answer_set = read_answer_set(answer_path, answer_type, file_name)
 
         time = timeit.default_timer()
         if model is None:

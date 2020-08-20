@@ -21,7 +21,7 @@ def main_fnc(file_name, test_set, answer_set):
 
 def correlation_test(path):
   try:
-    if common_test(test_path=test_path, fnc=main_fnc):
+    if common_test(test_path=test_path, answer_path=answer_path, answer_type="whole", fnc=main_fnc):
       return False, True    # normal
     else:
       return False, False   # aborted

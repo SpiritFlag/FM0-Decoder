@@ -2,8 +2,8 @@ import sys
 import os
 #import pickle
 
-from sklearn import svm
-from sklearn.externals import joblib
+#from sklearn import svm
+#from sklearn.externals import joblib
 from global_vars import *
 from common.test import common_test
 

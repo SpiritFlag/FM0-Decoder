@@ -36,7 +36,8 @@ def decode_data(signal):
     bit_score = []
 
     for bit in range(n_bit_data):
-      cur_start = int(pre_start + n_bit*bit) + tot_shift
+      cur_start = int(pre_start + constant_bit_len*bit) + tot_shift
+
       if cur_start + 1.5*n_bit + n_shift >= len(signal):
         decoded_bit.append(-1)
         bit_index.append(-1)
