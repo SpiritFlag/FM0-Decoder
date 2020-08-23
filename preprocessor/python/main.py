@@ -3,6 +3,7 @@ import sys
 from A_IQconvert.main import main as IQconvert
 from A_split_set.main import main as split_set
 from B_augment_sample.main import main as augment_sample
+from B_extract_bit.main import main as extract_bit
 from X_convert_answer.main import main as convert_answer
 
 
@@ -13,7 +14,8 @@ if __name__ == "__main__":
     print("1. IQconvert")
     print("2. split set")
     print("3. augment sample")
-    print("4. convert answer")
+    print("4. extract bit")
+    print("5. convert answer")
     menu = int(input("\nSelect > "))
 
     if menu == 1:
@@ -23,6 +25,8 @@ if __name__ == "__main__":
     elif menu == 3:
       augment_sample()
     elif menu == 4:
+      extract_bit()
+    elif menu == 5:
       convert_answer()
     else:
       raise ValueError("Invalid menu number!")

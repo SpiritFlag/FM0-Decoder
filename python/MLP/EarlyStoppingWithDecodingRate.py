@@ -76,7 +76,7 @@ class EarlyStoppingWithDecodingRate(tf.keras.callbacks.Callback):
       print("\t\tVALIDATION SUCCESS= " + str(success) + " / " + str(len(val_ans)) + "\t(" + str(round(100 * success / len(val_ans), 2)) + "%)")
 
       if serach_hyperparameter is True:
-        self.fileH.write(str(epoch + 1) + "\t" + str(success_t) + "\t" + str(success) + "\n")
+        self.fileH.write(str(epoch + 1) + "\t" + str(success) + "\n")
 
       if success != 0:
         if success > self.best_success:
@@ -126,8 +126,8 @@ class EarlyStoppingWithDecodingRate(tf.keras.callbacks.Callback):
       self.fileS.close()
 
       if serach_hyperparameter is True:
-        self.fileH.write(str(self.best_epoch) + "\t" + str(self.best_success_t) + "\t" + str(self.best_success) + "\n")
-        self.fileH.write("\t" + str(len(self.train_data[1])) + "\t" + str(len(self.validation_data[1])) + "\n\n")
+        self.fileH.write(str(self.best_epoch) + "\t" + str(self.best_success) + "\n")
+        self.fileH.write("\t" + str(len(self.validation_data[1])) + "\n\n")
         self.fileH.close()
 
     except Exception as ex:

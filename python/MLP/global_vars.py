@@ -67,14 +67,14 @@ if model_type == "bit":
 
 elif model_type == "signal":
   size_hidden_layer = []
-  for a in [5120, 4096, 3072, 2048, 1024]:
-    for b in range(1):
+  for a in [6144, 5120, 4096, 3072, 2048, 1024]:
+    for b in range(2):
       size_hidden_layer.append(a)
 
   is_batch_normalization = True
 
-  learning_rate = 0.0001
-  batch_size = 32
+  learning_rate = 1e-4
+  batch_size = 1024
   patience = 5
   learning_epoch = 1000
 
@@ -95,9 +95,3 @@ elif model_type == "signal":
 
     output_activation_function = "relu"
     loss_function = "mse"
-
-
-
-lr_low = 1e-4
-lr_high = 1e-3
-lr_size = 30

@@ -10,8 +10,7 @@ from SVM.train import SVM_train
 from SVM.test import SVM_test
 from MLP.train import MLP_train
 from MLP.test import MLP_test
-from MLP.hyper import MLP_hyper
-from MLP.output import MLP_output
+from MLP.train_learning_rate import MLP_train_lr
 
 
 
@@ -44,17 +43,14 @@ if __name__ == "__main__":
     elif menu == 3: # 3. MLP
       print("1. train")
       print("2. test")
-      print("3. search hyperparameter")
-      print("4. save_output")
+      print("3. train learning rate")
       menu = int(input("\nSelect > "))
       if menu == 1:
         menu = MLP_train
       elif menu == 2:
         menu = MLP_test
       elif menu == 3:
-        menu = MLP_hyper
-      elif menu == 4:
-        menu = MLP_output
+        menu = MLP_train_lr
       else:
         raise ValueError("Invalid menu number!")
 

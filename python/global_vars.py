@@ -31,8 +31,8 @@ augment_list = [48.1, 49.1, 50.1, 51.1]
 #augment_list = [49.1]
 
 # for search hyperparameter only
-serach_hyperparameter = False
-#serach_hyperparameter = True
+#serach_hyperparameter = False
+serach_hyperparameter = True
 #read_ratio = 0.1
 read_ratio = 1
 
