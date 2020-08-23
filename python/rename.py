@@ -17,4 +17,4 @@ def rename(model, log):
 
   except Exception as ex:
     _, _, tb = sys.exc_info()
-    print("[main:" + str(tb.tb_lineno) + "] " + str(ex) + "\n\n")
+    print("[rename:" + str(tb.tb_lineno) + "] " + str(ex) + "\n\n")

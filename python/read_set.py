@@ -26,7 +26,7 @@ def shuffle_set(signal, answer):
 
 
 
-def read_set(signal_path, answer_path, answer_type, postfix, file_name_list, is_shuffle=False):
+def read_set(signal_path, answer_path, answer_type, postfix, file_name_list, augment_list=[], is_shuffle=False):
   try:
     signal = []
     answer = []
@@ -35,7 +35,7 @@ def read_set(signal_path, answer_path, answer_type, postfix, file_name_list, is_
       file_name = file_name_list[x]
 
       try:
-        if augment_training is False:
+        if augment_training == []:
           signal.extend(np.load(signal_path + file_name + "_signal_" + postfix + ".npy"))
           answer.extend(np.load(answer_path + file_name + "_answer_" + answer_type + "_" + postfix + ".npy"))
         else:

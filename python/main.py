@@ -28,9 +28,9 @@ if __name__ == "__main__":
       raise ValueError("Invalid menu number!")
 
     print("\n\n\t*** Select Function ***")
-    if menu == 1: # 1. correlation
+    if menu == 1:
       menu = correlation_test
-    elif menu == 2: # 2. SVM
+    elif menu == 2:
       print("1. train")
       print("2. test")
       menu = int(input("\nSelect > "))
@@ -40,7 +40,7 @@ if __name__ == "__main__":
         menu = SVM_test
       else:
         raise ValueError("Invalid menu number!")
-    elif menu == 3: # 3. MLP
+    elif menu == 3:
       print("1. train")
       print("2. test")
       print("3. train learning rate")

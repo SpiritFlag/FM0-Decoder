@@ -1,40 +1,30 @@
-file_name_list_all = []
-for a in ["100", "200", "300", "400"]:
-#for a in ["100"]:
-#for a in ["100", "200"]:
-    for b in ["0", "l100", "r100"]:
-        for c in ["0", "45", "90", "135"]:
-            file_name_list_all.append(a + "_" + b + "_" + c)
+data_path = "data/"
+exp_num = 1
+if exp_num < 10:
+  data_path_prefix = data_path + "exp0" + str(exp_num) + "_"
+else:
+  data_path_prefix = data_path + "exp" + str(exp_num) + "_"
 
-#file_name_list = ["100_0_0"]
-#file_name_list = ["100_0_0", "100_0_45", "100_0_90", "100_0_135"]
-file_name_list = file_name_list_all
-#RN_index = 0
 
-#file_name_list = ["045", "046", "047", "107", "108", "109", "143"]
-#file_name_list = ["050", "060", "070", "080", "090", "100", "110", "120", "130", "140", "150", "160", "170", "190", "200"]
+
+if exp_num == 1:
+  file_name_list_all = []
+  for a in ["100", "200", "300", "400"]:
+  #for a in ["100", "200"]:
+      for b in ["0", "l100", "r100"]:
+          for c in ["0", "45", "90", "135"]:
+              file_name_list_all.append(a + "_" + b + "_" + c)
+
+  #file_name_list = ["100_0_0", "100_0_45", "100_0_90", "100_0_135"]
+  file_name_list = file_name_list_all
+
+  n_signal = 3000
 
 
 
 #cuda_device_id = "-1"
-cuda_device_id = "0"
-#cuda_device_id = "1"
-
-
-
-# for augement training only
-#augment_training = False
-augment_training = True
-#augment_list = [48, 49, 50, 51, 52]
-augment_list = [48.1, 49.1, 50.1, 51.1]
-#augment_list = [48.1, 49.1]
-#augment_list = [49.1]
-
-# for search hyperparameter only
-#serach_hyperparameter = False
-serach_hyperparameter = True
-#read_ratio = 0.1
-read_ratio = 1
+#cuda_device_id = "0"
+cuda_device_id = "1"
 
 
 

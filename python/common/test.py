@@ -3,11 +3,10 @@ import os
 import timeit
 
 from global_vars import *
-from read_set import read_set
 
 
 
-def common_test(model=None, test_path="", answer_path="", answer_type="", fnc=None):
+def common_test(model=None, fnc_read_set=None, fnc=None):
   try:
     os.mkdir(log_full_path + "_detail/")
 
@@ -20,7 +19,7 @@ def common_test(model=None, test_path="", answer_path="", answer_type="", fnc=No
       try:
         print("\n\n\t*** " + file_name + " ***")
         log.write(file_name + "\t")
-        test_set, answer_set = read_set(test_path, answer_path, answer_type, "test", [file_name])
+        test_set, answer_set = fnc_read_set([file_name], "test")
 
         time = timeit.default_timer()
         if model is None:

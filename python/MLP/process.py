@@ -14,7 +14,7 @@ def process(model, file_name, test_set, answer_set):
     file = open(log_full_path + "_detail/" + file_name, "w")
 
     inference_time = timeit.default_timer()
-    predict_set = model.test_model(np.array(test_set))
+    predict_set = model.test_model(test_set)
     inference_time = timeit.default_timer() - inference_time
 
     test_time = timeit.default_timer()

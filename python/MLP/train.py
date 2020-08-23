@@ -1,21 +1,28 @@
 import sys
+import os
 import timeit
 import numpy as np
 
 from tqdm import tqdm
 from global_vars import *
 from MLP.global_vars import *
-from read_set import read_set
 from MLP.MLP import MLP
+from MLP.read_set import read_set
 from MLP.test import MLP_test
 
 
 
 def MLP_train(path):
   try:
+    if os.path.isdir(signal_path) is False:
+      raise NameError("signal_path= " + signal_path + " does not exist!")
+
+    if os.path.isdir(answer_path) is False:
+      raise NameError("answer_path= " + answer_path + " does not exist!")
+
     mlp = MLP(size_hidden_layer, learning_rate)
-    train_set, answer_set = read_set(signal_path, answer_path, answer_type, "train", file_name_list, is_shuffle=True)
-    validation_train_set, validation_answer_set = read_set(signal_path, answer_path, answer_type, "validation", file_name_list)
+    train_set, answer_set = read_set(file_name_list, "train", is_shuffle=True)
+    validation_train_set, validation_answer_set = read_set(file_name_list, "validation")
 
     train_time = timeit.default_timer()
     hist = mlp.train_model(train_set, answer_set, validation_train_set, validation_answer_set)

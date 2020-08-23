@@ -25,16 +25,7 @@ def process(file_name):
         pre_start = detect_preamble(signal[idx])
         level = -1
 
-        if postfix == "test":
-          result = []
-
-          for x in range(n_bit_data):
-            signal_start = pre_start + int(x*n_bit_static) - n_half_bit
-            result.extend(signal[idx][signal_start:signal_start+int(2*n_bit)])
-
-          npy_signal1.append(np.array(result))
-
-        else:
+        if postfix == "train":
           for x in range(n_bit_data):
             signal_start = pre_start + int(x*n_bit_static) - n_half_bit
             sample = np.array(signal[idx][signal_start:signal_start+int(2*n_bit)])
@@ -52,13 +43,22 @@ def process(file_name):
                 npy_signal4.append(sample)
                 level *= -1
 
-      if postfix == "test":
-        np.save(output_path + file_name + "_bit_" + postfix, npy_signal1)
-      else:
+        else:
+          result = []
+
+          for x in range(n_bit_data):
+            signal_start = pre_start + int(x*n_bit_static) - n_half_bit
+            result.extend(signal[idx][signal_start:signal_start+int(2*n_bit)])
+
+          npy_signal1.append(np.array(result))
+
+      if postfix == "train":
         np.save(output_path + file_name + "_bit_" + postfix + "_1", npy_signal1)
         np.save(output_path + file_name + "_bit_" + postfix + "_2", npy_signal2)
         np.save(output_path + file_name + "_bit_" + postfix + "_3", npy_signal3)
         np.save(output_path + file_name + "_bit_" + postfix + "_4", npy_signal4)
+      else:
+        np.save(output_path + file_name + "_bit_" + postfix, npy_signal1)
 
   except Exception as ex:
     _, _, tb = sys.exc_info()
