@@ -7,7 +7,7 @@ else:
 
 
 
-if exp_num == 1:
+if exp_num == 0 or exp_num == 1:
   file_name_list_all = []
   for a in ["100", "200", "300", "400"]:
       for b in ["0", "l100", "r100"]:
@@ -18,6 +18,14 @@ if exp_num == 1:
   file_name_list = file_name_list_all
 
   n_signal = 3000
+
+if exp_num == 2:
+  file_name_list = ["010", "020", "030", "040", "050", "060", "070", "080", "090", "100"]
+  n_signal = 500
+
+if exp_num == 3:
+  file_name_list = ["045", "046", "047", "107", "108", "109", "143"]
+  n_signal = 500
 
 
 

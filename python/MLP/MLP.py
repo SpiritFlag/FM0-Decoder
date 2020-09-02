@@ -116,12 +116,15 @@ class MLP(tf.keras.Model):
       elif model_type == "bit":
         output = []
 
-        for idx in tqdm(range(len(input)), desc="PREDICTING", ncols=100, unit=" signal"):
-          test = []
+        test = []
+        for idx in range(len(input)):
           for x in range(n_bit_data):
             test.append(input[idx][int(2*n_bit*x):int(2*n_bit*(x+1))])
-          result = self.model.predict(np.array(test))
-          output.append(result)
+
+        result = self.model.predict(np.array(test))
+
+        for x in range(len(input)):
+          output.append(result[int(n_bit_data*x):int(n_bit_data*(x+1))])
 
         return output
 

@@ -23,7 +23,7 @@ def MLP_train_lr(path):
     validation_train_set, validation_answer_set = read_set(file_name_list, "validation")
 
     size_hidden_layer_list = []
-    for x in range(1, 2):
+    for x in range(1, 6):
       size_hidden_layer = []
       for a in [6144, 5120, 4096, 3072, 2048, 1024]:
         for b in range(x):
@@ -31,6 +31,7 @@ def MLP_train_lr(path):
       size_hidden_layer_list.append(size_hidden_layer)
 
     learning_rate = [1e-2, 1e-3, 1e-4, 1e-5, 1e-6]
+    #learning_rate = [1e-4]
 
     for hl in size_hidden_layer_list:
       for lr in learning_rate:

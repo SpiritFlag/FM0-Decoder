@@ -49,7 +49,7 @@ class EarlyStoppingWithDecodingRate(tf.keras.callbacks.Callback):
 
   def on_epoch_begin(self, epoch, logs=None):
     try:
-      print("")
+      print("\n\n")
 
     except Exception as ex:
       _, _, tb = sys.exc_info()
@@ -59,8 +59,11 @@ class EarlyStoppingWithDecodingRate(tf.keras.callbacks.Callback):
 
   def on_epoch_end(self, epoch, logs=None):
     try:
-      #val_res = self.model.predict(self.validation_data[0])
+      print("\n\tPREDICTING..", end="\t")
+      time = timeit.default_timer()
       val_res = self.test_fnc(self.validation_data[0])
+      print("EXECUTE TIME= " + str(round(timeit.default_timer() - time, 3)) + " (sec)")
+
       val_ans = self.validation_data[1]
       success = count_success(val_res, val_ans)
 
@@ -107,7 +110,7 @@ class EarlyStoppingWithDecodingRate(tf.keras.callbacks.Callback):
   def on_train_end(self, epoch, logs=None):
     try:
       print("\n\nEarly stopping and restoring model weights from the epoch " + str(self.best_epoch) + ".")
-      if serach_hyperparameter is False:
+      if train_learning_rate is False:
         self.model.set_weights(self.best_weights)
       print("\t\tVALIDATION SUCCESS= " + str(self.best_success) + " / " + str(len(self.validation_data[1])) +
         "\t(" + str(round(100 * self.best_success / len(self.validation_data[1]), 2)) + "%)\n")

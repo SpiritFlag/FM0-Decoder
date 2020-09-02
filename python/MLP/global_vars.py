@@ -1,14 +1,16 @@
 from global_vars import *
 
-#model_type = "signal"
-model_type = "bit"
+model_type = "signal"
+#model_type = "bit"
 
 if model_type == "signal":
   signal_path = data_path_prefix + "B_signal_std_cliffing/"
   #signal_path = data_path_prefix + "C_augment_random_x4/"
+  signal_path = data_path_prefix + "C_augment_random_x8/"
 
   augment_list = []
   #augment_list = [48.1, 49.1, 50.1, 51.1]
+  augment_list = [48.1, 48.6, 49.1, 49.6, 50.1, 50.6, 51.1, 51.6]
 
   #answer_type = "pre_bit_onehot"
   answer_type = "pre_signal_onehot"
@@ -18,7 +20,8 @@ if model_type == "signal":
   #answer_type = "nopre_bit_regression"
 
 elif model_type == "bit":
-  signal_path = data_path_prefix + "C_bit_49.25/"
+  #signal_path = data_path_prefix + "C_bit_49.25/"
+  signal_path = data_path_prefix + "C_bit_49.25_nocliffing/"
   answer_type = "nopre_bit_regression"
 
 answer_path = data_path_prefix + "X_answer/"

@@ -1,9 +1,11 @@
 import sys
+import os
 
 from global_vars import *
 from common.test import common_test
 from correlation.global_vars import *
-from correlation.process import *
+from correlation.read_set import read_set
+from correlation.process import process
 
 
 
@@ -21,7 +23,13 @@ def main_fnc(file_name, test_set, answer_set):
 
 def correlation_test(path):
   try:
-    if common_test(test_path=signal_path, answer_path=answer_path, answer_type=answer_type, fnc=main_fnc):
+    if os.path.isdir(signal_path) is False:
+      raise NameError("signal_path= " + signal_path + " does not exist!")
+
+    if os.path.isdir(answer_path) is False:
+      raise NameError("answer_path= " + answer_path + " does not exist!")
+
+    if common_test(fnc_read_set=read_set, fnc=main_fnc):
       return False, True    # normal
     else:
       return False, False   # aborted

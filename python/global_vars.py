@@ -1,3 +1,7 @@
+#cuda_device_id = "-1"
+cuda_device_id = "0"
+#cuda_device_id = "1"
+
 data_path = "data/"
 exp_num = 1
 if exp_num < 10:
@@ -5,9 +9,7 @@ if exp_num < 10:
 else:
   data_path_prefix = data_path + "exp" + str(exp_num) + "_"
 
-
-
-if exp_num == 1:
+if exp_num == 0 or exp_num == 1:
   file_name_list_all = []
   for a in ["100", "200", "300", "400"]:
   #for a in ["100", "200"]:
@@ -20,11 +22,13 @@ if exp_num == 1:
 
   n_signal = 3000
 
+if exp_num == 2:
+  file_name_list = ["010", "020", "030", "040", "050", "060", "070", "080", "090", "100"]
+  n_signal = 500
 
-
-#cuda_device_id = "-1"
-#cuda_device_id = "0"
-cuda_device_id = "1"
+if exp_num == 3:
+  file_name_list = ["045", "046", "047", "107", "108", "109", "143"]
+  n_signal = 500
 
 
 

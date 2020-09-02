@@ -11,7 +11,8 @@ from X_convert_answer.encode_data import encode_data
 
 def process(file_name):
   try:
-    postfix_list = ["train", "validation", "test"]
+    #postfix_list = ["train", "validation", "test"]
+    postfix_list = ["test"]
 
     for postfix in postfix_list:
       answer = np.load(answer_path + file_name + "_answer_" + postfix + ".npy")
