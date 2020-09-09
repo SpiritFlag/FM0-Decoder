@@ -18,19 +18,71 @@ def process(file_name):
         npy_signal = []
 
         for idx in tqdm(range(len(signal)), desc=postfix.upper()+" "+str(augment), ncols=100, unit=" signal"):
-          augment_coefficient = augment_standard / (augment + np.random.rand())
-          conv_len = int(n_sample / augment_coefficient) + 1
-          margin = n_sample - conv_len
-          if margin < 0:
-            conv_len = n_sample
-
           result = []
-          for x in range(conv_len):
-            result.append(signal[idx][int(x*augment_coefficient)])
+          augment_coefficient = augment_standard / (augment + np.random.rand())
 
-          end = result[-1]
-          for x in range(margin):
-            result.append(end)
+          if augment_coefficient < 1:     # size up
+            conv_window = int(1 / (1 - augment_coefficient))
+
+            if augment_mode == 2:
+              margin_signal = []
+              for x in range(augment_avg_window):
+                margin_signal.append(signal[idx][0])
+              margin_signal.extend(signal[idx])
+              for x in range(augment_avg_window):
+                margin_signal.append(signal[idx][-1])
+
+            elif augment_mode == 3:
+              margin_signal = []
+              margin_signal.append(signal[idx][0])
+              margin_signal.extend(signal[idx])
+              margin_signal.append(signal[idx][-1])
+
+            for x in range(int(n_sample / conv_window)):
+              if augment_mode == 1:
+                window = signal[idx][int(x*(conv_window-1)):int((x+1)*(conv_window-1))]
+                result.extend(window)
+                result.append(window[-1])
+
+              elif augment_mode == 2:
+                window = margin_signal[int(x*(conv_window-1)):int((x+1)*(conv_window-1)+2*augment_avg_window)]
+                target = int(np.random.rand()*(conv_window-1))
+                result.extend(window[augment_avg_window:augment_avg_window+target])
+                result.append(np.mean(window[target:target+int(2*augment_avg_window)+1]))
+                result.extend(window[augment_avg_window+target:-augment_avg_window])
+
+              elif augment_mode == 3:
+                window = margin_signal[int(x*(conv_window-1)):int((x+1)*(conv_window-1)+2)]
+                target = int(np.random.rand()*(conv_window-1))
+                result.extend(window[1:1+target])
+                result.append(np.mean(window[target:target+2]))
+                result.extend(window[1+target:-1])
+
+            size_rest = n_sample - len(result)
+            start = int(int(n_sample / conv_window) * (conv_window - 1))
+            result.extend(signal[idx][start:start+size_rest])
+
+          elif augment_coefficient >= 1:  # size down
+            conv_window = int(1 / (augment_coefficient - 1))
+
+            for x in range(int(n_sample / (conv_window+1))):
+              window = signal[idx][int(x*(conv_window+1)):int((x+1)*(conv_window+1))]
+
+              if augment_mode == 1:
+                result.extend(window[:-1])
+
+              elif augment_mode == 2 or augment_mode == 3:
+                target = int(np.random.rand()*(conv_window+1))
+                result.extend(window[:target])
+                result.extend(window[target+1:])
+
+            start = int(int(n_sample / (conv_window+1)) * (conv_window+1))
+            size_rest = n_sample - start
+            result.extend(signal[idx][start:start+size_rest])
+
+            size_margin = n_sample - len(result)
+            for x in range(size_margin):
+              result.append(signal[idx][-1])
 
           npy_signal.append(np.array(result))
 

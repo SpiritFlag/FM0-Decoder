@@ -8,7 +8,7 @@ from global_vars import *
 
 def common_process(file, fnc, isFile):
   try:
-    if os.path.exists(file):
+    if file != None and os.path.exists(file):
       select = input("FILE is already exist. Press 'Y' if you want to rewrite. ")
       if select != 'Y':
         print("Execution aborted..")

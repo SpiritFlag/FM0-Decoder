@@ -58,11 +58,15 @@ class MLP(tf.keras.Model):
 
       for idx in range(len(size_hidden_layer)):
         hidden_layer = tf.keras.layers.Dense(units=size_hidden_layer[idx], name="hidden"+str(idx+1))
+        if dropout_rate > 0:
+          dropout_layer = tf.keras.layers.Dropout(rate=dropout_rate, name="dropout"+str(idx+1))
         if is_batch_normalization is True:
           batch_layer = tf.keras.layers.BatchNormalization(name="batch"+str(idx+1))
         activation_layer = tf.keras.layers.Activation(tf.nn.relu, name="activation"+str(idx+1))
 
         layer = hidden_layer(layer)
+        if dropout_rate > 0:
+          layer = dropout_layer(layer)
         if is_batch_normalization is True:
           layer = batch_layer(layer)
         layer = activation_layer(layer)
