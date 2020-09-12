@@ -5,12 +5,12 @@ model_type = "signal"
 
 if model_type == "signal":
   signal_path = data_path_prefix + "B_signal_std_cliffing/"
-  signal_path = data_path_prefix + "C_augment_random_x4/"
+  signal_path = data_path_prefix + "C_augment_random_x8_t1/"
   #signal_path = data_path_prefix + "C_augment_random_x8/"
 
   augment_list = []
-  augment_list = [48.1, 49.1, 50.1, 51.1]
-  #augment_list = [48.1, 48.6, 49.1, 49.6, 50.1, 50.6, 51.1, 51.6]
+  #augment_list = [48.1, 49.1, 50.1, 51.1]
+  augment_list = [48.1, 48.6, 49.1, 49.6, 50.1, 50.6, 51.1, 51.6]
 
   #answer_type = "pre_bit_onehot"
   answer_type = "pre_signal_onehot"
@@ -56,8 +56,8 @@ dropout_rate = 0.2
 is_batch_normalization = False
 
 layer_depth = 3
-learning_rate = 1e-5
-batch_size = 4096
+learning_rate = 1e-4
+batch_size = 1024
 patience = 5
 learning_epoch = 1000
 

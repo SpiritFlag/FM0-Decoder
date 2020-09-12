@@ -19,7 +19,14 @@ def process(file_name):
 
         for idx in tqdm(range(len(signal)), desc=postfix.upper()+" "+str(augment), ncols=100, unit=" signal"):
           result = []
-          augment_coefficient = augment_standard / (augment + np.random.rand())
+          augment_coefficient = augment_standard / (augment + np.random.rand() * augment_width)
+
+          if append_t1 is True:
+            t1 = int(np.random.rand() * 50)
+            for x in range(t1):             # append random T1
+              result.append(signal[idx][0])
+          else:
+            t1 = 0
 
           if augment_coefficient < 1:     # size up
             conv_window = int(1 / (1 - augment_coefficient))
@@ -38,7 +45,12 @@ def process(file_name):
               margin_signal.extend(signal[idx])
               margin_signal.append(signal[idx][-1])
 
+            cur = 0
             for x in range(int(n_sample / conv_window)):
+              cur = x
+              if (t1 + (cur + 1) * conv_window) > n_sample:
+                break
+
               if augment_mode == 1:
                 window = signal[idx][int(x*(conv_window-1)):int((x+1)*(conv_window-1))]
                 result.extend(window)
@@ -59,13 +71,18 @@ def process(file_name):
                 result.extend(window[1+target:-1])
 
             size_rest = n_sample - len(result)
-            start = int(int(n_sample / conv_window) * (conv_window - 1))
+            start = int(cur * (conv_window - 1))
             result.extend(signal[idx][start:start+size_rest])
 
           elif augment_coefficient >= 1:  # size down
             conv_window = int(1 / (augment_coefficient - 1))
 
+            cur = 0
             for x in range(int(n_sample / (conv_window+1))):
+              cur = x
+              if (t1 + (cur + 1) * (conv_window+1)) > n_sample:
+                break
+
               window = signal[idx][int(x*(conv_window+1)):int((x+1)*(conv_window+1))]
 
               if augment_mode == 1:
@@ -76,8 +93,8 @@ def process(file_name):
                 result.extend(window[:target])
                 result.extend(window[target+1:])
 
-            start = int(int(n_sample / (conv_window+1)) * (conv_window+1))
-            size_rest = n_sample - start
+            start = int(cur * (conv_window + 1))
+            size_rest = np.min([n_sample - start, n_sample - len(result)])
             result.extend(signal[idx][start:start+size_rest])
 
             size_margin = n_sample - len(result)

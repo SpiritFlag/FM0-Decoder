@@ -1,6 +1,6 @@
 #cuda_device_id = "-1"
-#cuda_device_id = "0"
-cuda_device_id = "1"
+cuda_device_id = "0"
+#cuda_device_id = "1"
 
 data_path = "data/"
 exp_num = 1
@@ -17,6 +17,7 @@ if exp_num == 0 or exp_num == 1:
           for c in ["0", "45", "90", "135"]:
               file_name_list_all.append(a + "_" + b + "_" + c)
 
+  #file_name_list = ["100_0_0"]
   #file_name_list = ["100_0_0", "100_0_45", "100_0_90", "100_0_135"]
   file_name_list = file_name_list_all
 
