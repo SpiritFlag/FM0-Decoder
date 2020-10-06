@@ -14,10 +14,13 @@ def process(file_name):
     for postfix in postfix_list:
       signal = np.load(signal_path + file_name + "_signal_" + postfix + ".npy")
 
-      for augment in augment_list:
+      #for augment in augment_list:
+      for augment_idx in tqdm(range(len(augment_list)), desc=postfix.upper(), ncols=100, unit=" subset"):
+        augment = augment_list[augment_idx]
         npy_signal = []
 
-        for idx in tqdm(range(len(signal)), desc=postfix.upper()+" "+str(augment), ncols=100, unit=" signal"):
+        for idx in range(len(signal)):
+        #for idx in tqdm(range(len(signal)), desc=postfix.upper()+" "+str(augment), ncols=100, unit=" signal"):
           result = []
           augment_coefficient = augment_standard / (augment + np.random.rand() * augment_width)
 

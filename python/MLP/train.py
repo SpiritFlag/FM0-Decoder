@@ -34,6 +34,7 @@ def MLP_train(path):
 
     ret = MLP_test(model_full_path)
     return True, ret[1]
+    #return False, False
 
   except Exception as ex:
     _, _, tb = sys.exc_info()

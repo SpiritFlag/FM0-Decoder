@@ -8,9 +8,25 @@ answer_path = data_path_prefix + "X_answer/"
 #answer_path = data_path_prefix + "B_signalAll/"
 answer_type = "nopre_bit_regression"
 
-augment_list = []
-augment_list = [48.1, 49.1, 50.1, 51.1]
-#augment_list = [48.1, 48.6, 49.1, 49.6, 50.1, 50.6, 51.1, 51.6]
+augment_ratio = 4
+if augment_ratio > 1:
+  signal_path = data_path_prefix + "C_augment_random_x" + str(augment_ratio) + "/"
 
-n_shift = 0
-constant_bit_len = 49.19
+  n_subset = 9
+  if n_subset > 1:
+    augment_ratio = int(augment_ratio * n_subset)
+
+    signal_path = data_path_prefix + "C_augment_random_subset_" + str(n_subset)+ "_x" + str(augment_ratio) + "/"
+    answer_path = data_path_prefix + "X_answer_subset_" + str(n_subset) + "/"
+
+  augment_standard = 49.19
+  augment_start = 48.1
+  augment_end = 52.1
+  augment_width = (augment_end - augment_start) / augment_ratio
+
+  augment_list = []
+  for x in range(augment_ratio):
+    augment_list.append(augment_start + x * augment_width)
+
+n_shift = 2
+constant_bit_len = 50
