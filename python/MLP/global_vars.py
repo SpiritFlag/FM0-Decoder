@@ -7,16 +7,23 @@ if model_type == "signal":
   signal_path = data_path_prefix + "B_signal_std_cliffing/"
   answer_path = data_path_prefix + "X_answer/"
 
-  augment_ratio = 1
+  augment_ratio = 4
   if augment_ratio > 1:
     signal_path = data_path_prefix + "C_augment_random_x" + str(augment_ratio) + "/"
 
-    n_subset = 24
+    n_subset = 1
+    augment_subset = False
     if n_subset > 1:
-      augment_ratio = int(augment_ratio * n_subset)
+      if augment_subset is True:
+        augment_ratio = int(augment_ratio * n_subset)
 
       signal_path = data_path_prefix + "C_augment_random_subset_" + str(n_subset)+ "_x" + str(augment_ratio) + "/"
       answer_path = data_path_prefix + "X_answer_subset_" + str(n_subset) + "/"
+
+    augment_noise_ratio = 0
+    augment_noise_level = 1
+    if augment_noise_ratio > 0:
+      signal_path = signal_path[:-1] + "_noise" + str(augment_noise_ratio) + "_" + str(augment_noise_level) + "/"
 
     augment_standard = 49.19
     augment_start = 48.1
@@ -67,11 +74,13 @@ if answer_type == "pre_bit_regression" or answer_type == "nopre_bit_regression":
 
 
 
+is_gaussian_noise = True
+is_residual_network = False
 dropout_rate = 0.2
 is_batch_normalization = False
 
 layer_depth = 3
-learning_rate = 1e-4
+learning_rate = 1e-5
 batch_size = 1024
 patience = 5
 learning_epoch = 1000

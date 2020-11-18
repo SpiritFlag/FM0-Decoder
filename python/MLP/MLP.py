@@ -44,6 +44,7 @@ class MLP(tf.keras.Model):
   def build_model(self, size_hidden_layer):
     try:
       self.input_layer = tf.keras.layers.Input(shape=(size_input_layer,), name="input")
+      self.noise_layer = tf.keras.layers.GaussianNoise(stddev=1, name="gaussian_noise")
       self.output_layer = tf.keras.layers.Dense(units=size_output_layer, name="output")
 
       if output_activation_function == "my_softmax":
@@ -54,7 +55,10 @@ class MLP(tf.keras.Model):
         self.output_activation_lyaer = tf.keras.layers.Activation(tf.nn.softmax, name="output_activation")
 
 
-      layer = self.input_layer
+      if is_gaussian_noise is True:
+        layer = self.noise_layer(self.input_layer)
+      else:
+        layer = self.input_layer
 
       for idx in range(len(size_hidden_layer)):
         hidden_layer = tf.keras.layers.Dense(units=size_hidden_layer[idx], name="hidden"+str(idx+1))
@@ -65,10 +69,18 @@ class MLP(tf.keras.Model):
         activation_layer = tf.keras.layers.Activation(tf.nn.relu, name="activation"+str(idx+1))
 
         layer = hidden_layer(layer)
+
+        if is_residual_network is True and idx % layer_depth == 0:
+          residual_input = layer
+
         if dropout_rate > 0:
           layer = dropout_layer(layer)
         if is_batch_normalization is True:
           layer = batch_layer(layer)
+
+        if is_residual_network is True and (idx + 1) % layer_depth == 0:
+          layer += residual_input
+
         layer = activation_layer(layer)
 
       layer = self.output_activation_lyaer(self.output_layer(layer))

@@ -5,12 +5,19 @@ augment_ratio = 4
 signal_path = data_path_prefix + "B_signal_std_cliffing/"
 output_path = data_path_prefix + "C_augment_random_x" + str(augment_ratio) + "/"
 
-n_subset = 27
+n_subset = 1
+augment_subset = False
 if n_subset > 1:
-  augment_ratio = int(augment_ratio * n_subset)
+  if augment_subset is True:
+    augment_ratio = int(augment_ratio * n_subset)
 
   signal_path = data_path_prefix + "B_signal_std_cliffing_subset_" + str(n_subset) + "/"
   output_path = data_path_prefix + "C_augment_random_subset_" + str(n_subset)+ "_x" + str(augment_ratio) + "/"
+
+augment_noise_ratio = 0
+augment_noise_level = 1
+if augment_noise_ratio > 0:
+  output_path = output_path[:-1] + "_noise" + str(augment_noise_ratio) + "_" + str(augment_noise_level) + "_randn/"
 
 augment_standard = 49.19
 augment_start = 48.1

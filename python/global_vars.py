@@ -1,6 +1,6 @@
 #cuda_device_id = "-1"
-cuda_device_id = "0"
-#cuda_device_id = "1"
+#cuda_device_id = "0"
+cuda_device_id = "1"
 
 data_path = "data/"
 exp_num = 1

@@ -12,18 +12,18 @@ def read_set_signal(file_name_list, postfix):
     signal = []
     answer = []
 
-    for file_name in file_name_list:
-    #for x in tqdm(range(len(file_name_list)), desc="READING", ncols=100, unit=" file"):
+    #for file_name in file_name_list:
+    for x in tqdm(range(len(file_name_list)), desc="READING", ncols=100, unit=" file"):
       try:
-        #file_name = file_name_list[x]
+        file_name = file_name_list[x]
 
         if augment_ratio == 1:
           signal.extend(np.load(signal_path + file_name + "_signal_" + postfix + ".npy"))
           answer.extend(np.load(answer_path + file_name + "_answer_" + answer_type + "_" + postfix + ".npy"))
         else:
-          #for augment in augment_list:
-          for augment_idx in tqdm(range(len(augment_list)), desc=file_name, ncols=100, unit=" file"):
-            augment = augment_list[augment_idx]
+          for augment in augment_list:
+          #for augment_idx in tqdm(range(len(augment_list)), desc=file_name, ncols=100, unit=" file"):
+            #augment = augment_list[augment_idx]
             signal.extend(np.load(signal_path + file_name + "_signal_" + str(augment) + "_" + postfix + ".npy"))
             answer.extend(np.load(answer_path + file_name + "_answer_" + answer_type + "_" + postfix + ".npy"))
 
@@ -31,8 +31,16 @@ def read_set_signal(file_name_list, postfix):
         _, _, tb = sys.exc_info()
         print("[MLP:read_set_signal:" + file_name + ":" + str(tb.tb_lineno) + "] " + str(ex) + "\n\n")
 
-    print(len(signal), len(answer))
-    return signal, answer
+    if augment_ratio > 1 and augment_noise_ratio > 1:
+      new_answer = []
+      for x in answer:
+        for y in range(augment_noise_ratio):
+          new_answer.append(x)
+      #print(len(signal), len(new_answer))
+      return signal, new_answer
+    else:
+      #print(len(signal), len(answer))
+      return signal, answer
 
   except Exception as ex:
     _, _, tb = sys.exc_info()
