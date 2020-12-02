@@ -5,7 +5,7 @@ answer_path = data_path_prefix + "B_answer/"
 #output_path = data_path_prefix + "B_signalAll/"
 output_path = data_path_prefix + "X_answer/"
 
-n_subset = 27
+n_subset = 1
 if n_subset > 1:
   answer_path = data_path_prefix + "B_answer_subset_" + str(n_subset) + "/"
   output_path = data_path_prefix + "X_answer_subset_" + str(n_subset) + "/"

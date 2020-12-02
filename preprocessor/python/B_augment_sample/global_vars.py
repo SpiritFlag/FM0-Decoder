@@ -1,6 +1,6 @@
 from global_vars import *
 
-augment_ratio = 4
+augment_ratio = 8
 
 signal_path = data_path_prefix + "B_signal_std_cliffing/"
 output_path = data_path_prefix + "C_augment_random_x" + str(augment_ratio) + "/"

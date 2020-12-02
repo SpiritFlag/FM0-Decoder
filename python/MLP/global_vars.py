@@ -7,7 +7,7 @@ if model_type == "signal":
   signal_path = data_path_prefix + "B_signal_std_cliffing/"
   answer_path = data_path_prefix + "X_answer/"
 
-  augment_ratio = 4
+  augment_ratio = 8
   if augment_ratio > 1:
     signal_path = data_path_prefix + "C_augment_random_x" + str(augment_ratio) + "/"
 
@@ -76,12 +76,12 @@ if answer_type == "pre_bit_regression" or answer_type == "nopre_bit_regression":
 
 is_gaussian_noise = True
 is_residual_network = False
-dropout_rate = 0.2
+dropout_rate = 0.3
 is_batch_normalization = False
 
 layer_depth = 3
-learning_rate = 1e-5
-batch_size = 1024
+learning_rate = 1e-4
+batch_size = 2048
 patience = 5
 learning_epoch = 1000
 

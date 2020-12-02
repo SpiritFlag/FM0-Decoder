@@ -17,7 +17,7 @@ if exp_num == 0 or exp_num == 1:
   #file_name_list = ["100_0_0"]
   file_name_list = file_name_list_all
 
-  n_signal = 1
+  n_signal = 3000
 
 if exp_num == 2:
   file_name_list = ["010", "020", "030", "040", "050", "060", "070", "080", "090", "100"]

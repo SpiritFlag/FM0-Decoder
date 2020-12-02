@@ -1,14 +1,15 @@
 from global_vars import *
 
 #signal_path = data_path_prefix + "B_signal_std/"
-#signal_path = data_path_prefix + "B_signal_std_cliffing/"
+signal_path = data_path_prefix + "B_signal_std_cliffing/"
 #signal_path = data_path_prefix + "B_signalAll/"
-signal_path = data_path_prefix + "C_augment_random_x4/"
+#signal_path = data_path_prefix + "C_augment_random_x4/"
 answer_path = data_path_prefix + "X_answer/"
 #answer_path = data_path_prefix + "B_signalAll/"
 answer_type = "nopre_bit_regression"
 
-augment_ratio = 4
+augment_ratio = 1
+augment_list = []
 if augment_ratio > 1:
   signal_path = data_path_prefix + "C_augment_random_x" + str(augment_ratio) + "/"
 
@@ -24,9 +25,8 @@ if augment_ratio > 1:
   augment_end = 52.1
   augment_width = (augment_end - augment_start) / augment_ratio
 
-  augment_list = []
   for x in range(augment_ratio):
     augment_list.append(augment_start + x * augment_width)
 
-n_shift = 2
+n_shift = 4
 constant_bit_len = 50
