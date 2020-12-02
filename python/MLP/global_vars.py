@@ -76,7 +76,7 @@ if answer_type == "pre_bit_regression" or answer_type == "nopre_bit_regression":
 
 is_gaussian_noise = True
 is_residual_network = False
-dropout_rate = 0.3
+dropout_rate = 0.2
 is_batch_normalization = False
 
 layer_depth = 3

@@ -70,20 +70,28 @@ class MLP(tf.keras.Model):
 
         layer = hidden_layer(layer)
 
-        if is_residual_network is True and idx % layer_depth == 0:
-          residual_input = layer
-
-        if dropout_rate > 0:
-          layer = dropout_layer(layer)
         if is_batch_normalization is True:
           layer = batch_layer(layer)
 
-        if is_residual_network is True and (idx + 1) % layer_depth == 0:
-          layer += residual_input
-
         layer = activation_layer(layer)
 
-      layer = self.output_activation_lyaer(self.output_layer(layer))
+        if dropout_rate > 0:
+          layer = dropout_layer(layer)
+
+      if output_activation_function == "my_softmax_2":
+        layer = self.output_layer(layer)
+        partial_layer_list = []
+
+        for idx in range(int(size_output_layer / 4)):
+          partial_layer = tf.keras.layers.Dense(units=4, activation=tf.nn.softmax, name="output"+str(idx+1))
+          partial_layer_list.append(partial_layer(layer))
+
+        self.output_activation_layer = tf.keras.layers.Concatenate(partial_layer_list)
+        layer = self.output_activation_lyaer(layer)
+
+      else:
+        layer = self.output_activation_lyaer(self.output_layer(layer))
+
       return tf.keras.Model(self.input_layer, layer)
 
     except Exception as ex:
