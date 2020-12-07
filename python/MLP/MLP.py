@@ -24,6 +24,22 @@ def my_softmax(input):
 
 
 
+def my_categorical_crossentropy(y_true, y_pred):
+  try:
+    tot_loss = 0
+    loss_function = tf.keras.losses.CategoricalCrossentropy()
+
+    split_true = tf.split(y_true, int(y_true.shape[1] / size_slice), axis=1)
+    split_pred = tf.split(y_pred, int(y_pred.shape[1] / size_slice), axis=1)
+
+    return loss_function(split_true, split_pred)
+
+  except Exception as ex:
+    _, _, tb = sys.exc_info()
+    print("[MLP.my_categorical_crossentropy:" + str(tb.tb_lineno) + "] " + str(ex) + "\n\n")
+
+
+
 class MLP(tf.keras.Model):
   def __init__(self, size_hidden_layer, learning_rate):
     try:
@@ -32,7 +48,8 @@ class MLP(tf.keras.Model):
       self.learning_rate = learning_rate
       optimizer = tf.keras.optimizers.Adam(self.learning_rate)
       self.model = self.build_model(size_hidden_layer)
-      self.model.compile(loss=loss_function, optimizer=optimizer)
+      #self.model.compile(loss=loss_function, optimizer=optimizer)
+      self.model.compile(loss=my_categorical_crossentropy, optimizer=optimizer)
       self.model.summary()
 
     except Exception as ex:
@@ -48,11 +65,11 @@ class MLP(tf.keras.Model):
       self.output_layer = tf.keras.layers.Dense(units=size_output_layer, name="output")
 
       if output_activation_function == "my_softmax":
-        self.output_activation_lyaer = tf.keras.layers.Activation(my_softmax, name="output_activation")
+        self.output_activation_layer = tf.keras.layers.Activation(my_softmax, name="output_activation")
       elif output_activation_function == "relu":
-        self.output_activation_lyaer = tf.keras.layers.Activation(tf.nn.relu, name="output_activation")
+        self.output_activation_layer = tf.keras.layers.Activation(tf.nn.relu, name="output_activation")
       elif output_activation_function == "softmax":
-        self.output_activation_lyaer = tf.keras.layers.Activation(tf.nn.softmax, name="output_activation")
+        self.output_activation_layer = tf.keras.layers.Activation(tf.nn.softmax, name="output_activation")
 
 
       if is_gaussian_noise is True:
@@ -79,18 +96,16 @@ class MLP(tf.keras.Model):
           layer = dropout_layer(layer)
 
       if output_activation_function == "my_softmax_2":
-        layer = self.output_layer(layer)
         partial_layer_list = []
 
         for idx in range(int(size_output_layer / 4)):
           partial_layer = tf.keras.layers.Dense(units=4, activation=tf.nn.softmax, name="output"+str(idx+1))
           partial_layer_list.append(partial_layer(layer))
 
-        self.output_activation_layer = tf.keras.layers.Concatenate(partial_layer_list)
-        layer = self.output_activation_lyaer(layer)
+        layer = tf.keras.layers.Concatenate()(partial_layer_list)
 
       else:
-        layer = self.output_activation_lyaer(self.output_layer(layer))
+        layer = self.output_activation_layer(self.output_layer(layer))
 
       return tf.keras.Model(self.input_layer, layer)
 
@@ -123,7 +138,7 @@ class MLP(tf.keras.Model):
 
   def restore_model(self, path):
     try:
-      self.model = tf.keras.models.load_model(path)
+      self.model = tf.keras.models.load_model(path, compile=False)
       #self.model.summary()
 
     except Exception as ex:

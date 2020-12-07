@@ -28,5 +28,5 @@ if augment_ratio > 1:
   for x in range(augment_ratio):
     augment_list.append(augment_start + x * augment_width)
 
-n_shift = 4
-constant_bit_len = 50
+n_shift = 0
+constant_bit_len = 49.19
