@@ -18,7 +18,7 @@ def process(model, file_name, test_set, answer_set):
     inference_time = timeit.default_timer() - inference_time
 
     test_time = timeit.default_timer()
-    success, error_idx, n_error = count_success(predict_set, answer_set, countBit=True)
+    success, error_idx, n_error = count_success(predict_set, np.hsplit(answer_set, int(size_output_layer / 4)), countBit=True)
     for idx in range(len(answer_set)):
       file.write(str(error_idx[idx]) + "\t" + str(n_error[idx]) + "\n")
     file.close()

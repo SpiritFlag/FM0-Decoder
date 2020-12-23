@@ -7,7 +7,7 @@ if model_type == "signal":
   signal_path = data_path_prefix + "B_signal_std_cliffing/"
   answer_path = data_path_prefix + "X_answer/"
 
-  augment_ratio = 1
+  augment_ratio = 8
   if augment_ratio > 1:
     signal_path = data_path_prefix + "C_augment_random_x" + str(augment_ratio) + "/"
 
@@ -76,11 +76,11 @@ if answer_type == "pre_bit_regression" or answer_type == "nopre_bit_regression":
 
 is_gaussian_noise = True
 is_residual_network = False
-dropout_rate = 0
-is_batch_normalization = True
+dropout_rate = 0.2
+is_batch_normalization = False
 
-layer_depth = 3
-learning_rate = 1e-3
+layer_depth = 1
+learning_rate = 1e-4
 batch_size = 2048
 patience = 5
 learning_epoch = 1000
@@ -99,8 +99,8 @@ if model_type == "signal":
     else:
       size_output_layer = 512
 
-    output_activation_function = "my_softmax"
-    #output_activation_function = "my_softmax_2"
+    #output_activation_function = "my_softmax"
+    output_activation_function = "my_softmax_2"
     loss_function = "categorical_crossentropy"
 
   elif encoding_type == "regression":

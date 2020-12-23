@@ -6,7 +6,7 @@ import tensorflow as tf
 from tqdm import tqdm
 from global_vars import *
 from MLP.global_vars import *
-from MLP.EarlyStoppingWithDecodingRate import EarlyStoppingWithDecodingRate
+from MLP.MyCallback import MyCallback
 
 
 
@@ -49,7 +49,10 @@ class MLP(tf.keras.Model):
       optimizer = tf.keras.optimizers.Adam(self.learning_rate)
       self.model = self.build_model(size_hidden_layer)
       #self.model.compile(loss=loss_function, optimizer=optimizer)
-      self.model.compile(loss=my_categorical_crossentropy, optimizer=optimizer)
+      if output_activation_function == "my_softmax_2":
+        self.model.compile(loss="categorical_crossentropy", optimizer=optimizer)
+      else:
+        self.model.compile(loss=my_categorical_crossentropy, optimizer=optimizer)
       self.model.summary()
 
     except Exception as ex:
@@ -102,7 +105,7 @@ class MLP(tf.keras.Model):
           partial_layer = tf.keras.layers.Dense(units=4, activation=tf.nn.softmax, name="output"+str(idx+1))
           partial_layer_list.append(partial_layer(layer))
 
-        layer = tf.keras.layers.Concatenate()(partial_layer_list)
+        return tf.keras.Model(self.input_layer, partial_layer_list)
 
       else:
         layer = self.output_activation_layer(self.output_layer(layer))
@@ -120,9 +123,15 @@ class MLP(tf.keras.Model):
       if os.path.isdir(model_full_path) is False:
         os.mkdir(model_full_path)
 
-      hist = self.model.fit(input, answer, epochs=learning_epoch, batch_size=batch_size,
-        callbacks=[EarlyStoppingWithDecodingRate(patience=patience, train_data=[input, answer], validation_data=[val_input, val_answer],\
-          learning_rate=self.learning_rate, test_fnc=self.test_model, log_path=model_full_path)]\
+      n_slice = int(size_output_layer / 4)
+      if len(input) % batch_size == 0:
+        n_batch = int(len(input) / batch_size)
+      else:
+        n_batch = int(len(input) / batch_size) + 1
+
+      hist = self.model.fit(input, np.hsplit(answer, n_slice), epochs=learning_epoch, batch_size=batch_size, verbose=0,
+        callbacks=[MyCallback(n_batch=n_batch, patience=patience, validation_data=[val_input, np.hsplit(val_answer, n_slice)],\
+          test_fnc=self.test_model, log_path=model_full_path)]\
         )
 
       if save_model is True:
@@ -150,7 +159,12 @@ class MLP(tf.keras.Model):
   def test_model(self, input):
     try:
       if model_type == "signal":
-        return self.model.predict(input)
+        if len(input) % batch_size == 0:
+          n_batch = int(len(input) / batch_size)
+        else:
+          n_batch = int(len(input) / batch_size) + 1
+
+        return self.model.predict(input, batch_size=batch_size, callbacks=[MyCallback(n_batch=n_batch)])
 
       elif model_type == "bit":
         output = []

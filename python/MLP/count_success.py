@@ -23,8 +23,10 @@ def process_signal(predict_set, answer_set, countBit=False):
 
     for bit in range(n_range):
       if encoding_type == "onehot":
-        predict = np.array(predict_set[int(size_slice*bit):int(size_slice*(bit+1))]).argmax()
-        answer = np.array(answer_set[int(size_slice*bit):int(size_slice*(bit+1))]).argmax()
+        #predict = np.array(predict_set[int(size_slice*bit):int(size_slice*(bit+1))]).argmax()
+        predict = predict_set[bit].argmax()
+        answer = answer_set[bit].argmax()
+        #answer = np.array(answer_set[int(size_slice*bit):int(size_slice*(bit+1))]).argmax()
       elif encoding_type == "regression":
         threshold = 0.5
         predict = predict_set[bit]
@@ -94,6 +96,9 @@ def count_success(predict_set, answer_set, countBit=False):
     success = 0
     error_idx_list = []
     n_error_list = []
+
+    predict_set = np.transpose(predict_set, (1, 0, 2))
+    answer_set = np.transpose(np.array(answer_set), (1, 0, 2))
 
     for idx in tqdm(range(len(predict_set)), desc="TESTING", ncols=100, unit=" signal"):
       cur_fail = False
