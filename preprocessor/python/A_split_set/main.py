@@ -29,8 +29,12 @@ def main():
     if os.path.isdir(signal_path3) is False:
       raise NameError("signal_path3= " + signal_path3 + " does not exist!")
 
-    if os.path.isdir(answer_path) is False:
-      raise NameError("answer_path= " + answer_path + " does not exist!")
+    if os.path.isdir(label_path) is False:
+      raise NameError("label_path= " + label_path + " does not exist!")
+
+    if os.path.isdir(label_output_path) is False:
+      os.mkdir(label_output_path)
+      print("Successfuly created an unexist folder! label_output_path= " + label_output_path)
 
     common_process(signal_path + file_name_list[0] + "_signal_train.npy", main_fnc, True)
 

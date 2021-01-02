@@ -7,7 +7,7 @@ from MLP.global_vars import *
 
 
 
-def process_signal(predict_set, answer_set, countBit=False):
+def process_signal(predict_set, label_set, countBit=False):
   try:
     cur_fail = False
     error_idx = -1
@@ -25,8 +25,8 @@ def process_signal(predict_set, answer_set, countBit=False):
       if encoding_type == "onehot":
         #predict = np.array(predict_set[int(size_slice*bit):int(size_slice*(bit+1))]).argmax()
         predict = predict_set[bit].argmax()
-        answer = answer_set[bit].argmax()
-        #answer = np.array(answer_set[int(size_slice*bit):int(size_slice*(bit+1))]).argmax()
+        label = label_set[bit].argmax()
+        #label = np.array(label_set[int(size_slice*bit):int(size_slice*(bit+1))]).argmax()
       elif encoding_type == "regression":
         threshold = 0.5
         predict = predict_set[bit]
@@ -34,9 +34,9 @@ def process_signal(predict_set, answer_set, countBit=False):
           predict = 0
         else:
           predict = 1
-        answer = answer_set[bit]
+        label = label_set[bit]
 
-      if predict == answer:
+      if predict == label:
         continue
 
       if countBit is True:
@@ -57,7 +57,7 @@ def process_signal(predict_set, answer_set, countBit=False):
 
 
 
-def process_bit(predict_set, answer_set, countBit=False):
+def process_bit(predict_set, label_set, countBit=False):
   try:
     cur_fail = False
     error_idx = -1
@@ -65,12 +65,12 @@ def process_bit(predict_set, answer_set, countBit=False):
 
     for bit in range(n_bit_data):
       predict = predict_set[bit].argmax() + 1
-      answer = answer_set[int(2*bit):int(2*(bit+1))]
+      label = label_set[int(2*bit):int(2*(bit+1))]
 
-      if (predict == 1 and answer[0] == 0 and answer[1] == 1) or\
-        (predict == 2 and answer[0] == 1 and answer[1] == 0) or\
-        (predict == 3 and answer[0] == 0 and answer[1] == 0) or\
-        (predict == 4 and answer[0] == 1 and answer[1] == 1):
+      if (predict == 1 and label[0] == 0 and label[1] == 1) or\
+        (predict == 2 and label[0] == 1 and label[1] == 0) or\
+        (predict == 3 and label[0] == 0 and label[1] == 0) or\
+        (predict == 4 and label[0] == 1 and label[1] == 1):
         continue
 
       if countBit is True:
@@ -91,14 +91,15 @@ def process_bit(predict_set, answer_set, countBit=False):
 
 
 
-def count_success(predict_set, answer_set, countBit=False):
+def count_success(predict_set, label_set, countBit=False):
   try:
     success = 0
+    tot_n_error = 0
     error_idx_list = []
     n_error_list = []
 
     predict_set = np.transpose(predict_set, (1, 0, 2))
-    answer_set = np.transpose(np.array(answer_set), (1, 0, 2))
+    label_set = np.transpose(np.array(label_set), (1, 0, 2))
 
     for idx in tqdm(range(len(predict_set)), desc="TESTING", ncols=100, unit=" signal"):
       cur_fail = False
@@ -106,15 +107,21 @@ def count_success(predict_set, answer_set, countBit=False):
       n_error = 0
 
       if model_type == "signal":
-        cur_fail, error_idx, n_error = process_signal(predict_set[idx], answer_set[idx], countBit)
+        cur_fail, error_idx, n_error = process_signal(predict_set[idx], label_set[idx], countBit)
       elif model_type == "bit":
-        cur_fail, error_idx, n_error = process_bit(predict_set[idx], answer_set[idx], countBit)
+        cur_fail, error_idx, n_error = process_bit(predict_set[idx], label_set[idx], countBit)
 
       if cur_fail is False:
         success += 1
       if countBit is True:
+        tot_n_error += n_error
         error_idx_list.append(error_idx)
         n_error_list.append(n_error)
+
+      if countBit is True:
+        print(f"\tacc: {success/(idx+1):6.4f}\tBER: {tot_n_error/((idx+1)*n_bit_data):6.4f}", end="\r")
+      else:
+        print(f"\tacc: {success/(idx+1):6.4f}", end="\r")
 
     if countBit is True:
       return success, error_idx_list, n_error_list

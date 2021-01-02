@@ -118,7 +118,7 @@ class MLP(tf.keras.Model):
 
 
 
-  def train_model(self, input, answer, val_input, val_answer, save_model=True):
+  def train_model(self, input, label, val_input, val_label, save_model=True):
     try:
       if os.path.isdir(model_full_path) is False:
         os.mkdir(model_full_path)
@@ -129,8 +129,8 @@ class MLP(tf.keras.Model):
       else:
         n_batch = int(len(input) / batch_size) + 1
 
-      hist = self.model.fit(input, np.hsplit(answer, n_slice), epochs=learning_epoch, batch_size=batch_size, verbose=0,
-        callbacks=[MyCallback(n_batch=n_batch, patience=patience, validation_data=[val_input, np.hsplit(val_answer, n_slice)],\
+      hist = self.model.fit(input, np.hsplit(label, n_slice), epochs=learning_epoch, batch_size=batch_size, verbose=0,
+        callbacks=[MyCallback(n_batch=n_batch, patience=patience, validation_data=[val_input, np.hsplit(val_label, n_slice)],\
           test_fnc=self.test_model, log_path=model_full_path)]\
         )
 

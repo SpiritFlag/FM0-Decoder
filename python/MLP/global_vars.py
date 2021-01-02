@@ -5,25 +5,11 @@ model_type = "signal"
 
 if model_type == "signal":
   signal_path = data_path_prefix + "B_signal_std_cliffing/"
-  answer_path = data_path_prefix + "X_answer/"
+  label_path = data_path_prefix + "X_label/"
 
-  augment_ratio = 8
+  augment_ratio = 1
   if augment_ratio > 1:
     signal_path = data_path_prefix + "C_augment_random_x" + str(augment_ratio) + "/"
-
-    n_subset = 1
-    augment_subset = False
-    if n_subset > 1:
-      if augment_subset is True:
-        augment_ratio = int(augment_ratio * n_subset)
-
-      signal_path = data_path_prefix + "C_augment_random_subset_" + str(n_subset)+ "_x" + str(augment_ratio) + "/"
-      answer_path = data_path_prefix + "X_answer_subset_" + str(n_subset) + "/"
-
-    augment_noise_ratio = 0
-    augment_noise_level = 1
-    if augment_noise_ratio > 0:
-      signal_path = signal_path[:-1] + "_noise" + str(augment_noise_ratio) + "_" + str(augment_noise_level) + "/"
 
     augment_standard = 49.19
     augment_start = 48.1
@@ -34,42 +20,39 @@ if model_type == "signal":
     for x in range(augment_ratio):
       augment_list.append(augment_start + x * augment_width)
 
-  #answer_type = "pre_bit_onehot"
-  answer_type = "pre_signal_onehot"
-  #answer_type = "pre_bit_regression"
-  #answer_type = "nopre_bit_onehot"
-  #answer_type = "nopre_signal_onehot"
-  #answer_type = "nopre_bit_regression"
+  #label_type = "pre_bit_onehot"
+  label_type = "pre_signal_onehot"
+  #label_type = "pre_bit_regression"
+  #label_type = "nopre_bit_onehot"
+  #label_type = "nopre_signal_onehot"
+  #label_type = "nopre_bit_regression"
 
 elif model_type == "bit":
   #signal_path = data_path_prefix + "C_bit_49.25/"
   signal_path = data_path_prefix + "C_bit_49.25_nocliffing/"
-  answer_type = "nopre_bit_regression"
+  label_type = "nopre_bit_regression"
 
-  answer_path = data_path_prefix + "X_answer/"
-
-train_learning_rate = False
-#train_learning_rate = True
+  label_path = data_path_prefix + "X_label/"
 
 
 
-if answer_type == "pre_bit_onehot" or answer_type == "pre_signal_onehot" or answer_type == "pre_bit_regression":
+if label_type == "pre_bit_onehot" or label_type == "pre_signal_onehot" or label_type == "pre_bit_regression":
   ispreamble = True
-if answer_type == "nopre_bit_onehot" or answer_type == "nopre_signal_onehot" or answer_type == "nopre_bit_regression":
+if label_type == "nopre_bit_onehot" or label_type == "nopre_signal_onehot" or label_type == "nopre_bit_regression":
   ispreamble = False
 
-if answer_type == "pre_bit_onehot" or answer_type == "nopre_bit_onehot"\
-  or answer_type == "pre_bit_regression" or answer_type == "nopre_bit_regression":
+if label_type == "pre_bit_onehot" or label_type == "nopre_bit_onehot"\
+  or label_type == "pre_bit_regression" or label_type == "nopre_bit_regression":
   encoding_unit = "bit"
   size_slice = 2
-if answer_type == "pre_signal_onehot" or answer_type == "nopre_signal_onehot":
+if label_type == "pre_signal_onehot" or label_type == "nopre_signal_onehot":
   encoding_unit = "signal"
   size_slice = 4
 
-if answer_type == "nopre_bit_onehot" or answer_type == "pre_bit_onehot"\
-  or answer_type == "nopre_signal_onehot" or answer_type == "pre_signal_onehot":
+if label_type == "nopre_bit_onehot" or label_type == "pre_bit_onehot"\
+  or label_type == "nopre_signal_onehot" or label_type == "pre_signal_onehot":
   encoding_type = "onehot"
-if answer_type == "pre_bit_regression" or answer_type == "nopre_bit_regression":
+if label_type == "pre_bit_regression" or label_type == "nopre_bit_regression":
   encoding_type = "regression"
 
 
@@ -79,7 +62,7 @@ is_residual_network = False
 dropout_rate = 0.2
 is_batch_normalization = False
 
-layer_depth = 1
+layer_depth = 3
 learning_rate = 1e-4
 batch_size = 2048
 patience = 5

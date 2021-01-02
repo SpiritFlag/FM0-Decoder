@@ -4,14 +4,14 @@ import numpy as np
 from tqdm import tqdm
 from global_vars import *
 from A_IQconvert.global_vars import *
-from A_IQconvert.read_signal import read_signal
 from A_IQconvert.kalman_filter import kalman_filter
 
 
 
 def process(file_name):
   try:
-    Isignal, Qsignal, answer = read_signal(file_name)
+    Isignal = np.load(signal_path + file_name + "_Isignal.npy")
+    Qsignal = np.load(signal_path + file_name + "_Qsignal.npy")
 
     npy_signal = []
     npy_signal_std = []
@@ -101,8 +101,6 @@ def process(file_name):
     np.save(output_path + file_name + "_Qsignal", npy_Qsignal)
     np.save(output_path2 + file_name + "_Qsignal", npy_Qsignal_std)
     np.save(output_path3 + file_name + "_Qsignal", npy_Qsignal_std_cliffing)
-    np.save(answer_output_path + file_name + "_answer", answer)
-
 
   except Exception as ex:
     _, _, tb = sys.exc_info()

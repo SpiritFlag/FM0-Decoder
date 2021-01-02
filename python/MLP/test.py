@@ -10,9 +10,9 @@ from MLP.process import process
 
 
 
-def main_fnc(model, file_name, test_set, answer_set):
+def main_fnc(model, file_name, test_set, label_set):
   try:
-    return process(model, file_name, test_set, answer_set)
+    return process(model, file_name, test_set, label_set)
 
   except Exception as ex:
     _, _, tb = sys.exc_info()
@@ -25,8 +25,8 @@ def MLP_test(path):
     if os.path.isdir(signal_path) is False:
       raise NameError("signal_path= " + signal_path + " does not exist!")
 
-    if os.path.isdir(answer_path) is False:
-      raise NameError("answer_path= " + answer_path + " does not exist!")
+    if os.path.isdir(label_path) is False:
+      raise NameError("label_path= " + label_path + " does not exist!")
 
     mlp = MLP(size_hidden_layer, learning_rate)
     if path == "":

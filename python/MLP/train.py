@@ -17,15 +17,15 @@ def MLP_train(path):
     if os.path.isdir(signal_path) is False:
       raise NameError("signal_path= " + signal_path + " does not exist!")
 
-    if os.path.isdir(answer_path) is False:
-      raise NameError("answer_path= " + answer_path + " does not exist!")
+    if os.path.isdir(label_path) is False:
+      raise NameError("label_path= " + label_path + " does not exist!")
 
     mlp = MLP(size_hidden_layer, learning_rate)
-    train_set, answer_set = read_set(file_name_list, "train", is_shuffle=True)
-    validation_train_set, validation_answer_set = read_set(file_name_list, "validation")
+    train_set, label_set = read_set(file_name_list, "train", is_shuffle=True)
+    validation_train_set, validation_label_set = read_set(file_name_list, "validation")
 
     train_time = timeit.default_timer()
-    hist = mlp.train_model(train_set, answer_set, validation_train_set, validation_answer_set)
+    hist = mlp.train_model(train_set, label_set, validation_train_set, validation_label_set)
     print("\t\tTRAIN TIME= " + str(round(timeit.default_timer() - train_time, 3)) + " (sec)\n")
 
     file = open(model_full_path + "/train_time", "w")

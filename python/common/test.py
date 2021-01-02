@@ -23,13 +23,14 @@ def common_test(model=None, fnc_read_set=None, fnc=None):
 
         time = timeit.default_timer()
         if model is None:
-          success, fnc_time = fnc(file_name, test_set, answer_set)
+          success, n_error, fnc_time = fnc(file_name, test_set, answer_set)
         else:
-          success, fnc_time = fnc(model, file_name, test_set, answer_set)
+          success, n_error, fnc_time = fnc(model, file_name, test_set, answer_set)
 
         if len(answer_set) != 0:
-          print("\t\tSUCCESS= " + str(success) + " / " + str(len(answer_set)) + "\t(" + str(round(100 * success / len(answer_set), 2)) + "%)\n")
-          log.write(str(success) + "\t" + str(len(answer_set)) + "\t")
+          print(f"\n\tRESULT=\t{success:5d} / {len(answer_set):5d} ({100*success/len(answer_set):6.2f}%)", end="")
+          print(f"\n\tBER=\t{n_error:5d} / {int(n_bit_data*len(answer_set)):5d} ({100*n_error/(n_bit_data*len(answer_set)):6.2f}%)\n")
+          log.write(str(success) + "\t" + str(len(answer_set)) + "\t" + str(n_error) + "\t" + str(int(n_bit_data*len(answer_set))) + "\t")
         else:
           print("\t\tSUCCESS= 0 / 0 (- %)\n")
           log.write("0\t0\t")

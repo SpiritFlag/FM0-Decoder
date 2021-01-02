@@ -10,7 +10,7 @@ from MLP.global_vars import *
 def read_set_signal(file_name_list, postfix):
   try:
     signal = []
-    answer = []
+    label = []
 
     #for file_name in file_name_list:
     for x in tqdm(range(len(file_name_list)), desc="READING", ncols=100, unit=" file"):
@@ -19,28 +19,28 @@ def read_set_signal(file_name_list, postfix):
 
         if augment_ratio == 1:
           signal.extend(np.load(signal_path + file_name + "_signal_" + postfix + ".npy"))
-          answer.extend(np.load(answer_path + file_name + "_answer_" + answer_type + "_" + postfix + ".npy"))
+          label.extend(np.load(label_path + file_name + "_label_" + label_type + "_" + postfix + ".npy"))
         else:
           for augment in augment_list:
           #for augment_idx in tqdm(range(len(augment_list)), desc=file_name, ncols=100, unit=" file"):
             #augment = augment_list[augment_idx]
             signal.extend(np.load(signal_path + file_name + "_signal_" + str(augment) + "_" + postfix + ".npy"))
-            answer.extend(np.load(answer_path + file_name + "_answer_" + answer_type + "_" + postfix + ".npy"))
+            label.extend(np.load(label_path + file_name + "_label_" + label_type + "_" + postfix + ".npy"))
 
       except Exception as ex:
         _, _, tb = sys.exc_info()
         print("[MLP:read_set_signal:" + file_name + ":" + str(tb.tb_lineno) + "] " + str(ex) + "\n\n")
 
     if augment_ratio > 1 and augment_noise_ratio > 1:
-      new_answer = []
-      for x in answer:
+      new_label = []
+      for x in label:
         for y in range(augment_noise_ratio):
-          new_answer.append(x)
-      #print(len(signal), len(new_answer))
-      return signal, new_answer
+          new_label.append(x)
+      #print(len(signal), len(new_label))
+      return signal, new_label
     else:
-      #print(len(signal), len(answer))
-      return signal, answer
+      #print(len(signal), len(label))
+      return signal, label
 
   except Exception as ex:
     _, _, tb = sys.exc_info()
@@ -51,7 +51,7 @@ def read_set_signal(file_name_list, postfix):
 def read_set_bit(file_name_list, postfix):
   try:
     signal = []
-    answer = []
+    label = []
 
     for x in tqdm(range(len(file_name_list)), desc="READING", ncols=100, unit=" file"):
       try:
@@ -72,17 +72,17 @@ def read_set_bit(file_name_list, postfix):
               ans = [0, 0, 0, 1]
 
             for y in range(len(read)):
-              answer.append(ans)
+              label.append(ans)
 
         else:
           signal.extend(np.load(signal_path + file_name + "_bit_" + postfix + ".npy"))
-          answer.extend(np.load(answer_path + file_name + "_answer_" + answer_type + "_" + postfix + ".npy"))
+          label.extend(np.load(label_path + file_name + "_label_" + label_type + "_" + postfix + ".npy"))
 
       except Exception as ex:
         _, _, tb = sys.exc_info()
         print("[MLP:read_set_bit:" + file_name + ":" + str(tb.tb_lineno) + "] " + str(ex) + "\n\n")
 
-    return signal, answer
+    return signal, label
 
   except Exception as ex:
     _, _, tb = sys.exc_info()
@@ -90,19 +90,19 @@ def read_set_bit(file_name_list, postfix):
 
 
 
-def shuffle_set(signal, answer):
+def shuffle_set(signal, label):
   try:
     RNindex = np.arange(len(signal))
     np.random.shuffle(RNindex)
 
     new_signal = []
-    new_answer = []
+    new_label = []
 
     for idx in range(len(RNindex)):
       new_signal.append(signal[RNindex[idx]])
-      new_answer.append(answer[RNindex[idx]])
+      new_label.append(label[RNindex[idx]])
 
-    return np.array(new_signal), np.array(new_answer)
+    return np.array(new_signal), np.array(new_label)
 
   except Exception as ex:
     _, _, tb = sys.exc_info()
@@ -113,14 +113,14 @@ def shuffle_set(signal, answer):
 def read_set(file_name_list, postfix, is_shuffle=False):
   try:
     if model_type == "signal":
-      signal, answer = read_set_signal(file_name_list, postfix)
+      signal, label = read_set_signal(file_name_list, postfix)
     elif model_type == "bit":
-      signal, answer = read_set_bit(file_name_list, postfix)
+      signal, label = read_set_bit(file_name_list, postfix)
 
     if is_shuffle is True:
-      return shuffle_set(signal, answer)
+      return shuffle_set(signal, label)
     else:
-      return np.array(signal), np.array(answer)
+      return np.array(signal), np.array(label)
 
   except Exception as ex:
     _, _, tb = sys.exc_info()

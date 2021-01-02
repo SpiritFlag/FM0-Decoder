@@ -7,7 +7,7 @@ from A_split_set.global_vars import *
 
 
 
-def subprocess(file_name, signal_path_list, signal_list, Isignal_list, Qsignal_list, answer_path, answer, RNindex, postfix):
+def subprocess(file_name, signal_path_list, signal_list, Isignal_list, Qsignal_list, label_output_path, label, RNindex, postfix):
   try:
     npy_list = []
     npy_Ilist = []
@@ -16,7 +16,7 @@ def subprocess(file_name, signal_path_list, signal_list, Isignal_list, Qsignal_l
       npy_list.append([])
       npy_Ilist.append([])
       npy_Qlist.append([])
-    npy_answer = []
+    npy_label = []
 
     for idx in tqdm(range(len(RNindex)), desc=postfix.upper(), ncols=100, unit=" signal"):
       for x in range(len(signal_list)):
@@ -27,7 +27,7 @@ def subprocess(file_name, signal_path_list, signal_list, Isignal_list, Qsignal_l
         Qsignal = Qsignal_list[x]
         npy_Qlist[x].append(Qsignal[RNindex[idx]])
 
-      npy_answer.append(answer[RNindex[idx]])
+      npy_label.append(label[RNindex[idx]])
 
     for x in range(len(signal_list)):
       signal_path = signal_path_list[x]
@@ -35,7 +35,7 @@ def subprocess(file_name, signal_path_list, signal_list, Isignal_list, Qsignal_l
       np.save(signal_path + file_name + "_Isignal_" + postfix, npy_Ilist[x])
       np.save(signal_path + file_name + "_Qsignal_" + postfix, npy_Qlist[x])
 
-    np.save(answer_path + file_name + "_answer_" + postfix, npy_answer)
+    np.save(label_output_path + file_name + "_label_" + postfix, npy_label)
 
   except Exception as ex:
     _, _, tb = sys.exc_info()
@@ -54,7 +54,7 @@ def process(file_name):
     Qsignal = np.load(signal_path + file_name + "_Qsignal.npy")
     Qsignal_std = np.load(signal_path2 + file_name + "_Qsignal.npy")
     Qsignal_std_cliffing = np.load(signal_path3 + file_name + "_Qsignal.npy")
-    answer = np.load(answer_path + file_name + "_answer.npy")
+    label = np.load(label_path + file_name + "_label.npy")
 
 
     signal_path_list = [signal_path, signal_path2, signal_path3]
@@ -63,16 +63,22 @@ def process(file_name):
     Qsignal_list = [Qsignal, Qsignal_std, Qsignal_std_cliffing]
 
 
-    RNindex = np.arange(n_signal)
-    np.random.shuffle(RNindex)
-    RNtrain = RNindex[0:n_signal_train]
-    RNvalidation = RNindex[n_signal_train:n_signal_train+n_signal_validation]
-    RNtest = RNindex[n_signal_train+n_signal_validation:n_signal]
+    if make_test_only is False:
+      RNindex = np.arange(n_signal)
+      np.random.shuffle(RNindex)
+      RNtrain = RNindex[0:n_signal_train]
+      RNvalidation = RNindex[n_signal_train:n_signal_train+n_signal_validation]
+      RNtest = RNindex[n_signal_train+n_signal_validation:n_signal]
+    else:
+      RNtrain = [0]
+      RNvalidation = [0]
+      RNtest = [i for i in range(n_signal)]
 
 
-    subprocess(file_name, signal_path_list, signal_list, Isignal_list, Qsignal_list, answer_path, answer, RNtrain, "train")
-    subprocess(file_name, signal_path_list, signal_list, Isignal_list, Qsignal_list, answer_path, answer, RNvalidation, "validation")
-    subprocess(file_name, signal_path_list, signal_list, Isignal_list, Qsignal_list, answer_path, answer, RNtest, "test")
+
+    subprocess(file_name, signal_path_list, signal_list, Isignal_list, Qsignal_list, label_output_path, label, RNtrain, "train")
+    subprocess(file_name, signal_path_list, signal_list, Isignal_list, Qsignal_list, label_output_path, label, RNvalidation, "validation")
+    subprocess(file_name, signal_path_list, signal_list, Isignal_list, Qsignal_list, label_output_path, label, RNtest, "test")
 
 
   except Exception as ex:

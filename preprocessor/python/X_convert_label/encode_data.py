@@ -71,4 +71,4 @@ def encode_data(answer, encoding_unit, encoding_type):
 
   except Exception as ex:
     _, _, tb = sys.exc_info()
-    print("[X_convert_answer:encode_data:" + str(tb.tb_lineno) + "] " + str(ex) + "\n\n")
+    print("[X_convert_label:encode_data:" + str(tb.tb_lineno) + "] " + str(ex) + "\n\n")
