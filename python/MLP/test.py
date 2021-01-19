@@ -5,6 +5,7 @@ from global_vars import *
 from common.test import common_test
 from MLP.global_vars import *
 from MLP.MLP import MLP
+from MLP.CNN import CNN
 from MLP.read_set import read_set
 from MLP.process import process
 
@@ -28,7 +29,11 @@ def MLP_test(path):
     if os.path.isdir(label_path) is False:
       raise NameError("label_path= " + label_path + " does not exist!")
 
-    mlp = MLP(size_hidden_layer, learning_rate)
+    if model_type != "CNN":
+      mlp = MLP(size_hidden_layer, learning_rate)
+    else:
+      mlp = CNN()
+
     if path == "":
       print("[Model path] " + str(os.listdir(model_path)) + "\n")
       model_name = input("Input the model name: ").rstrip("\n")

@@ -64,7 +64,7 @@ class MyCallback(tf.keras.callbacks.Callback):
     try:
       self.pbar.update(1)
       if batch+1 < self.n_batch:
-        print(f" loss: {logs.get('loss'):.4f} - avg: {logs.get('loss')/self.n_slice:.4f}", end="\r")
+        print(f" loss: {logs.get('loss'):.4f} - avg: {logs.get('loss')/self.n_slice:.4f}     ", end="\r")
       else:
         print("                              ", end="\r")
 

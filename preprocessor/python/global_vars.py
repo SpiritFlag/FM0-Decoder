@@ -1,5 +1,5 @@
 data_path = "../data/"
-exp_num = 6
+exp_num = 1
 if exp_num < 10:
   data_path_prefix = data_path + "exp0" + str(exp_num) + "_"
 else:

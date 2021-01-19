@@ -25,6 +25,11 @@ def append_preamble(encoding_unit, encoding_type):
       # Preamble: HH LH LL HL LL HH
       return np.array([1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 1])
 
+    elif encoding_type == "binary":
+      # HH(1), HL(0), LH(0), LL(1)
+      # Preamble: HH LH LL HL LL HH
+      return np.array([1, 0, 1, 0, 1, 1])
+
   except Exception as ex:
     _, _, tb = sys.exc_info()
     print("[X_convert_label:append_preamble:" + str(tb.tb_lineno) + "] " + str(ex) + "\n\n")

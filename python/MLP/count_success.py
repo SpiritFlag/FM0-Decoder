@@ -27,7 +27,7 @@ def process_signal(predict_set, label_set, countBit=False):
         predict = predict_set[bit].argmax()
         label = label_set[bit].argmax()
         #label = np.array(label_set[int(size_slice*bit):int(size_slice*(bit+1))]).argmax()
-      elif encoding_type == "regression":
+      elif encoding_type == "regression" or encoding_type == "binary":
         threshold = 0.5
         predict = predict_set[bit]
         if predict < threshold:
@@ -106,7 +106,7 @@ def count_success(predict_set, label_set, countBit=False):
       error_idx = -1
       n_error = 0
 
-      if model_type == "signal":
+      if model_type == "signal" or model_type == "CNN":
         cur_fail, error_idx, n_error = process_signal(predict_set[idx], label_set[idx], countBit)
       elif model_type == "bit":
         cur_fail, error_idx, n_error = process_bit(predict_set[idx], label_set[idx], countBit)
@@ -122,6 +122,9 @@ def count_success(predict_set, label_set, countBit=False):
         print(f"\tacc: {success/(idx+1):6.4f}\tBER: {tot_n_error/((idx+1)*n_bit_data):6.4f}", end="\r")
       else:
         print(f"\tacc: {success/(idx+1):6.4f}", end="\r")
+
+      if idx == len(predict_set) - 1:
+        print("                              ", end="\r")
 
     if countBit is True:
       return success, error_idx_list, n_error_list

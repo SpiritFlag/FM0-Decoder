@@ -7,6 +7,7 @@ from tqdm import tqdm
 from global_vars import *
 from MLP.global_vars import *
 from MLP.MLP import MLP
+from MLP.CNN import CNN
 from MLP.read_set import read_set
 from MLP.test import MLP_test
 
@@ -20,7 +21,10 @@ def MLP_train(path):
     if os.path.isdir(label_path) is False:
       raise NameError("label_path= " + label_path + " does not exist!")
 
-    mlp = MLP(size_hidden_layer, learning_rate)
+    if model_type != "CNN":
+      mlp = MLP(size_hidden_layer, learning_rate)
+    else:
+      mlp = CNN()
     train_set, label_set = read_set(file_name_list, "train", is_shuffle=True)
     validation_train_set, validation_label_set = read_set(file_name_list, "validation")
 

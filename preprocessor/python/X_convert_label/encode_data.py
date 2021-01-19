@@ -67,6 +67,9 @@ def encode_data(answer, encoding_unit, encoding_type):
             # State 3: LH
             result.extend([0, 1])
 
+    elif encoding_type == "binary":
+      result = answer
+
     return np.array(result)
 
   except Exception as ex:

@@ -1,3 +1,15 @@
+##
+# @mainpage Doxygen Example Project
+#
+# @section description_main Description
+# An example Python program demonstrating how to use Doxygen style comments for
+# generating source code documentation with Doxygen.
+#
+# @section notes_main Notes
+# - Add special project notes here that you want to communicate to the user.
+#
+# Copyright (c) 2020 Woolsey Workshop.  All rights reserved.
+
 import os
 import sys
 
