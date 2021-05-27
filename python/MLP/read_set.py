@@ -81,8 +81,8 @@ def read_set_CNN(file_name_list, postfix):
           pbar.update(1)
         else:
           for augment in augment_list:
-            i = np.load(signal_path + file_name + "_Isignal_" + str(augment) + "_" + postfix + ".npy")
-            q = np.load(signal_path + file_name + "_Qsignal_" + str(augment) + "_" + postfix + ".npy")
+            i = np.load(signal_path + file_name + "_" + str(augment) + "_Isignal_" + postfix + ".npy")
+            q = np.load(signal_path + file_name + "_" + str(augment) + "_Qsignal_" + postfix + ".npy")
             signal[int(x*n_size):int((x+1)*n_size)] = np.expand_dims(np.swapaxes(np.array([i, q]).transpose(), 0, 1), axis=1)
             label[int(x*n_size):int((x+1)*n_size)] = np.load(label_path + file_name + "_label_" + label_type + "_" + postfix + ".npy")
             x += 1
@@ -159,7 +159,7 @@ def shuffle_set(signal, label):
 
 def read_set(file_name_list, postfix, is_shuffle=False):
   try:
-    
+
     if postfix == "train":
       if pre_shuffled is True:
         return read_set_train()

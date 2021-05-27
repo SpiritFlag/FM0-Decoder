@@ -9,6 +9,7 @@ from SignalStandardization import SignalStandardization
 from SignalAugmentation import SignalAugmentation
 from LabelCreation import LabelCreation
 from SetPartition import SetPartition
+from Clustering import Clustering   # temp
 
 
 class SelectMenu():
@@ -36,5 +37,7 @@ class SelectMenu():
             instance = LabelCreation()
         elif menu == 5:
             instance = SetPartition()
+        elif menu == 6:
+            instance = Clustering()
 
         instance.main()

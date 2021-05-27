@@ -20,7 +20,10 @@ def process(model, file_name, test_set, label_set):
     test_time = timeit.default_timer()
     success, error_idx, n_error = count_success(predict_set, np.hsplit(label_set, int(size_output_layer / size_slice)), countBit=True)
     for idx in range(len(label_set)):
-      file.write(str(error_idx[idx]) + "\t" + str(n_error[idx]) + "\n")
+      file.write(str(n_error[idx]) + "\n")
+      for error in error_idx[idx]:
+        file.write(str(error) + "\t")
+      file.write("\n")
     file.close()
     test_time = timeit.default_timer() - test_time
 

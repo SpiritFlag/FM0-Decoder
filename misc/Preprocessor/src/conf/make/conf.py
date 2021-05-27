@@ -8,7 +8,7 @@ n_bit_preamble = 6
 n_bit_data = 128
 
 data_path = "../data/"
-exp_num = 3
+exp_num = 12
 
 aug_ratio = 1
 aug_st = 48.1

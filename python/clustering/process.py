@@ -2,7 +2,6 @@ import sys
 
 from tqdm import tqdm
 from global_vars import *
-from correlation.decode_data import decode_data
 
 
 
@@ -52,4 +51,4 @@ def process(file_name, test_set, label_set):
 
   except Exception as ex:
     _, _, tb = sys.exc_info()
-    print("[correlation:process:" + str(tb.tb_lineno) + "] " + str(ex) + "\n\n")
+    print("[clustering:process:" + str(tb.tb_lineno) + "] " + str(ex) + "\n\n")

@@ -29,12 +29,30 @@ class CNN(tf.keras.Model):
   def build_model(self):
     try:
       self.input_layer = tf.keras.layers.Input(shape=(1, size_input_layer, size_input_filter), name="input")
-      layer = self.input_layer
+      self.noise_layer = tf.keras.layers.GaussianNoise(stddev=0.1, name="gaussian_noise")
+
+      if is_gaussian_noise is True:
+        layer = self.noise_layer(self.input_layer)
+      else:
+        layer = self.input_layer
 
       for idx in range(len(size_filter)):
-        conv_layer = tf.keras.layers.Conv2D(filters=size_filter[idx], kernel_initializer='he_uniform', kernel_size=(1, size_conv_layer), activation="relu", name="conv"+str(idx+1))
+        conv_layer = tf.keras.layers.Conv2D(filters=size_filter[idx], kernel_initializer='he_uniform', kernel_size=(1, size_conv_layer), name="conv"+str(idx+1))
+        layer = conv_layer(layer)
+
+        if is_batch_normalization is True:
+          batch_layer = tf.keras.layers.BatchNormalization(name="conv_batch"+str(idx+1))
+          layer = batch_layer(layer)
+
+        activation_layer = tf.keras.layers.Activation(tf.nn.relu, name="conv_activation"+str(idx+1))
+        layer = activation_layer(layer)
+
+        # if dropout_rate > 0:
+        #   dropout_layer = tf.keras.layers.Dropout(rate=dropout_rate, name="conv_dropout"+str(idx+1))
+        #   layer = dropout_layer(layer)
+
         pool_layer = tf.keras.layers.MaxPooling2D(pool_size=(1, size_pool_layer), name="pool"+str(idx+1))
-        layer = pool_layer(conv_layer(layer))
+        layer = pool_layer(layer)
 
       self.flatten_layer = tf.keras.layers.Flatten(name="flatten")
       layer = self.flatten_layer(layer)

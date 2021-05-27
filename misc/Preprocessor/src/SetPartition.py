@@ -69,7 +69,6 @@ class SetPartition(Preprocessor):
                 self.indexPath)
             print("")
 
-
         if self.onlyTest is True:
             index = [[], [], np.arange(self.nSignal)]
 

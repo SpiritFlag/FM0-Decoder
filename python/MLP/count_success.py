@@ -10,7 +10,7 @@ from MLP.global_vars import *
 def process_signal(predict_set, label_set, countBit=False):
   try:
     cur_fail = False
-    error_idx = -1
+    error_idx = []
     n_error = 0
 
     if ispreamble is True:
@@ -40,9 +40,8 @@ def process_signal(predict_set, label_set, countBit=False):
         continue
 
       if countBit is True:
-        if cur_fail is False:
-          error_idx = bit
-          cur_fail = True
+        cur_fail = True
+        error_idx.append(bit+1)
         n_error += 1
         continue
       else:

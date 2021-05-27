@@ -1,15 +1,20 @@
 ##
-# @mainpage Preprocessor
+# @mainpage FM0-Decoder
 #
-# @brief This program is a sub-program that pre-processes the dataset into a
-# form suitable for machine learning.
+# @brief This is a program that trains and tests the Signal-to-Signal
+# translator model for decoding backscatter signals.
 #
 # @section contents_main Contents
-# The program consists of  main functions.
-# - SignalDimensionalityReduction
+# The program consists of three main functions.
+# - Train
+#  - Learn the Signal-to-Signal translator model.
+# - Test
+#  - Test the Signal-to-Signal translator model.
+# - RuleBased
+#  - Decode the signal with conventional rule-based decoding method.
 #
 # @section dependencies_main Dependencies
-# - configparser, numpy, tqdm
+# - configparser, tqdm
 
 ##
 # @file main.py
@@ -24,15 +29,12 @@ if __name__ == "__main__":
     while True:
         try:
             print("")
-            print("1. Signal Dimensionality Reduction")
-            print("2. Signal Standardization")
-            print("3. Signal Augmentation")
-            print("4. Label Creation")
-            print("5. Set Partition")
+            print("1. Train")
+            print("3. Rule-Based Decoding")
             print("")
             print("Input Menu Number: ", end="")
             menu = int(input())
-            if menu == 0 or menu > 6:
+            if menu == 0 or menu > 3:
                 raise ValueError(f"invalid menu number: {menu}")
             print("")
             break
